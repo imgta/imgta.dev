@@ -6,9 +6,10 @@ export function DateBlock({ date }: DateBlockProps) {
   if (!date) date = new Date();
 
   const d = typeof date === 'string' ? new Date(date) : date;
+
   const YYYY = d.getFullYear().toString();
   const MMM = d.toLocaleString('en-US', { month: 'short' }).toUpperCase().split('');
-  const DD = d.getDate().toString().padStart(2, '0').split('');
+  const DD = d.getUTCDate().toString().padStart(2, '0').split('');
 
   const isoDate = d.toISOString().split('T')[0];
 

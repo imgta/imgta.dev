@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createMetaTags } from '@/utils/meta';
 import { TechStack } from '@/components/TechStack';
-import { DateBlock } from '@/components/DateBlock';
-import { TechFlex } from '@/components/TechFlex';
+import { Projects } from '@/components/Projects';
 
 //------------------------------------------------------------
 
@@ -15,20 +14,23 @@ export const Route = createFileRoute('/')({
 });
 
 interface HeaderProps {
-  cli: string;
   heading: string;
+  cli?: string;
   id?: string;
 }
 function Header({ cli, heading, id }: HeaderProps) {
+  const anchorId = heading.replace(' ', '-');
   return (
-    <div>
-      <div className="flex gap-1 items-center text-gt-600/70 dark:text-muted tracking-[-0.075em] -ml-0.5">
-        <span className="font-inter text-xs scale-y-125 scale-x-75">&gt;</span>
-        <p className="font-dankmono text-sm">{cli}</p>
-      </div>
-      <h3 id={id} className="font-neuvetica text-3xl text-foreground/90 dark:text-gt-600 leading-none">
+    <div id={anchorId}>
+      {cli && (
+        <div className="flex gap-1 items-center text-gt-600/70 dark:text-muted tracking-[-0.075em] -ml-0.5">
+          <span className="font-inter text-xs scale-y-125 scale-x-75">&gt;</span>
+          <p className="font-dankmono text-sm">{cli}</p>
+        </div>
+      )}
+      <h2 id={id} className="font-neuvetica text-3xl text-foreground/90 dark:text-gt-600 leading-none">
         {heading}
-      </h3>
+      </h2>
     </div>
   );
 }
@@ -60,16 +62,18 @@ function Index() {
           </section>
 
           <section className="max-w-xl mx-auto my-24 space-y-8">
-            <Header id="skills" heading="tech stack" cli="pnpm add" />
+            <Header heading="tech stack" cli="pnpm add" />
             <TechStack />
           </section>
 
           <section className="max-w-xl mx-auto my-24 space-y-8">
-            <Header id="projects" heading="projects" cli="git init" />
+            <Header heading="projects" cli="git init" />
             <p className="mt-4 font-neuvetica text-lg text-muted-foreground text-pretty tracking-[0.075em]">
               Whether born of sheer curiosity, boyish enthusiasm, or from the lure of voluntary challenge, projects are seen as buoyant invitations for thoughtful exploration, bold experimentation, and meaningful growth.
             </p>
           </section>
+          <Projects />
+
 
         </div>
       </div>

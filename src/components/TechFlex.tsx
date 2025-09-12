@@ -1,5 +1,7 @@
+import { Link } from '@tanstack/react-router';
 import { LogoIcon } from '@/components/LogoIcon';
 import { cn } from '@/lib/utils';
+import { TECHS } from '@/lib/tech';
 
 //------------------------------------------------------------
 
@@ -12,26 +14,39 @@ interface TechFlexProps {
 
 export function TechFlex({ stack, iconClass }: TechFlexProps) {
   return (
-    <section className="flex flex-row items-center group mt-2 gap-3 mx-auto">
-      {stack.map((tech, idx) =>
-        <div
-          key={idx}
-          className="flex items-center text-start
-          text-foreground group-hover:cursor-pointer"
-        >
-          <LogoIcon
-            name={tech.toLowerCase()}
-            className={cn('size-6', iconClass)}
-          />
-          <span
-            className="overflow-x-hidden whitespace-nowrap max-w-0
-            transition-[max-width,padding-left] duration-200 ease-in-out
-            group-hover:max-w-md group-hover:pl-1
-            text-xs font-semibold group-hover:text-content/90 dark:group-hover:text-content-300"
+    <section className="flex flex-row items-center mt-2 mx-auto gap-2">
+      {stack.map((name, idx) => {
+        const key = name
+          .replace(/^aws\s+/i, '')  // strip leading 'AWS'
+          .replace(/[\s.]+/g, '')   // remove whitespace, periods
+          .toLowerCase();
+
+        const tech = TECHS[key];
+        const href = tech ? tech.to : '#';
+
+        return (
+          <Link
+            key={idx}
+            to={href}
+            title={name}
+            target='_blank' rel="noopener noreferrer"
+            className="group flex hover:cursor-pointer"
           >
-            {tech}
-          </span>
-        </div>
+
+            <LogoIcon name={name} className={cn('size-7', iconClass)} />
+
+            <span
+              className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
+              text-sm font-sfmono tracking-tighter font-normal
+              text-foreground dark:group-hover:text-content-300
+              group-hover:max-w-md group-hover:text-content/90 group-hover:pl-1
+              transition-[max-width,padding-left] duration-150 ease-in-out"
+            >
+              {name}
+            </span>
+          </Link>
+        );
+      }
       )}
     </section>
   );

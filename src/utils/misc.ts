@@ -1,6 +1,104 @@
+export interface FormatDateOptions {
+  showTime?: boolean;
+  locale?: string;
+  timeZone?: string;
+  intl?: Intl.DateTimeFormatOptions;
+  format?: string;
+}
+
+/**
+ * Flexible date formatter.
+ * @param input - Date object, ISO date string, or unix timestamp.
+ * @param options - Options for time, locale, time zone, `Intl.DateTimeFormat` formats, and shorthand token formats (e.g. 'MMM D, YYYY, HH:mm').
+ *
+ * Supported tokens:
+ *  YYYY, YY, MMMM, MMM, MM, M, DD, D, dddd, ddd, HH, H, hh, h, mm, m, ss, s, a
+ * 
+ * @examples
+ * ```ts
+ * formatDate('2025-09-12T20:05:00Z');  // 'Sep 12, 2025, 4:05 PM' (in America/New_York)
+ * formatDate(Date.now(), { format: 'MMM D, YYYY, HH:mm' });  // 'Sep 12, 2025, 20:10'
+ * formatDate('2025-09-12', { format: 'dddd, MMMM D, YYYY' });  // 'Friday, September 12, 2025'
+ * formatDate('2025-09-12T20:05:00Z', { intl: { dateStyle: 'full', timeStyle: 'short' }, timeZone: 'America/New_York' });  // 'Friday, September 12, 2025 at 4:05 PM'
+ * ```
+ */
+export function formatDate(input: Date | string | number, options: FormatDateOptions = { showTime: true }) {
+  const {
+    showTime = true,
+    locale = 'en-US',
+    timeZone,         // 'America/New_York'
+    intl,             // overrides `showTime` if provided
+    format,
+  } = options;
+
+  const date = new Date(input);
+  if (Number.isNaN(date.getTime())) return '';
+
+  // token-based formatting
+  if (format) {
+    // timezone-sensitive, Intl parts helpers
+    const part = (opts: Intl.DateTimeFormatOptions, type: Intl.DateTimeFormatPartTypes) =>
+      new Intl.DateTimeFormat(locale, { timeZone, ...opts })
+        .formatToParts(date)
+        .find(p => p.type === type)?.value ?? '';
+
+    const YYYY = part({ year: 'numeric' }, 'year'); // '2025'
+    const YY = YYYY.slice(-2);                      // '25'
+    const MMMM = part({ month: 'long' }, 'month');  // 'April'
+    const MMM = part({ month: 'short' }, 'month');  // 'Apr'
+    const MM2 = part({ month: '2-digit' }, 'month');// '04'
+    const MM = MM2;
+    const M = String(parseInt(MM2, 10));            // '4'
+
+    const DD2 = part({ day: '2-digit' }, 'day');    // '07'
+    const DD = DD2;
+    const D = String(parseInt(DD2, 10));            // '7'
+
+    const dddd = part({ weekday: 'long' }, 'weekday'); // 'Thursday'
+    const ddd = part({ weekday: 'short' }, 'weekday'); // 'Thur'
+
+    const HH2 = part({ hour: '2-digit', hour12: false }, 'hour') || '00'; // '08'
+    const HH = HH2;
+    const H = String(parseInt(HH2, 10));                                  // '8'
+
+    const mm2 = part({ minute: '2-digit' }, 'minute') || '00';
+    const mm = mm2;
+    const m = String(parseInt(mm2, 10));
+
+    const ss2 = part({ second: '2-digit' }, 'second') || '00';
+    const ss = ss2;
+    const s = String(parseInt(ss2, 10));
+
+    const dayPeriod = part({ hour: 'numeric', hour12: true }, 'dayPeriod')?.toLowerCase();
+    const a = dayPeriod || (parseInt(HH2, 10) >= 12 ? 'pm' : 'am');
+
+    const h12 = ((n: number) => (n % 12) || 12)(parseInt(HH2, 10));
+    const hh = String(h12).padStart(2, '0');
+    const h = String(h12);
+
+    // replace tokens (longest first to avoid partial matches)
+    return format.replace(
+      /YYYY|YY|MMMM|MMM|dddd|ddd|MM|M|DD|D|HH|H|hh|h|mm|m|ss|s|a/g,
+      (tok) => ({
+        YYYY, YY, MMMM, MMM, dddd, ddd, MM, M, DD, D, HH, H, hh, h, mm, m, ss, s, a,
+      } as Record<string, string>)[tok]
+    );
+  }
+
+  // Intl options path (explicit control)
+  if (intl) {
+    return new Intl.DateTimeFormat(locale, { timeZone, ...intl }).format(date);
+  }
+
+  // default behavior (backwards compatible)
+  const base: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+  if (showTime) Object.assign(base, { hour: 'numeric', minute: 'numeric' });
+  return new Intl.DateTimeFormat(locale, { timeZone, ...base }).format(date);
+}
+
+
 /**
  * Simple debounce function.
- * 
  * @param func 
  * @param delay 
  * @returns 
@@ -28,7 +126,6 @@ export function debounce<T extends (...args: any[]) => any>
 
 /**
  * Returns a total count of words from a given text input.
- *
  * @param text - The generated text content (with HTML tags)
  * @returns The total number of words from the text
  */
@@ -44,7 +141,6 @@ export function countWords(text: string) {
 
 /**
  * Estimates the number of syllables in a given word.
- * 
  * - Handles special cases like words starting with 'some'.
  * - Ignores silent 'e' endings and leading 'y' characters.
  * - Groups consecutive vowels (1–2) as a single syllable.
@@ -72,7 +168,6 @@ export function countSyllables(word: string) {
 
 /**
  * Analyzes a block of text and extracts key readability metrics.
- * 
  * - Strips HTML tags, whitespace, and common HTML entities.
  * - Counts sentences, words, syllables, and letters.
  * - Categorizes words by syllable count (tiny, small, big).
@@ -129,7 +224,6 @@ export function countContent(content: string) {
 
 /**
  * Calculates a variety of readability scores for a block of text.
- * 
  * This function analyzes the text using standard readability formulas, including:
  * - **Flesch-Kincaid Grade Level** (school grade level estimate)
  * - **Flesch Reading Ease** (easier = higher score)

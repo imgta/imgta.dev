@@ -15,12 +15,12 @@ interface NavagationLink {
 }
 
 const navLinks: NavagationLink[] = [
-  { name: 'Skills', to: '#skills' },
+  { name: 'Skills', to: '#tech-stack' },
   { name: 'Projects', to: '#projects' },
   { name: 'CV', to: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
 ];
 
-const SOCIAL_KEYS = ['github', 'linkedin'] as const satisfies readonly TechKey[];
+const SOCIAL_KEYS = ['github', 'linkedin', 'instagram'] as const satisfies readonly TechKey[];
 
 const footerLinks: NavagationLink[] = SOCIAL_KEYS.map(key => {
   const def = TECHS[key];

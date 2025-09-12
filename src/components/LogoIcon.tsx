@@ -7,12 +7,12 @@ export interface LogoIconProps extends React.SVGProps<SVGSVGElement> {
 
 export function LogoIcon({ name, ...props }: LogoIconProps) {
   const key = name
-    .replace(/[\s.]+/g, '') // remove whitespaces and periods
+    .replace(/^aws\s+/i, '')  // strip leading 'AWS'
+    .replace(/[\s.]+/g, '')   // remove whitespace, periods
     .toLowerCase();
 
-  const def = TECHS[key];
-  if (!def) return null;
+  const tech = TECHS[key];
+  if (!tech) return null;
 
-  return cloneElement(def.icon, { ...props });
-
+  return cloneElement(tech.icon, { ...props });
 }
