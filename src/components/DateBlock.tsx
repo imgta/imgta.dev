@@ -7,7 +7,7 @@ export function DateBlock({ date }: DateBlockProps) {
 
   const d = typeof date === 'string' ? new Date(date) : date;
 
-  const YYYY = d.getFullYear().toString();
+  const YYYY = d.getFullYear().toString().split('');
   const MMM = d.toLocaleString('en-US', { month: 'short' }).toUpperCase().split('');
   const DD = d.getUTCDate().toString().padStart(2, '0').split('');
 
@@ -16,20 +16,19 @@ export function DateBlock({ date }: DateBlockProps) {
   return (
     <time
       dateTime={isoDate}
-      className="font-neuvetica font-medium flex flex-col max-w-fit mx-auto space-y-1 tabular-nums text-lg text-content-800/80"
+      className="flex flex-col max-w-fit mx-auto tabular-nums tracking-tight
+      font-inter font-light text-content-700/50 dark:text-content-600/50"
     >
-      <span className="leading-none">{YYYY}</span>
-
-      <span className="text-xl flex justify-between leading-3.5">
-        {MMM.map(
-          (char, idx) => <span key={idx}>{char}</span>)
-        }
+      <span className="flex justify-between text-base leading-none">
+        {YYYY.map((char, idx) => <span key={idx}>{char}</span>)}
       </span>
 
-      <span className="flex justify-between text-4xl tabular-nums leading-9">
-        {DD.map(
-          (char, idx) => <span key={idx}>{char}</span>)
-        }
+      <span className="flex justify-between text-xl leading-[1.65rem]">
+        {MMM.map((char, idx) => <span key={idx}>{char}</span>)}
+      </span>
+
+      <span className="flex justify-between text-[1.875rem] leading-[1.8rem]">
+        {DD.map((char, idx) => <span key={idx}>{char}</span>)}
       </span>
     </time>
   );

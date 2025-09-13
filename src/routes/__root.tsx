@@ -43,7 +43,7 @@ export const Route = createRootRoute({
         <HeadContent />
 
         <div className="min-h-screen flex flex-col">
-          <header>
+          <header className="sticky bg-selection/50 dark:bg-selection/30 inset-0 top-0 z-20 backdrop-blur-[2.5px] border-b border-muted-foreground/10">
             <nav className="max-w-5xl mx-auto px-8 py-8">
               <div className="flex items-center gap-8">
 
@@ -59,7 +59,7 @@ export const Route = createRootRoute({
                       &gt;
                     </span>
                     <p className="font-neuvetica tracking-[0.07em]">
-                      <span className="font-light text-content-500/60 dark:text-muted-foreground/20
+                      <span className="font-light text-content-500/60 dark:text-content-600
                                       group-hover:text-content-700 dark:group-hover:text-content-250"
                       >
                         im
@@ -78,7 +78,7 @@ export const Route = createRootRoute({
                     key={link.to}
                     to={link.to}
                     className="font-neuvetica lowercase text-[1.1rem] tracking-[0.07em]
-                              text-content-500 dark:text-content-400/90
+                              text-content-700 dark:text-content-400
                               hover:text-gt-600 dark:hover:text-gt-600
                               [&.active]:text-gt-600 [&.active]:font-medium"
                   >
@@ -100,17 +100,17 @@ export const Route = createRootRoute({
             <div className="mx-auto max-w-6xl overflow-hidden px-6 lg:px-8 py-4 sm:py-8">
               <div className="mt-6 lg:mt-8 flex justify-center gap-x-12">
                 {footerLinks.map(link => (
-                  <Link
+                  <a
                     key={link.to}
-                    to={link.to}
+                    href={link.to}
                     title={link.name}
+                    aria-label={link.name}
                     target='_blank' rel="noopener noreferrer"
-                    aria-label="Find Gordon on his socials"
                     className="text-foreground hover:scale-125 duration-75"
                   >
                     <span className="sr-only">{link.name}</span>
                     {link.icon && <link.icon aria-hidden="true" className="size-7" />}
-                  </Link >
+                  </a>
                 ))}
               </div>
 

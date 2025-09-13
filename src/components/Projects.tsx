@@ -1,18 +1,21 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
 import { LogoIcon } from '@/components/LogoIcon';
-import { TechFlex } from '@/components/TechFlex';
+import { TechFlex } from '@/components/TechStack';
 import { formatDate } from '@/utils/misc';
+import { cn } from '@/lib/utils';
+import { Header } from '@/components/Header';
 import { DateBlock } from '@/components/DateBlock';
+
 
 
 interface Project {
   name: string;
   summary: string;
   logo?: string;
-  tagline?: string;
+  cli?: string;
   cover: { src: string, alt?: string; }[];
   techStack: string[];
   startDate: string;
@@ -28,31 +31,33 @@ interface Project {
 
 const PROJECTS: Project[] = [
   {
+    featured: true,
     name: 'Video Blog AI',
     logo: 'videoblogai',
-    summary: 'Co-founder of an AI-powered blogging platform for transforming video, text, and user content into SEO-optimized blog posts.',
+    cli: 'npx nuxthub deploy',
+    summary: 'Co-founder, full-stack software engineer of an AI-powered blogging platform for converting and transforming videos, articles, and user inputs into SEO-optimized blog posts and content clusters.',
     techStack: [
       'Nuxt',
       'FastAPI',
       'Drizzle',
       'Stripe',
-      'Docker',
       'NGINX',
-      'Cloudflare',
+      'Docker',
       'Oracle',
+      'Cloudflare',
     ],
     startDate: '2024-01-08',
-    links: { live: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral', },
+    links: { live: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral', demo: 'https://linkedin.com/in/gordonta', repo: 'https://imgta.dev' },
     cover: [
       { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview' },
       { src: '/img/vibby-full.webp', alt: 'Video Blog AI page preview' },
     ],
-    featured: true,
   },
   {
     name: 'Nootrient',
     logo: 'nootrient',
-    summary: 'Shopify e-commerce site for a creative lifestyle supplement brand, complete with migrated WooCommerce (WordPress) core data, SEO-optimized copy rewrites, and responsive layout redesigns.',
+    cli: 'shopify theme push',
+    summary: 'Shopify e-commerce store for a creative lifestyle supplements brand, core WordPress (WooCommerce) data migrations, SEO-optimizations with brand-aligned copywriting, and custom, responsive design.',
     techStack: [
       'Shopify',
       'WordPress',
@@ -71,16 +76,19 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'Word Wisp',
-    summary: 'AI co-authoring tool that rewrites text in classic literary styles using semantic retrieval over Project Gutenberg corpus to deliver narrative-accurate edits with source attribution.',
+    cli: 'docker-compose up -d',
+    summary: 'An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
     techStack: [
       'React',
       'Next.js',
+      'Drizzle',
       'Neon',
-      'Docker',
       'Chroma',
+      'Docker',
       'AWS EC2',
     ],
     startDate: '2025-05',
+    endDate: '2025-05',
     links: { demo: 'https://wisp-eta.vercel.app' },
     cover: [
       { src: '/img/wisp-preview.png', alt: 'Word Wisp preview' },
@@ -89,8 +97,16 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'Vialect',
-    summary: 'Multimedia transcriber that transforms video and audio into navigable transcripts and summaries, improving accessibility for multilingual audiences and content consumers.',
-    techStack: ['Python', 'Streamlit', 'HuggingFace', 'PyTorch'],
+    cli: 'streamlit run app.py',
+    summary: 'A Streamlit (Python) video/audio transcriber app that generates timestamped transcripts and summaries with TTS narration, featuring FFMPEG media preprocessing, speaker diarization, and cross-platform video URL intake.',
+    techStack: [
+      'Streamlit',
+      'Python',
+      'OpenAI',
+      'HuggingFace',
+      'FFMPEG',
+      'PyTorch',
+    ],
     startDate: '2023-11',
     endDate: '2023-12',
     links: { repo: 'https://github.com/imgta/vialect' },
@@ -100,86 +116,130 @@ const PROJECTS: Project[] = [
     ],
   },
   {
+    archived: true,
     name: 'playtrace',
-    summary: 'playtrace is a full-stack, social events hosting app that aims to electrify social circles and allow communities to be explored, candidly, through customizable event pages.',
+    cli: 'npx strapi start',
+    summary: 'playtrace was a full-stack events hosting web app built on Nuxt (frontend) and Strapi CMS (backend), Unsplash/GIPHY cover image search, AWS S3 storage, Google Places autocompletes, and Google Routes for multi-location mapping.',
     techStack: [
       'Nuxt',
       'Strapi',
       'Supabase',
-      'Render',
       'Cloudflare',
-      'AWS S3'
+      'Render',
+      'Google Places',
+      'AWS S3',
     ],
     startDate: '2023-08',
     endDate: '2023-11',
     links: {},
     cover: [
-      { src: '/img/play-preview.png', alt: 'playtrace preview' },
+      { src: '/img/play-preview.jpg', alt: 'playtrace preview' },
       { src: '/img/play-full.webp', alt: 'playtrace page preview' },
     ],
-    archived: true,
   },
 ];
 
 
 function ProjectCard({ project }: { project: Project; }) {
+  const { live, demo, repo } = project.links;
+  const actions = [];
+  if (live) actions.push({ href: live, label: 'Website', title: 'live website', });
+  if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', });
+  if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <LogoIcon name="github" className="size-4" /> });
+
+  const { startDate, endDate } = project;
+  const period = [];
+
+  if (!endDate) period.push(
+    formatDate(startDate, { format: 'YYYY' }),
+    'present'
+  );
+
+  if (endDate) {
+    if (endDate !== startDate) {
+      const [startYr] = startDate.split('-');
+      const [endYr] = endDate.split('-');
+      if (startYr === endYr) period.push(
+        formatDate(startDate, { format: 'MMM' }),
+        formatDate(endDate, { format: 'MMM YYYY' })
+      );
+      else period.push(
+        formatDate(startDate, { format: 'MMM YYYY' }),
+        formatDate(endDate, { format: 'MMM YYYY' })
+      );
+    }
+    else period.push(formatDate(startDate, { format: 'MMM YYYY' }));
+  }
+
   return (
-    <Card className="overflow-hidden p-0 bg-card border-border shadow-md">
-      <CardContent className="p-0">
-        <div className="relative aspect-video object-cover">
-          <img
-            src={project.cover[0].src || "/placeholder.svg"}
-            alt={project.cover[0].alt || `${project.name} preview`}
-          />
-        </div>
-        <div className="p-6 space-y-4">
-
-          <div className="flex justify-between items-center">
-            <div>
-              {project.logo
-                ? <LogoIcon name={project.logo} className="h-10 w-auto" />
-                : <h3 className="font-neuvetica text-2xl text-foreground">{project.name}</h3>
+    <Card className="overflow-hidden p-0 gap-0 bg-card/75 border-border shadow-md">
+      <section>
+        <div className="flex justify-between items-end p-6 pb-0">
+          <Header heading={project.name.toLowerCase()} cli={project.cli} />
+          <div>
+            <div className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
+              {period.length > 1
+                ? <p>{period[0]} <span>&ndash;</span> {period[1]}</p>
+                : <p>{period[0]}</p>
               }
-              {project.tagline && <p className="text-sm text-accent font-medium mt-1">{project.tagline}</p>}
             </div>
-
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              {/* {(project.startDate && !project.endDate) && <DateBlock date={project.startDate} />} */}
-              <span>
-                {formatDate(project.startDate, { format: 'MMM YYYY' })} &ndash; {project.endDate ? formatDate(project.endDate, { format: 'MMM YYYY' }) : 'present'}
-              </span>
-            </div>
+            <TechFlex stack={project.techStack} iconClass="size-6" />
           </div>
-
-          <TechFlex stack={project.techStack} />
-
-          <h4 className="mt-4 font-neuvetica text-lg text-muted-foreground tracking-[0.075em] leading-relaxed text-pretty">
-            {project.summary}
-          </h4>
-
-          {!project.archived && (
-            <div className="flex gap-2 pt-2">
-              {project.links.live && (
-                <Button size="sm" className="flex items-center gap-2">
-                  <ExternalLink className="size-4" />
-                  Visit
-                </Button>
-              )}
-              {project.links.demo && (
-                <Button size="sm" variant="outline" className="flex items-center gap-2 bg-transparent">
-                  <ExternalLink className="size-4" />
-                  Demo
-                </Button>
-              )}
-              {project.links.repo && (
-                <Button size="sm" variant="outline" className="flex items-center gap-2 bg-transparent">
-                  <LogoIcon name="github" className="size-4" />
-                  Code
-                </Button>
-              )}
-            </div>
-          )}
         </div>
+
+        <div className="m-4 border-b border-border" />
+
+        <div className="flex items-center mt-4 px-8 gap-1">
+          <div>
+            {project.logo && <LogoIcon name={project.logo} className="size-3/4" />}
+          </div>
+          <div className="font-neuvetica text-lg text-muted-foreground tracking-[0.075em] leading-6.5 text-pretty">
+            {project.summary}
+          </div>
+        </div>
+
+        {/* LINKS */}
+        <div className="p-4 pb-2 flex justify-end items-end">
+          <div className="flex justify-between items-end">
+            {!project.archived && actions.length &&
+              <div className="flex gap-1">
+                {actions.map(a =>
+                  <Button asChild key={a.label} size="sm" variant="link" className="flex items-center gap-1.5">
+                    <a
+                      href={a.href}
+                      title={`${project.name} ${a.title}`}
+                      aria-label={`Link to ${project.name}'s ${a.title}`}
+                      target="_blank" rel="noopener noreferrer"
+                    >
+                      {a.icon && a.icon}
+                      <span className="lowercase font-dankmono text-content-700 dark:text-content-400">{a.label}</span>
+                    </a>
+                  </Button>
+                )}
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+
+      <CardContent className="p-0">
+        {/* IMAGES */}
+        <div className="relative aspect-[media]">
+          <img className={cn(
+            'object-cover rounded-xs w-full',
+            project.archived && 'grayscale-100 hover:grayscale-0',
+          )}
+            src={project.cover[0].src ?? "/placeholder.svg"}
+            alt={project.cover[0].alt ?? `${project.name} preview`}
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="absolute left-3 top-3 flex gap-2">
+            {project.archived && <Badge variant="destructive">archived</Badge>}
+          </div>
+        </div>
+
       </CardContent>
     </Card>
   );
@@ -190,8 +250,8 @@ export function Projects() {
   return (
     <section className="py-16 max-w-3xl mx-auto">
       <div className="space-y-8">
-        {PROJECTS.map((project, index) => (
-          <ProjectCard key={index} project={project} />
+        {PROJECTS.map(project => (
+          <ProjectCard key={project.name} project={project} />
         ))}
       </div>
     </section>

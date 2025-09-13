@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createMetaTags } from '@/utils/meta';
-import { TechFlex } from '@/components/TechFlex';
-import { ProgressiveBlur } from '@/components/BlurAnchor';
+import { TechFlex } from '@/components/TechStack';
 
 export const Route = createFileRoute('/about')({
   head: () => createMetaTags({
@@ -27,7 +26,8 @@ const stack2 = [
 ];
 
 const stack3 = [
-  'Docker', 'EC2', 'Chroma', 'Qdrant', 'Liquid',
+  'Nootrient',
+  'FFMPEG',
 ];
 
 function About() {
@@ -35,9 +35,8 @@ function About() {
     <>
       <TechFlex stack={stack} iconClass="size-12" />
       <TechFlex stack={stack2} iconClass="size-12" />
-      <TechFlex stack={stack3} iconClass="size-12" />
+      <div className="flex justify-center my-8"><TechFlex stack={stack3} iconClass="size-36" /></div>
 
-      <ProgressiveBlur />
     </>
   );
 }

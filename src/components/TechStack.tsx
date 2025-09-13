@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
 import { LogoIcon } from '@/components/LogoIcon';
-import { TECHS } from '@/lib/tech';
+import { TECHS, type TechKey } from '@/lib/tech';
 import { cn } from '@/lib/utils';
 
 //------------------------------------------------------------
 
 interface TechItem {
-  key: keyof typeof TECHS;
+  key: TechKey;
   tags: string[];
 };
 
@@ -78,8 +77,7 @@ export function TechStack() {
   }
 
   return (
-    <ul
-      role="list" aria-labelledby="skills"
+    <ul role="list" aria-labelledby="skills"
       className="grid grid-cols-3 sm:grid-cols-5 gap-y-6 sm:gap-y-8 sm:gap-x-4 xl:gap-x-8"
       onMouseOver={updateBitmask}
       onMouseOut={clearBitmask}
@@ -95,9 +93,9 @@ export function TechStack() {
 
         return (
           <li key={tech.name} className="space-y-2">
-            <Link
+            <a
               title={tech.name}
-              to={tech.to}
+              href={tech.to}
               target="_blank" rel="noopener noreferrer"
               aria-label={`Visit the official ${tech.name} website`}
               data-id={tech.name}
@@ -111,7 +109,7 @@ export function TechStack() {
               )}
             >
               <LogoIcon name={tech.name} className="size-9" />
-            </Link>
+            </a>
 
             <p className="block truncate text-center pointer-events-none text-xs sm:text-sm text-foreground dark:text-content-400/90">
               {tech.name}
@@ -120,5 +118,49 @@ export function TechStack() {
         );
       })}
     </ul>
+  );
+}
+
+//------------------------------------------------------------
+
+interface TechFlexProps { stack: string[]; iconClass?: string; }
+
+export function TechFlex({
+  stack,
+  iconClass = '',
+}: TechFlexProps) {
+  return (
+    <section className="flex flex-row items-center mt-2 mx-auto gap-2">
+      {stack.map(name => {
+        const key = name
+          .replace(/^aws\s+/i, '')  // strip leading 'AWS'
+          .replace(/[\s.]+/g, '')   // remove whitespace, periods
+          .toLowerCase();
+        const tech = TECHS[key];
+        const href = tech ? tech.to : '#';
+
+        return (
+          tech && <a
+            key={key} href={href}
+            title={name}
+            target='_blank' rel="noopener noreferrer"
+            className="group flex hover:cursor-pointer"
+          >
+            <LogoIcon name={name} className={cn(
+              'size-7 group-hover:saturate-150 group-hover:brightness-125',
+              iconClass,
+            )} />
+            <span
+              className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
+              font-nunito font-semibold text-sm text-foreground/80 tracking-tighter
+              group-hover:max-w-md group-hover:pl-1.5
+              transition-[max-width,padding-left] duration-200 ease-in-out"
+            >
+              {name}
+            </span>
+          </a>);
+      }
+      )}
+    </section>
   );
 }

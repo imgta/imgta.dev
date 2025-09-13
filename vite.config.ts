@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// https://vite.dev/config/
+// https://vite.dev/config
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -17,7 +17,7 @@ export default defineConfig({
         plugins: ['babel-plugin-react-compiler'],
         presets: ['@babel/preset-typescript'], // if using typescript
       },
-      include: /\.[jt]sx?$/,
+      include: /\.[jt]sx?$/, // js, jsx, ts, tsx
     }),
   ],
   envDir: '../', // if sharing `.env` in parent directory in monorepo

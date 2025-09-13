@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { createMetaTags } from '@/utils/meta';
 import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
+import { Header } from '@/components/Header';
 
 //------------------------------------------------------------
 
@@ -13,27 +14,6 @@ export const Route = createFileRoute('/')({
   component: Index,
 });
 
-interface HeaderProps {
-  heading: string;
-  cli?: string;
-  id?: string;
-}
-function Header({ cli, heading, id }: HeaderProps) {
-  const anchorId = heading.replace(' ', '-');
-  return (
-    <div id={anchorId}>
-      {cli && (
-        <div className="flex gap-1 items-center text-gt-600/70 dark:text-muted tracking-[-0.075em] -ml-0.5">
-          <span className="font-inter text-xs scale-y-125 scale-x-75">&gt;</span>
-          <p className="font-dankmono text-sm">{cli}</p>
-        </div>
-      )}
-      <h2 id={id} className="font-neuvetica text-3xl text-foreground/90 dark:text-gt-600 leading-none">
-        {heading}
-      </h2>
-    </div>
-  );
-}
 
 //------------------------------------------------------------
 
@@ -43,6 +23,19 @@ function Index() {
       <div className="flex justify-center max-w-4xl mx-auto mt-8 space-y-1">
         <div>
 
+          <svg
+            aria-hidden="true"
+            className="absolute top-0 -z-10 inset-x-0 h-screen w-full stroke-content-250
+            mask-[radial-gradient(32rem_32rem_at_center,white,transparent)]"
+          >
+            <defs><pattern id="griddy" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse"><path d="M.5 200V.5H200" fill="none" /></pattern></defs>
+            <svg x="50%" y="-1" className="overflow-visible fill-content-50 dark:fill-content-900/70">
+              <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" />
+            </svg>
+            <rect width="100%" height="100%" fill="url(#griddy)" />
+          </svg>
+
+          {/* HERO */}
           <section className="flex justify-center items-center gap-4">
             <div>
               <h3 className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 tracking-wide">
@@ -61,19 +54,23 @@ function Index() {
             </div>
           </section>
 
+          {/* TECHSTACK */}
           <section className="max-w-xl mx-auto my-24 space-y-8">
             <Header heading="tech stack" cli="pnpm add" />
             <TechStack />
           </section>
 
-          <section className="max-w-xl mx-auto my-24 space-y-8">
-            <Header heading="projects" cli="git init" />
-            <p className="mt-4 font-neuvetica text-lg text-muted-foreground text-pretty tracking-[0.075em]">
-              Whether born of sheer curiosity, boyish enthusiasm, or from the lure of voluntary challenge, projects are seen as buoyant invitations for thoughtful exploration, bold experimentation, and meaningful growth.
-            </p>
+          {/* PROJECTS */}
+          <section className="my-24 space-y-8">
+            <div className="max-w-xl mx-auto">
+              <Header heading="projects" cli="git init">
+                <p className="font-neuvetica text-lg tracking-[0.075em]">
+                  Whether born of sheer curiosity, boyish enthusiasm, or from the lure of voluntary challenge, projects are seen as buoyant invitations for thoughtful exploration, bold experimentation, and meaningful growth.
+                </p>
+              </Header>
+            </div>
+            <Projects />
           </section>
-          <Projects />
-
 
         </div>
       </div>
