@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LogoIcon } from '@/components/LogoIcon';
+import { IconSvg } from '@/components/IconSvg';
 import { TECHS, type TechKey } from '@/lib/tech';
 import { cn } from '@/lib/utils';
 
@@ -107,7 +107,7 @@ export function TechStack() {
                 }
               )}
             >
-              <LogoIcon name={tech.name} className="size-9" />
+              <IconSvg name={tech.name} className="size-9" />
             </a>
 
             <p className="block truncate text-center pointer-events-none text-xs sm:text-sm text-foreground dark:text-content-400/90">
@@ -145,15 +145,15 @@ export function TechFlex({
             target='_blank' rel="noopener noreferrer"
             className="group flex hover:cursor-pointer"
           >
-            <LogoIcon name={name} className={cn(
+            <IconSvg name={name} className={cn(
               'size-7 group-hover:saturate-150 group-hover:brightness-125',
               iconClass,
             )} />
             <span
               className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
-              font-nunito font-semibold text-sm text-foreground/80 tracking-tighter
-              group-hover:max-w-md group-hover:pl-1.5
-              transition-[max-width,padding-left] duration-200 ease-in-out"
+              font-sfmono text-sm text-foreground/80 tracking-tight
+              group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-2
+              transition-[max-width,padding-left] duration-250 ease-in-out"
             >
               {name}
             </span>

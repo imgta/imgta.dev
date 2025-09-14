@@ -1,8 +1,8 @@
-import { Badge } from '@/components/ui/badge';
+import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
 import { HighlightLink } from '@/components/ui/highlight-link';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/Header';
-import { LogoIcon } from '@/components/LogoIcon';
 import { TechFlex } from '@/components/TechStack';
 import { formatDate } from '@/utils/misc';
 import { cn } from '@/lib/utils';
@@ -140,20 +140,12 @@ const PROJECTS: Project[] = [
 ];
 
 
-export function ExternalLink(props: React.SVGProps<SVGSVGElement>) {
-  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.825" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5" /></svg>;
-}
-
-export function LiveLink(props: React.SVGProps<SVGSVGElement>) {
-  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"><path d="M20.94 13.045A9 9 0 1 0 11.987 21M3.6 9h16.8M3.6 15H13" /><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 2.529 10.294M16 22l5-5m0 4.5V17h-4.5" /></g></svg>;
-}
-
 function ProjectCard({ project }: { project: Project; }) {
   const { live, demo, repo } = project.links;
   const actions = [];
   if (live) actions.push({ href: live, label: 'Site', title: 'live website', icon: <LiveLink className="size-4.5" /> });
   if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', icon: <ExternalLink className="size-4.5" /> });
-  if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <LogoIcon name="github" className="size-4" /> });
+  if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <IconSvg name="github" className="size-4.5" /> });
 
   const { startDate, endDate } = project;
   const period = [];
@@ -185,21 +177,20 @@ function ProjectCard({ project }: { project: Project; }) {
         <div className="flex justify-between items-end p-6 pb-0">
           <Header heading={project.name.toLowerCase()} cli={project.cli} />
           <div>
-            <div className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
-              {period.length > 1
-                ? <p>{period[0]} <span>&ndash;</span> {period[1]}</p>
-                : <p>{period[0]}</p>
-              }
-            </div>
+            {/* <time className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
+              {period.length ? period.join(` – `) : period[0]}
+            </time> */}
             <TechFlex stack={project.techStack} iconClass="size-6" />
           </div>
         </div>
 
         <div className="m-4 border-b border-border" />
-
+        <time className="flex justify-start items-center text-xs text-muted-foreground">
+          {period.length ? period.join(` – `) : period[0]}
+        </time>
         <div className="flex items-center mt-4 px-8 gap-1">
           <div>
-            {project.logo && <LogoIcon name={project.logo} className="size-3/4" />}
+            {project.logo && <IconSvg name={project.logo} className="size-3/4" />}
           </div>
           <div className="font-neuvetica text-lg text-muted-foreground tracking-[0.075em] leading-6.5 text-pretty">
             {project.summary}
@@ -209,20 +200,25 @@ function ProjectCard({ project }: { project: Project; }) {
         {/* LINKS */}
         <div className="pt-4 pb-2 px-8">
           {!project.archived && actions.length &&
-            <div className="flex justify-end items-end gap-8">
+            <div className="flex justify-end items-end gap-6">
               {actions.map(a =>
-                <div key={a.label} className="flex items-center gap-2 group">
+                <div key={a.label} className="flex items-center group">
                   <HighlightLink
                     href={a.href}
                     title={`${project.name} ${a.title}`}
                     aria-label={`Link to ${project.name}'s ${a.title}`}
                   >
-                    <div className="flex items-center gap-1">
-                      <span className="opacity-0 group-hover:opacity-100">{a.icon}</span>
-                      <span><span className="group-hover:hidden tracking-[-0.15rem] text-foreground/50 font-dankmono px-1.5">\\</span>{a.label}</span>
-                    </div>
+                    <p className="flex justify-center">
+                      <span className="hidden group-hover:block pr-1">
+                        {a.icon}
+                      </span>
+                      <span className="group-hover:hidden min-w-5.5 tracking-[-0.15rem] 
+                      font-dankmono font-thin text-muted-foreground/50 scale-y-125">
+                        \\
+                      </span>
+                      <span>{a.label}</span>
+                    </p>
                   </HighlightLink>
-
                 </div>
               )}
             </div>

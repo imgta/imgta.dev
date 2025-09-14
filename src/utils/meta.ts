@@ -83,3 +83,7 @@ export function createMetaTags(config: MetaConfig) {
 
   return { meta: tags, links };
 }
+
+import { TECHS } from '@/lib/tech';
+
+export const SOCIALS = ['github', 'linkedin', 'instagram'].map(key => TECHS[key]);

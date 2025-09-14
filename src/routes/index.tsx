@@ -3,7 +3,7 @@ import { createMetaTags } from '@/utils/meta';
 import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
 import { Header } from '@/components/Header';
-import { TECHS, SOCIAL_KEYS } from '@/lib/tech';
+import { SOCIALS } from '@/utils/meta';
 import { HighlightLink } from '@/components/ui/highlight-link';
 
 //------------------------------------------------------------
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/')({
   component: Index,
 });
 
-const SOCIALS = SOCIAL_KEYS.map(key => TECHS[key]);
+
 
 //------------------------------------------------------------
 
@@ -25,17 +25,16 @@ function Index() {
     <>
       <div className="flex justify-center max-w-4xl mx-auto mt-8 space-y-1">
         <div>
-
           <svg aria-hidden="true"
-            className="absolute inset-x-0 -top-0 -left-32 -z-10 h-screen w-full stroke-content-250 dark:stroke-content/30
-            mask-[radial-gradient(40rem_36rem_at_center,white,transparent)]"
+            className="absolute inset-x-0 top-[5rem] left-0 -z-10 min-h-screen w-full stroke-content-200/70 dark:stroke-content/50
+            mask-[radial-gradient(32rem_32rem_at_center,white,transparent)]"
           >
             <defs>
               <pattern id="gt-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
                 <path d="M.5 200V.5H200" fill="none" />
               </pattern>
             </defs>
-            <svg x="50%" y="-1" className="overflow-visible fill-card/50 dark:fill-selection/30">
+            <svg x="50%" y="-1" className="overflow-visible fill-card/35 dark:fill-card/70">
               <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" />
             </svg>
             <rect width="100%" height="100%" fill="url(#gt-grid)" />
@@ -51,13 +50,12 @@ function Index() {
                 I&#700;m Gordon, a full-stack engineer who builds expressive apps.
               </h1>
 
-              <div>
+              <div className="my-4 max-w-fit">
                 {SOCIALS.map(social => (
-                  <div key={social.name} className="flex items-center">
-                    <HighlightLink href={social.to} title={social.name} aria-label={social.name}>
-                      {social.name}
-                    </HighlightLink>
-                  </div>
+                  <HighlightLink key={social.name} href={social.to} title={social.name} aria-label={social.name}>
+                    {social.name}
+                  </HighlightLink>
+
                 ))}
               </div>
             </div>
@@ -81,8 +79,8 @@ function Index() {
           <section className="my-24 space-y-8">
             <div className="max-w-xl mx-auto">
               <Header heading="projects" cli="git init">
-                <p className="font-neuvetica text-lg tracking-[0.075em]">
-                  Whether born of sheer curiosity, boyish enthusiasm, or from the lure of voluntary challenge, projects are seen as buoyant invitations for thoughtful exploration, bold experimentation, and meaningful growth.
+                <p className="font-neuvetica text-lg tracking-[0.075em] text-justify">
+                  Whether through sheer curiosity, boyish enthusiasm, and voluntary challenge, projects are buoyant invitations for thoughtful exploration, bold experimentation, and meaningful growth.
                 </p>
               </Header>
             </div>

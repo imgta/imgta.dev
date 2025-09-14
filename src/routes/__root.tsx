@@ -1,27 +1,27 @@
-import { createRootRoute, HeadContent, Link, Outlet } from '@tanstack/react-router';
+import { createRootRoute, HeadContent, Link, type LinkProps, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Toaster } from '@/components/ui/sonner';
-import { TECHS, SOCIAL_KEYS } from '@/lib/tech';
-import { LogoIcon } from '@/components/LogoIcon';
+import { SOCIALS } from '@/utils/meta';
+import { IconSvg } from '@/components/IconSvg';
+import { HighlightLink } from '@/components/ui/highlight-link';
 import '@/styles/main.css';
+import { Button } from '@/components/ui/button';
 
 
 //------------------------------------------------------------
 
-interface NavagationLink {
-  to: string;
+interface NavigationLink extends
+  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'title' | 'aria-label'>, Pick<LinkProps, 'to' | 'hash' | 'activeProps' | 'activeOptions'> {
   name: string;
-  icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-const navLinks: NavagationLink[] = [
-  { name: 'Skills', to: '#tech-stack' },
-  { name: 'Projects', to: '#projects' },
-  { name: 'CV', to: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
+const navLinks: NavigationLink[] = [
+  { name: 'Skills', to: '/', hash: 'tech-stack', activeOptions: { exact: true, includeHash: true } },
+  { name: 'Projects', to: '/', hash: 'projects', activeOptions: { exact: true, includeHash: true } },
+  { name: 'CV', target: '_blank', rel: 'noopener noreferrer', href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
 ];
 
-const SOCIALS = SOCIAL_KEYS.map(key => TECHS[key]);
 
 //------------------------------------------------------------
 
@@ -34,14 +34,15 @@ export const Route = createRootRoute({
         <HeadContent />
 
         <div className="min-h-screen flex flex-col">
-          <header className="sticky bg-selection/50 dark:bg-selection/30 inset-0 top-0 z-20 backdrop-blur-[2.5px] border-b border-muted-foreground/10">
+          <header className="sticky inset-0 top-0 backdrop-blur-[2.5px] z-20
+          bg-selection dark:bg-selection/30 border-b border-muted-foreground/10">
             <nav className="max-w-5xl mx-auto px-8 py-8">
               <div className="flex items-center gap-8">
 
                 <section className="hidden sm:flex sm:flex-1">
                   <Link className="flex items-center text-3xl gap-2 group hover:cursor-pointer"
-                    onClick={scrollTop}
                     to="/"
+                    onClick={scrollTop}
                   >
                     <span className="font-inter font-extralight text-xl text-content-800 leading-none scale-y-150
                     dark:text-content-400/90 group-hover:text-gt-500 dark:group-hover:text-gt-400 group-hover:font-light
@@ -56,8 +57,7 @@ export const Route = createRootRoute({
                         im
                       </span>
                       <span className="font-normal text-content-700 dark:text-content-400/90
-                                      group-hover:text-gt-600 dark:group-hover:text-gt-400"
-                      >
+                                      group-hover:text-gt-600 dark:group-hover:text-gt-400">
                         gta
                       </span>
                     </p>
@@ -65,16 +65,26 @@ export const Route = createRootRoute({
                 </section>
 
                 {navLinks.map(link => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className="font-neuvetica lowercase text-[1.1rem] tracking-[0.07em]
+                  <Button asChild key={link.name} variant="link"
+                    className="font-dankmono lowercase text-[.92rem] tracking-tight px-0
                               text-content-700 dark:text-content-400
                               hover:text-gt-600 dark:hover:text-gt-600
-                              [&.active]:text-gt-600 [&.active]:font-medium"
+                              [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-[0.5rem]"
                   >
-                    {link.name}
-                  </Link>
+                    {link.to
+                      ? <Link {...link}>{link.name}</Link>
+                      : <a {...link}>{link.name}</a>}
+                  </Button>
+                  // <HighlightLink
+                  //   {...link}
+                  //   key={link.name}
+                  //   className="font-neuvetica lowercase text-[1.1rem] tracking-[0.07em]
+                  //             text-content-700 dark:text-content-400
+                  //             hover:text-gt-600 dark:hover:text-gt-600
+                  //             [&.active]:pb-3.5"
+                  // >
+                  //   {link.name}
+                  // </HighlightLink>
                 ))}
 
                 <ThemeToggle />
@@ -100,7 +110,7 @@ export const Route = createRootRoute({
                     className="text-foreground hover:scale-125 duration-75"
                   >
                     <span className="sr-only">{social.name}</span>
-                    <LogoIcon name={social.name} aria-hidden="true" className="size-7" />
+                    <IconSvg name={social.name} aria-hidden="true" className="size-7" />
                   </a>
                 ))}
               </div>
