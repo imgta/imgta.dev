@@ -100,8 +100,7 @@ export function TechStack() {
               aria-label={`Visit the official ${tech.name} website`}
               data-id={tech.name}
               data-mask={mask}
-              className={cn(
-                'flex justify-center my-1.5 transition-[transform,opacity] duration-200 ease-in-out',
+              className={cn('flex justify-center my-1.5 transition-[transform,opacity] duration-200 ease-in-out',
                 {
                   'scale-110': active,
                   'opacity-25': dim,

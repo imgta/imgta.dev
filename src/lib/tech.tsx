@@ -224,3 +224,5 @@ export const TECHS: Record<string, TechStack> = {
 };
 
 export type TechKey = keyof typeof TECHS;
+
+export const SOCIAL_KEYS = ['github', 'linkedin', 'instagram'] as const satisfies readonly TechKey[];

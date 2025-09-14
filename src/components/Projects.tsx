@@ -1,15 +1,11 @@
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { ExternalLink } from 'lucide-react';
+import { HighlightLink } from '@/components/ui/highlight-link';
+import { Card, CardContent } from '@/components/ui/card';
+import { Header } from '@/components/Header';
 import { LogoIcon } from '@/components/LogoIcon';
 import { TechFlex } from '@/components/TechStack';
 import { formatDate } from '@/utils/misc';
 import { cn } from '@/lib/utils';
-import { Header } from '@/components/Header';
-import { DateBlock } from '@/components/DateBlock';
-
-
 
 interface Project {
   name: string;
@@ -47,7 +43,11 @@ const PROJECTS: Project[] = [
       'Cloudflare',
     ],
     startDate: '2024-01-08',
-    links: { live: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral', demo: 'https://linkedin.com/in/gordonta', repo: 'https://imgta.dev' },
+    links: {
+      live: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
+      demo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
+      repo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
+    },
     cover: [
       { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview' },
       { src: '/img/vibby-full.webp', alt: 'Video Blog AI page preview' },
@@ -140,11 +140,19 @@ const PROJECTS: Project[] = [
 ];
 
 
+export function ExternalLink(props: React.SVGProps<SVGSVGElement>) {
+  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.825" d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5" /></svg>;
+}
+
+export function LiveLink(props: React.SVGProps<SVGSVGElement>) {
+  return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}><g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"><path d="M20.94 13.045A9 9 0 1 0 11.987 21M3.6 9h16.8M3.6 15H13" /><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 2.529 10.294M16 22l5-5m0 4.5V17h-4.5" /></g></svg>;
+}
+
 function ProjectCard({ project }: { project: Project; }) {
   const { live, demo, repo } = project.links;
   const actions = [];
-  if (live) actions.push({ href: live, label: 'Website', title: 'live website', });
-  if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', });
+  if (live) actions.push({ href: live, label: 'Site', title: 'live website', icon: <LiveLink className="size-4.5" /> });
+  if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', icon: <ExternalLink className="size-4.5" /> });
   if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <LogoIcon name="github" className="size-4" /> });
 
   const { startDate, endDate } = project;
@@ -199,29 +207,28 @@ function ProjectCard({ project }: { project: Project; }) {
         </div>
 
         {/* LINKS */}
-        <div className="p-4 pb-2 flex justify-end items-end">
-          <div className="flex justify-between items-end">
-            {!project.archived && actions.length &&
-              <div className="flex gap-1">
-                {actions.map(a =>
-                  <Button asChild key={a.label} size="sm" variant="link" className="flex items-center gap-1.5">
-                    <a
-                      href={a.href}
-                      title={`${project.name} ${a.title}`}
-                      aria-label={`Link to ${project.name}'s ${a.title}`}
-                      target="_blank" rel="noopener noreferrer"
-                    >
-                      {a.icon && a.icon}
-                      <span className="lowercase font-dankmono text-content-700 dark:text-content-400">{a.label}</span>
-                    </a>
-                  </Button>
-                )}
-              </div>
-            }
-          </div>
+        <div className="pt-4 pb-2 px-8">
+          {!project.archived && actions.length &&
+            <div className="flex justify-end items-end gap-8">
+              {actions.map(a =>
+                <div key={a.label} className="flex items-center gap-2 group">
+                  <HighlightLink
+                    href={a.href}
+                    title={`${project.name} ${a.title}`}
+                    aria-label={`Link to ${project.name}'s ${a.title}`}
+                  >
+                    <div className="flex items-center gap-1">
+                      <span className="opacity-0 group-hover:opacity-100">{a.icon}</span>
+                      <span><span className="group-hover:hidden tracking-[-0.15rem] text-foreground/50 font-dankmono px-1.5">\\</span>{a.label}</span>
+                    </div>
+                  </HighlightLink>
+
+                </div>
+              )}
+            </div>
+          }
         </div>
       </section>
-
 
       <CardContent className="p-0">
         {/* IMAGES */}

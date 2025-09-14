@@ -2,9 +2,10 @@ import { createRootRoute, HeadContent, Link, Outlet } from '@tanstack/react-rout
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Toaster } from '@/components/ui/sonner';
+import { TECHS, SOCIAL_KEYS } from '@/lib/tech';
 import { LogoIcon } from '@/components/LogoIcon';
-import { TECHS, type TechKey } from '@/lib/tech';
 import '@/styles/main.css';
+
 
 //------------------------------------------------------------
 
@@ -20,17 +21,7 @@ const navLinks: NavagationLink[] = [
   { name: 'CV', to: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
 ];
 
-const SOCIAL_KEYS = ['github', 'linkedin', 'instagram'] as const satisfies readonly TechKey[];
-
-const footerLinks: NavagationLink[] = SOCIAL_KEYS.map(key => {
-  const def = TECHS[key];
-
-  return {
-    name: def.name,
-    to: def.to ?? '#',
-    icon: props => <LogoIcon name={key} {...props} />,
-  };
-});
+const SOCIALS = SOCIAL_KEYS.map(key => TECHS[key]);
 
 //------------------------------------------------------------
 
@@ -99,17 +90,17 @@ export const Route = createRootRoute({
           <footer className="mt-auto">
             <div className="mx-auto max-w-6xl overflow-hidden px-6 lg:px-8 py-4 sm:py-8">
               <div className="mt-6 lg:mt-8 flex justify-center gap-x-12">
-                {footerLinks.map(link => (
+                {SOCIALS.map(social => (
                   <a
-                    key={link.to}
-                    href={link.to}
-                    title={link.name}
-                    aria-label={link.name}
+                    key={social.to}
+                    href={social.to}
+                    title={social.name}
+                    aria-label={social.name}
                     target='_blank' rel="noopener noreferrer"
                     className="text-foreground hover:scale-125 duration-75"
                   >
-                    <span className="sr-only">{link.name}</span>
-                    {link.icon && <link.icon aria-hidden="true" className="size-7" />}
+                    <span className="sr-only">{social.name}</span>
+                    <LogoIcon name={social.name} aria-hidden="true" className="size-7" />
                   </a>
                 ))}
               </div>

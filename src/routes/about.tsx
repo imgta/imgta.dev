@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createMetaTags } from '@/utils/meta';
 import { TechFlex } from '@/components/TechStack';
+import { BackgroundCards } from '@/components/Background';
 
 export const Route = createFileRoute('/about')({
   head: () => createMetaTags({
@@ -37,6 +38,7 @@ function About() {
       <TechFlex stack={stack2} iconClass="size-12" />
       <div className="flex justify-center my-8"><TechFlex stack={stack3} iconClass="size-36" /></div>
 
+      <BackgroundCards />
     </>
   );
 }
