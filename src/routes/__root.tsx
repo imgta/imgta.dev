@@ -102,8 +102,8 @@ export const Route = createRootRoute({
               <div className="mt-6 lg:mt-8 flex justify-center gap-x-12">
                 {SOCIALS.map(social => (
                   <a
-                    key={social.to}
-                    href={social.to}
+                    key={social.name}
+                    href={social.href}
                     title={social.name}
                     aria-label={social.name}
                     target='_blank' rel="noopener noreferrer"

@@ -1,18 +1,26 @@
 import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
 import { HighlightLink } from '@/components/ui/highlight-link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/Header';
 import { TechFlex } from '@/components/TechStack';
 import { formatDate } from '@/utils/misc';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+
+interface ProjectCoverImage {
+  src: string,
+  width: number;
+  height: number;
+  alt?: string;
+}
 
 interface Project {
   name: string;
   summary: string;
   logo?: string;
   cli?: string;
-  cover: { src: string, alt?: string; }[];
+  covers: ProjectCoverImage[];
   techStack: string[];
   startDate: string;
   endDate?: string;
@@ -48,9 +56,9 @@ const PROJECTS: Project[] = [
       demo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
       repo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
     },
-    cover: [
-      { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview' },
-      { src: '/img/vibby-full.webp', alt: 'Video Blog AI page preview' },
+    covers: [
+      { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview', width: 1174, height: 731 },
+      { src: '/img/vibby-full.webp', alt: 'Video Blog AI page preview', width: 1200, height: 6696 },
     ],
   },
   {
@@ -69,9 +77,9 @@ const PROJECTS: Project[] = [
     ],
     startDate: '2025-07',
     links: { live: 'https://nootrient.co' },
-    cover: [
-      { src: '/img/noot-preview.jpg', alt: 'Nootrient preview' },
-      { src: '/img/noot-ad-page.webp', alt: 'Nootrient ads conversion page' },
+    covers: [
+      { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
+      { src: '/img/noot-ad-page.webp', alt: 'Nootrient ads conversion page', width: 1127, height: 5296 },
     ],
   },
   {
@@ -90,9 +98,9 @@ const PROJECTS: Project[] = [
     startDate: '2025-05',
     endDate: '2025-05',
     links: { demo: 'https://wisp-eta.vercel.app' },
-    cover: [
-      { src: '/img/wisp-preview.png', alt: 'Word Wisp preview' },
-      { src: '/img/wisp-full.jpg', alt: 'Word Wisp page preview' },
+    covers: [
+      { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
+      { src: '/img/wisp-full.png', alt: 'Word Wisp page preview', width: 1127, height: 1998 },
     ],
   },
   {
@@ -110,9 +118,9 @@ const PROJECTS: Project[] = [
     startDate: '2023-11',
     endDate: '2023-12',
     links: { repo: 'https://github.com/imgta/vialect' },
-    cover: [
-      { src: '/img/vial-preview.png', alt: 'Vialect preview' },
-      { src: '/img/vial-full.webp', alt: 'Vialect page preview' },
+    covers: [
+      { src: '/img/vial-preview.png', alt: 'Vialect preview', width: 1127, height: 578 },
+      { src: '/img/vial-full.webp', alt: 'Vialect page preview', width: 1500, height: 2507 },
     ],
   },
   {
@@ -132,20 +140,38 @@ const PROJECTS: Project[] = [
     startDate: '2023-08',
     endDate: '2023-11',
     links: {},
-    cover: [
-      { src: '/img/play-preview.jpg', alt: 'playtrace preview' },
-      { src: '/img/play-full.webp', alt: 'playtrace page preview' },
+    covers: [
+      { src: '/img/play-preview.jpg', alt: 'playtrace preview', width: 1000, height: 763 },
+      { src: '/img/play-full.webp', alt: 'playtrace page preview', width: 1000, height: 3800 },
     ],
   },
 ];
 
+const PX_PER_SEC = 175;
+const MIN_DURATION_S = 5;
+const CARD_MAX_WIDTH = 768; // max-w-3xl
 
 function ProjectCard({ project }: { project: Project; }) {
+  const [hovering, setHovering] = useState(false);
+  const [preview, full] = project.covers;
+
+  const previewAspectRatio = CARD_MAX_WIDTH / preview.width;
+  const fullAspectRatio = CARD_MAX_WIDTH / full.width;
+  const lockHeight = preview.height * previewAspectRatio; // viewport
+
+  const scaledFullHeight = full.height * fullAspectRatio;
+  const scrollYDelta = scaledFullHeight - lockHeight;
+  const scrollDuration = Math.ceil(Math.max(scrollYDelta / PX_PER_SEC, MIN_DURATION_S));
+
+  //------------------------------------------------------------
+
   const { live, demo, repo } = project.links;
   const actions = [];
   if (live) actions.push({ href: live, label: 'Site', title: 'live website', icon: <LiveLink className="size-4.5" /> });
   if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', icon: <ExternalLink className="size-4.5" /> });
   if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <IconSvg name="github" className="size-4.5" /> });
+
+  //------------------------------------------------------------
 
   const { startDate, endDate } = project;
   const period = [];
@@ -171,28 +197,28 @@ function ProjectCard({ project }: { project: Project; }) {
     else period.push(formatDate(startDate, { format: 'MMM YYYY' }));
   }
 
+  //------------------------------------------------------------
+
   return (
-    <Card className="overflow-hidden p-0 gap-0 bg-card/75 border-border shadow-md">
+    <Card className="overflow-hidden p-0 gap-0 bg-card/75 border-none shadow-md">
       <section>
         <div className="flex justify-between items-end p-6 pb-0">
           <Header heading={project.name.toLowerCase()} cli={project.cli} />
           <div>
-            {/* <time className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
+            <time className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
               {period.length ? period.join(` – `) : period[0]}
-            </time> */}
+            </time>
             <TechFlex stack={project.techStack} iconClass="size-6" />
           </div>
         </div>
 
         <div className="m-4 border-b border-border" />
-        <time className="flex justify-start items-center text-xs text-muted-foreground">
-          {period.length ? period.join(` – `) : period[0]}
-        </time>
+
         <div className="flex items-center mt-4 px-8 gap-1">
           <div>
             {project.logo && <IconSvg name={project.logo} className="size-3/4" />}
           </div>
-          <div className="font-neuvetica text-lg text-muted-foreground tracking-[0.075em] leading-6.5 text-pretty">
+          <div className="font-neuvetica text-lg text-muted-foreground tracking-wider leading-6.5 text-pretty">
             {project.summary}
           </div>
         </div>
@@ -226,24 +252,41 @@ function ProjectCard({ project }: { project: Project; }) {
         </div>
       </section>
 
-      <CardContent className="p-0">
-        {/* IMAGES */}
-        <div className="relative aspect-[media]">
-          <img className={cn(
-            'object-cover rounded-xs w-full',
+      {/* IMAGES */}
+      <div className="inset-0">
+        <figure
+          className={cn(
+            'relative overflow-hidden aspect-[media]',
             project.archived && 'grayscale-100 hover:grayscale-0',
           )}
-            src={project.cover[0].src ?? "/placeholder.svg"}
-            alt={project.cover[0].alt ?? `${project.name} preview`}
+          style={{ height: `${lockHeight}px` }}
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
+          <img
+            className={cn(
+              `absolute inset-0 w-full h-auto object-cover`,
+              'transition-transform ease-[cubic-bezier(0, 1, 1, 1)]',
+            )}
+            style={{
+              transform: hovering ? `translateY(-${scrollYDelta}px)` : 'translateY(0)',
+              transitionDuration: hovering ? `${scrollDuration}s` : 'initial',
+            }}
+            src={hovering ? full.src : preview.src}
+            alt={preview.alt ?? `${project.name} preview`}
+            width={hovering ? full.width : preview.width}
+            height={hovering ? full.height : preview.height}
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute left-3 top-3 flex gap-2">
-            {project.archived && <Badge variant="destructive">archived</Badge>}
-          </div>
-        </div>
 
-      </CardContent>
+          {project.archived &&
+            <figcaption className="absolute left-3 top-3 flex gap-2">
+              <Badge variant="destructive">archived</Badge>
+            </figcaption>
+          }
+        </figure>
+      </div>
     </Card>
   );
 }

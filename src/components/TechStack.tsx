@@ -95,7 +95,7 @@ export function TechStack() {
           <li key={tech.name} className="space-y-2">
             <a
               title={tech.name}
-              href={tech.to}
+              href={tech.href}
               target="_blank" rel="noopener noreferrer"
               aria-label={`Visit the official ${tech.name} website`}
               data-id={tech.name}
@@ -133,13 +133,14 @@ export function TechFlex({
       {stack.map(name => {
         const key = name
           .replace(/^aws\s+/i, '')  // strip leading 'AWS'
-          .replace(/[\s.]+/g, '')   // remove whitespace, periods
+          .replace(/[\s.]+/g, '')   // strip whitespace, periods
           .toLowerCase();
         const tech = TECHS[key];
-        const href = tech ? tech.to : '#';
+        const { href } = TECHS[key] ?? '#';
 
         return (
-          tech && <a
+          tech &&
+          <a
             key={key} href={href}
             title={name}
             target='_blank' rel="noopener noreferrer"

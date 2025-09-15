@@ -1,10 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { createMetaTags } from '@/utils/meta';
+import { createMetaTags, SOCIALS } from '@/utils/meta';
+import { HighlightLink } from '@/components/ui/highlight-link';
 import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
 import { Header } from '@/components/Header';
-import { SOCIALS } from '@/utils/meta';
-import { HighlightLink } from '@/components/ui/highlight-link';
 
 //------------------------------------------------------------
 
@@ -51,12 +50,16 @@ function Index() {
               </h1>
 
               <div className="my-4 max-w-fit">
-                {SOCIALS.map(social => (
-                  <HighlightLink key={social.name} href={social.to} title={social.name} aria-label={social.name}>
+                {SOCIALS.map(social =>
+                  <HighlightLink
+                    key={social.name}
+                    href={social.href}
+                    title={social.name}
+                    aria-label={social.name}
+                  >
                     {social.name}
                   </HighlightLink>
-
-                ))}
+                )}
               </div>
             </div>
 
