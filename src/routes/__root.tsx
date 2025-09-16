@@ -19,7 +19,7 @@ const navLinks: NavigationLink[] = [
   { name: 'Skills', to: '/', hash: 'tech-stack', activeOptions: { exact: true, includeHash: true } },
   { name: 'Projects', to: '/', hash: 'projects', activeOptions: { exact: true, includeHash: true } },
   { name: 'Contact', to: '/', hash: 'contact', activeOptions: { exact: true, includeHash: true } },
-  { name: 'CV', target: '_blank', rel: 'noopener noreferrer', href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
+  { name: 'CV', title: 'Google Drive link', target: '_blank', rel: 'noopener noreferrer', href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
 ];
 
 
