@@ -7,7 +7,6 @@ import { IconSvg } from '@/components/IconSvg';
 import { Button } from '@/components/ui/button';
 import '@/styles/main.css';
 
-
 //------------------------------------------------------------
 
 interface NavigationLink extends
@@ -22,7 +21,6 @@ const navLinks: NavigationLink[] = [
   { name: 'CV', title: 'Google Drive link', target: '_blank', rel: 'noopener noreferrer', href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
 ];
 
-
 //------------------------------------------------------------
 
 export const Route = createRootRoute({
@@ -32,7 +30,6 @@ export const Route = createRootRoute({
     return (
       <>
         <HeadContent />
-
         <div className="min-h-screen flex flex-col">
           <header
             className="sticky inset-0 top-0 backdrop-blur-[3px] z-20
@@ -95,29 +92,30 @@ export const Route = createRootRoute({
 
           <footer className="mt-auto">
             <div className="mx-auto max-w-6xl overflow-hidden px-6 lg:px-8 py-4 sm:py-8">
-              <div className="mt-6 lg:mt-8 flex justify-center gap-x-12">
-                {SOCIALS.map(social => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    title={social.name}
-                    aria-label={social.name}
-                    target='_blank' rel="noopener noreferrer"
-                    className="text-foreground hover:scale-125 duration-75"
-                  >
-                    <span className="sr-only">{social.name}</span>
-                    <IconSvg name={social.name} aria-hidden="true" className="size-7" />
-                  </a>
-                ))}
+              <div className="mt-6 lg:mt-8">
+                <ul className="flex justify-center gap-x-12">
+                  {SOCIALS.map(social => (
+                    <li className="text-foreground hover:scale-125 duration-75" key={social.name}>
+                      <a
+                        href={social.href}
+                        title={social.name}
+                        aria-label={social.name}
+                        target='_blank' rel="noopener noreferrer"
+                      >
+                        <span className="sr-only">{social.name}</span>
+                        <IconSvg name={social.name} aria-hidden="true" className="size-7" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <p className="mt-8 text-center text-sm/6 text-foreground/50">
+              <address className="not-italic mt-6 text-center text-sm/6 text-foreground/50">
                 &copy; {new Date().getFullYear()} Gordon Ta. Happily based in Boston, MA.
-              </p>
+              </address>
             </div>
           </footer>
         </div>
-
         <Toaster />
       </>
     );

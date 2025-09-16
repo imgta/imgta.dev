@@ -36,37 +36,40 @@ function Index() {
                             justify-center items-start"
         >
           <div>
-            <blockquote className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 tracking-wide">
-              Hi there.
-            </blockquote>
+            <p className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 tracking-wide">Hi there.</p>
             <h1 className="font-neuvetica text-3xl md:text-[2rem]/10 lg:text-4xl text-content-700/90 dark:text-content-400/90 sm:tracking-[0.0125em] md:text-pretty">
               I&#700;m Gordon, a full-stack engineer who builds expressive apps
             </h1>
 
             <div className="font-neuvetica flex sm:grid items-start justify-between mt-4 sm:mt-0">
-              <div className="mt-1 sm:mt-8 mb-4 flex items-end gap-1 sm:gap-1.5 text-content-800/95 dark:text-foreground">
+              <address className="mt-1 sm:mt-8 mb-4 flex items-end gap-1 sm:gap-1.5 text-content-800/95 dark:text-foreground">
                 <MapPin className="size-[1.1rem] scale-y-105 origin-bottom stroke-gt-600 dark:stroke-gt-700 order-last sm:order-first" />
-                <h3 className="leading-4 font-normal tracking-wider">based in Boston, MA</h3>
-              </div>
-              <div className="sm:p-4 sm:pt-2 order-first sm:order-none">
-                <h3 className="font-medium text-lg tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4 pb-1">
+                <span className="leading-4 font-normal tracking-wider">
+                  based in Boston, MA
+                </span>
+              </address>
+
+              <nav aria-label="Social" className="sm:p-4 sm:pt-2 order-first sm:order-none">
+                <h2 className="font-medium text-lg tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4 pb-1">
                   socials
-                </h3>
-                {SOCIALS.map(({ name, href }) =>
-                  <address
-                    key={name}
-                    className="w-fit not-italic border-l border-border pl-4"
-                  >
-                    <HighlightLink
-                      href={href}
-                      title={name}
-                      aria-label={name}
+                </h2>
+                <ul>
+                  {SOCIALS.map(({ name, href }) =>
+                    <li
+                      key={name}
+                      className="w-fit border-l border-border pl-4"
                     >
-                      <span className="pl-1 dark:text-foreground">{name}</span>
-                    </HighlightLink>
-                  </address>
-                )}
-              </div>
+                      <HighlightLink
+                        href={href}
+                        title={name}
+                        aria-label={name}
+                      >
+                        <span className="pl-1 dark:text-foreground">{name}</span>
+                      </HighlightLink>
+                    </li>
+                  )}
+                </ul>
+              </nav>
             </div>
 
           </div>
@@ -113,9 +116,7 @@ function Index() {
                   <h3 className="font-medium text-[1.125rem]/7 tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-6">
                     {label}
                   </h3>
-                  <address
-                    className="tracking-wide not-italic border-l border-border pt-0 sm:pt-2 pl-6"
-                  >
+                  <address className="tracking-wide not-italic border-l border-border pt-0 sm:pt-2 pl-6">
                     <HighlightLink
                       href={href}
                       title={title}
