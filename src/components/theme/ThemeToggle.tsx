@@ -9,12 +9,12 @@ export function ThemeToggle() {
     <Button
       size="icon"
       variant="ghost"
-      className="text-muted-foreground"
+      className="text-muted-foreground -mt-1.5"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
       {isDark
         // sun
-        ? <svg key={key} className="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        ? <svg key={key} className="size-4.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" strokeDasharray="2" strokeDashoffset="2" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
             <path d="M12 19v1M19 12h1M12 5v-1M5 12h-1">
               <animate fill="freeze" attributeName="d" begin="0.6s" dur="0.1s" values="M12 19v1M19 12h1M12 5v-1M5 12h-1;M12 21v1M21 12h1M12 3v-1M3 12h-1" />
@@ -59,7 +59,7 @@ export function ThemeToggle() {
         </svg>
 
         // moon
-        : <svg key={key} className="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        : <svg key={key} className="size-4.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
             <g>
               <path strokeDasharray="2" strokeDashoffset="4" d="M12 21v1M21 12h1M12 3v-1M3 12h-1">

@@ -14,8 +14,8 @@ export function HighlightLink({
   size = 'sm',
   to,
   href,
-  target,
-  rel,
+  target = '_blank',
+  rel = 'noopener noreferrer',
   children,
   ...buttonProps
 }: HighlightLinkProps) {
@@ -24,13 +24,10 @@ export function HighlightLink({
     <span className="relative">
       <mark
         className="group bg-transparent hover:before:bg-amber-100/75 dark:hover:before:bg-amber-100/60
-            text-content-900 dark:text-content-400 dark:hover:text-content-50
-            before:absolute before:-inset-x-2 before:-inset-y-0.5 before:z-0"
+                  text-gt-700 hover:text-content dark:text-content-400 dark:hover:text-content-50
+                  before:absolute before:-inset-x-2 before:-inset-y-0.5 before:z-0"
       >
-        <span className={cn(
-          'group-hover:opacity-95 before:z-[1]',
-          // 'group-hover:blur-[0.025em]',
-        )}>
+        <span className="group-hover:opacity-95 before:z-[1]">
           {children}
         </span>
       </mark>

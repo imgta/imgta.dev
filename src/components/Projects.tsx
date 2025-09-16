@@ -1,12 +1,13 @@
-import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
-import { HighlightLink } from '@/components/ui/highlight-link';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/Header';
 import { TechFlex } from '@/components/TechStack';
+import { HighlightLink } from '@/components/ui/highlight-link';
+import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
+import { useElementWidth } from '@/hooks/useElementWidth';
 import { formatDate } from '@/utils/misc';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 
 interface ProjectCoverImage {
   src: string,
@@ -14,6 +15,8 @@ interface ProjectCoverImage {
   height: number;
   alt?: string;
 }
+
+type ProjectLinkMap = Record<'live' | 'demo' | 'code', { href: string; }>;
 
 interface Project {
   name: string;
@@ -24,14 +27,16 @@ interface Project {
   techStack: string[];
   startDate: string;
   endDate?: string;
-  links: {
-    live?: string;
-    demo?: string;
-    repo?: string;
-  };
+  links: Partial<ProjectLinkMap>;
   featured?: boolean;
   archived?: boolean;
 }
+
+const LINK_META = {
+  live: { label: 'Visit', title: 'website', Icon: <LiveLink className="size-4.5" /> },
+  demo: { label: 'Demo', title: 'demo website', Icon: <ExternalLink className="size-4.5" /> },
+  code: { label: 'Code', title: 'code repository', Icon: <IconSvg name="github" className="size-4.5" /> },
+};
 
 const PROJECTS: Project[] = [
   {
@@ -52,9 +57,7 @@ const PROJECTS: Project[] = [
     ],
     startDate: '2024-01-08',
     links: {
-      live: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
-      demo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
-      repo: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral',
+      live: { href: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral' },
     },
     covers: [
       { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview', width: 1174, height: 731 },
@@ -76,7 +79,7 @@ const PROJECTS: Project[] = [
       'Copywriting',
     ],
     startDate: '2025-07',
-    links: { live: 'https://nootrient.co' },
+    links: { live: { href: 'https://nootrient.co' } },
     covers: [
       { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
       { src: '/img/noot-ad-page.webp', alt: 'Nootrient ads conversion page', width: 1127, height: 5296 },
@@ -97,7 +100,7 @@ const PROJECTS: Project[] = [
     ],
     startDate: '2025-05',
     endDate: '2025-05',
-    links: { demo: 'https://wisp-eta.vercel.app' },
+    links: { demo: { href: 'https://wisp-eta.vercel.app' } },
     covers: [
       { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
       { src: '/img/wisp-full.png', alt: 'Word Wisp page preview', width: 1127, height: 1998 },
@@ -117,7 +120,7 @@ const PROJECTS: Project[] = [
     ],
     startDate: '2023-11',
     endDate: '2023-12',
-    links: { repo: 'https://github.com/imgta/vialect' },
+    links: { code: { href: 'https://github.com/imgta/vialect' } },
     covers: [
       { src: '/img/vial-preview.png', alt: 'Vialect preview', width: 1127, height: 578 },
       { src: '/img/vial-full.webp', alt: 'Vialect page preview', width: 1500, height: 2507 },
@@ -127,7 +130,7 @@ const PROJECTS: Project[] = [
     archived: true,
     name: 'playtrace',
     cli: 'npx strapi start',
-    summary: 'playtrace was a full-stack events hosting web app built on Nuxt (frontend) and Strapi CMS (backend), Unsplash/GIPHY cover image search, AWS S3 storage, Google Places autocompletes, and Google Routes for multi-location mapping.',
+    summary: 'playtrace was a full-stack events hosting web app built on Nuxt (frontend) and Strapi CMS (backend), featuring Unsplash/GIPHY cover image search, AWS S3 storage, Google Places autocompletes, and Google Routes for multi-location mapping.',
     techStack: [
       'Nuxt',
       'Strapi',
@@ -148,53 +151,78 @@ const PROJECTS: Project[] = [
 ];
 
 const PX_PER_SEC = 175;
-const MIN_DURATION_S = 5;
-const CARD_MAX_WIDTH = 768; // max-w-3xl
+const MIN_DURATION_S = 6;
 
 function ProjectCard({ project }: { project: Project; }) {
-  const [hovering, setHovering] = useState(false);
+  const [figureRef, cardWidth] = useElementWidth();
   const [preview, full] = project.covers;
+  const previewAspectRatio = cardWidth / preview.width;
+  const fullAspectRatio = cardWidth / full.width;
+  const lockHeight = preview.height * previewAspectRatio;
 
-  const previewAspectRatio = CARD_MAX_WIDTH / preview.width;
-  const fullAspectRatio = CARD_MAX_WIDTH / full.width;
-  const lockHeight = preview.height * previewAspectRatio; // viewport
+  const scrollDeltaY = (full.height * fullAspectRatio) - lockHeight;
+  const scrollDuration = Math.max(scrollDeltaY / PX_PER_SEC, MIN_DURATION_S);
 
-  const scaledFullHeight = full.height * fullAspectRatio;
-  const scrollYDelta = scaledFullHeight - lockHeight;
-  const scrollDuration = Math.ceil(Math.max(scrollYDelta / PX_PER_SEC, MIN_DURATION_S));
+  const [hovering, setHovering] = useState(false);
+  const hoverStart = useRef<number | null>(null);
+
+  const [manual, setManual] = useState(false);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  function onEnter() {
+    hoverStart.current = performance.now();
+    setHovering(true);
+  }
+
+  function onLeave() {
+    hoverStart.current = null;
+    setHovering(false);
+  }
+
+  function handleClick() {
+    if (!manual) {
+      const elapsedMs = hoverStart.current
+        ? performance.now() - hoverStart.current
+        : 0;
+      const scrollPct = Math.min(elapsedMs / (scrollDuration * 1000), 1);
+      setScrollOffset(scrollPct * scrollDeltaY);
+    }
+    setManual(prev => !prev);
+    setHovering(prev => !prev);
+  }
+
+  useLayoutEffect(() => {
+    if (manual && scrollerRef.current) {
+      scrollerRef.current.scrollTop = scrollOffset;
+    }
+  }, [manual, scrollOffset]);
 
   //------------------------------------------------------------
 
-  const { live, demo, repo } = project.links;
-  const actions = [];
-  if (live) actions.push({ href: live, label: 'Site', title: 'live website', icon: <LiveLink className="size-4.5" /> });
-  if (demo) actions.push({ href: demo, label: 'Demo', title: 'demo', icon: <ExternalLink className="size-4.5" /> });
-  if (repo) actions.push({ href: repo, label: 'Code', title: 'git repo', icon: <IconSvg name="github" className="size-4.5" /> });
+  const actions = Object.entries(project.links).map(([kind, { href }]) => {
+    const { label, title, Icon } = LINK_META[kind as 'live' | 'demo' | 'code'];
+    return { href, label, title, Icon };
+  });
 
   //------------------------------------------------------------
 
   const { startDate, endDate } = project;
-  const period = [];
+  const period: string[] = [];
 
-  if (!endDate) period.push(
-    formatDate(startDate, { format: 'YYYY' }),
-    'present'
-  );
+  if (!endDate) {
+    period.push(formatDate(startDate, { format: 'YYYY' }), 'present');
+  } else if (endDate === startDate) {
+    period.push(formatDate(startDate, { format: 'MMM YYYY' }));
+  } else {
+    const [startYr] = startDate.split('-');
+    const [endYr] = endDate.split('-');
+    const sameYear = startYr === endYr;
 
-  if (endDate) {
-    if (endDate !== startDate) {
-      const [startYr] = startDate.split('-');
-      const [endYr] = endDate.split('-');
-      if (startYr === endYr) period.push(
-        formatDate(startDate, { format: 'MMM' }),
-        formatDate(endDate, { format: 'MMM YYYY' })
-      );
-      else period.push(
-        formatDate(startDate, { format: 'MMM YYYY' }),
-        formatDate(endDate, { format: 'MMM YYYY' })
-      );
-    }
-    else period.push(formatDate(startDate, { format: 'MMM YYYY' }));
+    period.push(
+      formatDate(startDate, { format: sameYear ? 'MMM' : 'MMM YYYY' }),
+      formatDate(endDate, { format: 'MMM YYYY' }),
+    );
   }
 
   //------------------------------------------------------------
@@ -202,83 +230,124 @@ function ProjectCard({ project }: { project: Project; }) {
   return (
     <Card className="overflow-hidden p-0 gap-0 bg-card/75 border-none shadow-md">
       <section>
-        <div className="flex justify-between items-end p-6 pb-0">
-          <Header heading={project.name.toLowerCase()} cli={project.cli} />
-          <div>
-            <time className="flex justify-end items-end gap-1.5 text-xs text-muted-foreground">
-              {period.length ? period.join(` – `) : period[0]}
-            </time>
-            <TechFlex stack={project.techStack} iconClass="size-6" />
+        {/* HEADING */}
+        <div className="space-y-4 sm:space-y-0 sm:flex justify-between items-end px-8 pt-6">
+          <div className="hidden sm:block">
+            <Header heading={project.name.toLowerCase()} cli={project.cli} />
+          </div>
+          <div className="sm:hidden">
+            <Header heading={project.name.toLowerCase()} align="center center" />
+          </div>
+          <div className="max-w-fit sm:mx-0 mx-auto">
+            <TechFlex stack={project.techStack} iconClass="size-5.5 sm:size-6" />
           </div>
         </div>
 
         <div className="m-4 border-b border-border" />
 
-        <div className="flex items-center mt-4 px-8 gap-1">
-          <div>
-            {project.logo && <IconSvg name={project.logo} className="size-3/4" />}
-          </div>
-          <div className="font-neuvetica text-lg text-muted-foreground tracking-wider leading-6.5 text-pretty">
-            {project.summary}
-          </div>
-        </div>
-
-        {/* LINKS */}
-        <div className="pt-4 pb-2 px-8">
-          {!project.archived && actions.length &&
-            <div className="flex justify-end items-end gap-6">
-              {actions.map(a =>
-                <div key={a.label} className="flex items-center group">
-                  <HighlightLink
-                    href={a.href}
-                    title={`${project.name} ${a.title}`}
-                    aria-label={`Link to ${project.name}'s ${a.title}`}
-                  >
-                    <p className="flex justify-center">
-                      <span className="hidden group-hover:block pr-1">
-                        {a.icon}
-                      </span>
-                      <span className="group-hover:hidden min-w-5.5 tracking-[-0.15rem] 
-                      font-dankmono font-thin text-muted-foreground/50 scale-y-125">
-                        \\
-                      </span>
-                      <span>{a.label}</span>
-                    </p>
-                  </HighlightLink>
-                </div>
-              )}
+        {/* CONTENT */}
+        <div className="flex items-center px-6 gap-4.5">
+          {project.logo &&
+            <div className="hidden sm:flex items-center my-auto">
+              <IconSvg className="min-h-20 sm:min-h-24 w-auto" name={project.logo} />
             </div>
           }
+          <div className="space-y-2 sm:space-y-0">
+            <div className="flex justify-between sm:justify-start items-center gap-x-1">
+              {(!project.archived && actions.length) &&
+                <>
+                  <div className="flex gap-4">
+                    {actions.map(a =>
+                      <HighlightLink
+                        key={a.label}
+                        href={a.href}
+                        title={`${project.name} ${a.title}`}
+                        aria-label={`Link to ${project.name}'s ${a.title}`}
+                      >
+                        <p className="flex gap-1.5 text-foreground">
+                          <span>{a.Icon}</span>
+                          <span className="text-[.9rem] tracking-tighter">
+                            {a.label}
+                          </span>
+                        </p>
+                      </HighlightLink>
+                    )}
+                  </div>
+                  <span className="hidden sm:block -mt-1 px-2 text-lg text-muted-foreground/80 font-light tracking-tighter">
+                    \\
+                  </span>
+                </>
+              }
+              <time className="font-neuvetica text-muted-foreground/80 text-[.825rem] tracking-wider lowercase">
+                {period.length ? period.join(`–`) : period[0]}
+              </time>
+            </div>
+            <div className="font-neuvetica leading-6 sm:leading-6.5 text-foreground/90 dark:text-foreground/60 tracking-[.0375em] text-pretty">
+              {project.summary}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* IMAGES */}
-      <div className="inset-0">
+      <section className="mt-8">
         <figure
-          className={cn(
-            'relative overflow-hidden aspect-[media]',
-            project.archived && 'grayscale-100 hover:grayscale-0',
-          )}
-          style={{ height: `${lockHeight}px` }}
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
+          ref={figureRef}
+          className={cn('relative overflow-hidden aspect-[media]')}
+          style={{ height: lockHeight }}
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+          onClick={handleClick}
         >
           <img
             className={cn(
               `absolute inset-0 w-full h-auto object-cover`,
-              'transition-transform ease-[cubic-bezier(0, 1, 1, 1)]',
+              project.archived && 'grayscale-[.95] brightness-90',
+              hovering && 'opacity-0',
+              manual && 'hidden',
             )}
-            style={{
-              transform: hovering ? `translateY(-${scrollYDelta}px)` : 'translateY(0)',
-              transitionDuration: hovering ? `${scrollDuration}s` : 'initial',
-            }}
-            src={hovering ? full.src : preview.src}
-            alt={preview.alt ?? `${project.name} preview`}
-            width={hovering ? full.width : preview.width}
-            height={hovering ? full.height : preview.height}
+            src={preview.src}
+            alt={preview.alt}
+            width={preview.width}
+            height={preview.height}
             loading="lazy"
             decoding="async"
           />
+
+          {manual ? (
+            <div
+              ref={scrollerRef}
+              className="absolute inset-0 size-full object-cover overflow-y-auto cursor-n-resize"
+              style={{ WebkitOverflowScrolling: 'touch' }}   /* iOS momentum */
+            >
+              <img
+                className="w-full h-auto object-cover pointer-events-none"
+                src={full.src}
+                alt={full.alt}
+                width={full.width}
+                height={full.height}
+                fetchPriority="high"
+              />
+            </div>
+          ) : (
+            <img
+              className={cn(
+                `absolute inset-0 w-full h-auto object-cover cursor-pointer`,
+                'transition-transform ease-linear',
+                hovering ? 'opacity-100' : 'opacity-0',
+              )}
+              style={{
+                transform: hovering ? `translateY(-${scrollDeltaY}px)` : 'translateY(0)',
+                transitionDuration: hovering ? `${scrollDuration}s` : 'initial',
+                transitionDelay: hovering ? '200ms' : '0s',
+              }}
+              src={full.src}
+              alt={full.alt}
+              width={full.width}
+              height={full.height}
+              fetchPriority="high"
+            />
+          )}
 
           {project.archived &&
             <figcaption className="absolute left-3 top-3 flex gap-2">
@@ -286,7 +355,7 @@ function ProjectCard({ project }: { project: Project; }) {
             </figcaption>
           }
         </figure>
-      </div>
+      </section>
     </Card>
   );
 }

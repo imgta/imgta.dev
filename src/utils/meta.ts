@@ -87,3 +87,27 @@ export function createMetaTags(config: MetaConfig) {
 import { TECHS } from '@/lib/tech';
 
 export const SOCIALS = ['github', 'linkedin', 'instagram'].map(key => TECHS[key]);
+
+export const CONTACTS = [
+  {
+    label: 'email',
+    href: 'mailto:gphamta@gmail.com',
+    text: 'google mail',
+    ariaLabel: 'Send me an email',
+    title: 'Gmail',
+  },
+  {
+    label: 'schedule',
+    href: 'https://cal.com/imgta',
+    text: 'calendar',
+    ariaLabel: 'Schedule a chat with me',
+    title: 'Cal.com',
+  },
+  {
+    label: 'connect',
+    href: 'https://linkedin.com/in/gordonta',
+    text: 'linkedin',
+    ariaLabel: 'Connect with me on LinkedIn',
+    title: 'LinkedIn',
+  },
+] as const;

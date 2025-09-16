@@ -23,10 +23,7 @@
   scroll-behavior: smooth;
 
   --radius: 0.625rem;
-  /* --background: oklch(97.913% 0.00011 271.152); */
-  /* hsl(234, 27%, 96%); */
   --background: oklch(96.482% 0.00686 277.074);
-  /* --background: #e8eaf0; */
   --foreground: oklch(26.033% 0.00003 271.152);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -244,11 +241,8 @@ body {
   &::-webkit-scrollbar { display: none; }
 }
 
-
 @keyframes morph {
-    0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-
-    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-
-    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
 }

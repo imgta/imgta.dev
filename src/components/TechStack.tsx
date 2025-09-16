@@ -11,20 +11,20 @@ interface TechItem {
 };
 
 const STACK: TechItem[] = [
-  { key: 'react', tags: ['react'] },
-  { key: 'nextjs', tags: ['react', 'nextjs'] },
-  { key: 'vuejs', tags: ['vuejs'] },
-  { key: 'nuxt', tags: ['vuejs', 'nuxt'] },
-  { key: 'vite', tags: ['vite'] },
+  { key: 'react', tags: ['react', 'nextjs'] },
+  { key: 'nextjs', tags: ['nextjs'] },
+  { key: 'vuejs', tags: ['vuejs', 'nuxt'] },
+  { key: 'nuxt', tags: ['nuxt'] },
+  { key: 'vite', tags: ['vite', 'react', 'vuejs', 'nuxt'] },
   { key: 'python', tags: ['python', 'django', 'fastapi', 'streamlit'] },
   { key: 'fastapi', tags: ['fastapi'] },
   { key: 'django', tags: ['django'] },
   { key: 'streamlit', tags: ['streamlit'] },
   { key: 'docker', tags: ['docker'] },
   { key: 'javascript', tags: ['javascript', 'react', 'nextjs', 'vuejs', 'nuxt', 'vite'] },
-  { key: 'typescript', tags: ['typescript', 'javascript', 'react', 'nextjs', 'vuejs', 'nuxt', 'vite'] },
+  { key: 'typescript', tags: ['typescript', 'react', 'nextjs', 'vuejs', 'nuxt', 'vite'] },
   { key: 'tailwindcss', tags: ['tailwindcss'] },
-  { key: 'html', tags: ['html', 'django'] },
+  { key: 'html', tags: ['html'] },
   { key: 'css', tags: ['css', 'html', 'tailwindcss'] },
 ];
 
@@ -100,10 +100,11 @@ export function TechStack() {
               aria-label={`Visit the official ${tech.name} website`}
               data-id={tech.name}
               data-mask={mask}
-              className={cn('flex justify-center my-1.5 transition-[transform,opacity] duration-200 ease-in-out',
+              className={cn(
+                'flex justify-center my-1.5 transition-[transform,opacity,filter] duration-200 ease-in-out',
                 {
                   'scale-110': active,
-                  'opacity-25': dim,
+                  'opacity-25 grayscale-50': dim,
                 }
               )}
             >
@@ -129,7 +130,7 @@ export function TechFlex({
   iconClass = '',
 }: TechFlexProps) {
   return (
-    <section className="flex flex-row items-center mt-2 mx-auto gap-2">
+    <section className="flex flex-row items-center mx-auto gap-1 sm:gap-2">
       {stack.map(name => {
         const key = name
           .replace(/^aws\s+/i, '')  // strip leading 'AWS'
@@ -138,10 +139,10 @@ export function TechFlex({
         const tech = TECHS[key];
         const { href } = TECHS[key] ?? '#';
 
-        return (
-          tech &&
+        return (tech &&
           <a
-            key={key} href={href}
+            key={key}
+            href={href}
             title={name}
             target='_blank' rel="noopener noreferrer"
             className="group flex hover:cursor-pointer"
@@ -152,8 +153,8 @@ export function TechFlex({
             )} />
             <span
               className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
-              font-sfmono text-sm text-foreground/80 tracking-tight
-              group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-2
+              font-neuvetica font-medium text-sm text-foreground/80 tracking-wider lowercase
+              group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1
               transition-[max-width,padding-left] duration-250 ease-in-out"
             >
               {name}
