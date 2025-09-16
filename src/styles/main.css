@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -129,12 +128,8 @@
 
 @theme inline {
   --font-inter: "Inter", sans-serif;
-  --font-helvetica: "Helvetica", sans-serif;
   --font-neuvetica: "Neuvetica", sans-serif;
-  --font-nunito: "Nunito", sans-serif;
-  --font-jetbrains: "Jet Brains Mono", monospace;
   --font-dankmono: "Dank Mono", monospace;
-  --font-sfmono: 'SF Mono', monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

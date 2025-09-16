@@ -74,11 +74,20 @@ function Index() {
 
           </div>
           <figure className="order-first md:order-last flex justify-center md:justify-start">
-            <div className="bg-[url('/img/gta.jpg')] size-64 lg:size-[17rem]
-                            bg-cover bg-center bg-no-repeat object-cover
-                            saturate-[.85]
-                            animate-[morph_7s_ease-in-out_infinite] transition-[filter]"
-            />
+            <div className="size-64 lg:size-[17rem] pointer-events-none select-none">
+              <img
+                src="/img/gta.jpg"
+                alt=""
+                width={1440}
+                height={1439}
+                fetchPriority="high"
+                loading="eager"
+                decoding="async"
+                className="object-cover saturate-[.85]
+                          animate-[morph_7s_ease-in-out_infinite]
+                          transition-[filter]"
+              />
+            </div>
           </figure>
         </section>
 
