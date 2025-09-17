@@ -257,17 +257,22 @@ function ProjectCard({ project }: { project: Project; }) {
               {(!project.archived && actions.length) &&
                 <>
                   <div className="flex gap-4">
-                    {actions.map(a =>
+                    {actions.map(({ href, label, title, Icon }) =>
                       <HighlightLink
-                        key={a.label}
-                        href={a.href}
-                        title={`${project.name} ${a.title}`}
-                        aria-label={`Link to ${project.name}'s ${a.title}`}
+                        key={label}
+                        href={href}
+                        title={`${project.name} ${title}`}
+                        aria-label={`Link to ${project.name}'s ${title}`}
+                        onClick={() =>
+                          umami.track('project_view', {
+                            name: project.name.toLowerCase().replace(/[\s]+/g, '_')
+                          })
+                        }
                       >
                         <p className="flex gap-1.5 text-foreground">
-                          <span>{a.Icon}</span>
+                          <span>{Icon}</span>
                           <span className="text-[.9rem] tracking-tighter">
-                            {a.label}
+                            {label}
                           </span>
                         </p>
                       </HighlightLink>

@@ -63,6 +63,7 @@ function Index() {
                         href={href}
                         title={name}
                         aria-label={name}
+                        onClick={() => umami.track('social_click', { platform: name.toLowerCase() })}
                       >
                         <span className="pl-1 dark:text-foreground">{name}</span>
                       </HighlightLink>
@@ -130,6 +131,7 @@ function Index() {
                       href={href}
                       title={title}
                       aria-label={ariaLabel}
+                      onClick={() => umami.track('contact_click', { type: title.toLowerCase() })}
                     >
                       <span className="sm:ml-0">{text}</span>
                     </HighlightLink>

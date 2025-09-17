@@ -10,10 +10,11 @@ import '@/styles/main.css';
 //------------------------------------------------------------
 
 interface NavigationLink extends
-  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'title' | 'aria-label'>,
+  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    'href' | 'target' | 'rel' | 'title' | 'aria-label' | 'onClick'
+  >,
   Pick<LinkProps, 'to' | 'hash' | 'activeProps' | 'activeOptions'> {
   name: string;
-  onClick?: React.AnchorHTMLAttributes<HTMLAnchorElement>['onClick'];
 }
 
 const navLinks: NavigationLink[] = [
@@ -23,7 +24,7 @@ const navLinks: NavigationLink[] = [
   {
     name: 'CV', title: 'Google Drive link', target: '_blank', rel: 'noopener noreferrer',
     href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing',
-    onClick: () => (window as any).umami.track('resume_click'),
+    onClick: () => umami.track('cv_click'),
   },
 ];
 
@@ -101,7 +102,10 @@ export const Route = createRootRoute({
               <div className="mt-6 lg:mt-8">
                 <ul className="flex justify-center gap-x-12">
                   {SOCIALS.map(social => (
-                    <li className="text-foreground hover:scale-125 duration-75" key={social.name}>
+                    <li
+                      key={social.name}
+                      className="text-foreground hover:scale-125 duration-75"
+                    >
                       <a
                         href={social.href}
                         title={social.name}
