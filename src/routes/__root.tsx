@@ -10,15 +10,21 @@ import '@/styles/main.css';
 //------------------------------------------------------------
 
 interface NavigationLink extends
-  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'title' | 'aria-label'>, Pick<LinkProps, 'to' | 'hash' | 'activeProps' | 'activeOptions'> {
+  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'title' | 'aria-label'>,
+  Pick<LinkProps, 'to' | 'hash' | 'activeProps' | 'activeOptions'> {
   name: string;
+  onClick?: React.AnchorHTMLAttributes<HTMLAnchorElement>['onClick'];
 }
 
 const navLinks: NavigationLink[] = [
   { name: 'Skills', to: '/', hash: 'tech-stack', activeOptions: { exact: true, includeHash: true } },
   { name: 'Projects', to: '/', hash: 'projects', activeOptions: { exact: true, includeHash: true } },
   { name: 'Contact', to: '/', hash: 'contact', activeOptions: { exact: true, includeHash: true } },
-  { name: 'CV', title: 'Google Drive link', target: '_blank', rel: 'noopener noreferrer', href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing' },
+  {
+    name: 'CV', title: 'Google Drive link', target: '_blank', rel: 'noopener noreferrer',
+    href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing',
+    onClick: () => (window as any).umami.track('resume_click'),
+  },
 ];
 
 //------------------------------------------------------------
