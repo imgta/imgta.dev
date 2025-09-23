@@ -21,7 +21,7 @@ export function createMetaTags(config: MetaConfig) {
   const {
     title: pageTitle,
     description,
-    url,
+    url = import.meta.env.VITE_SITE_URL,
     image = DEFAULT_META.defaultImage,
     type = 'website',
     publishDate,

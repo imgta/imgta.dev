@@ -20,7 +20,6 @@ export default defineConfig({
       include: /\.[jt]sx?$/, // js, jsx, ts, tsx
     }),
   ],
-  envDir: '../', // if sharing `.env` in parent directory in monorepo
   resolve: { // resolve path aliases to the `/src` directory
     alias: {
       '@': path.resolve(__dirname, './src')
