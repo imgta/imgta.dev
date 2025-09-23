@@ -14,6 +14,7 @@ interface ProjectCoverImage {
   width: number;
   height: number;
   alt?: string;
+  title?: string;
 }
 
 type ProjectLinkMap = Record<'live' | 'demo' | 'code', { href: string; }>;
@@ -313,6 +314,7 @@ function ProjectCard({ project }: { project: Project; }) {
             )}
             src={preview.src}
             alt={preview.alt}
+            title={preview.alt}
             width={preview.width}
             height={preview.height}
             loading="lazy"
@@ -329,6 +331,7 @@ function ProjectCard({ project }: { project: Project; }) {
                 className="w-full h-auto object-cover pointer-events-none"
                 src={full.src}
                 alt={full.alt}
+                title={full.alt}
                 width={full.width}
                 height={full.height}
                 fetchPriority="high"
@@ -348,6 +351,7 @@ function ProjectCard({ project }: { project: Project; }) {
               }}
               src={full.src}
               alt={full.alt}
+              title={full.alt}
               width={full.width}
               height={full.height}
               fetchPriority="high"

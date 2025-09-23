@@ -78,7 +78,8 @@ function Index() {
             <div className="size-64 lg:size-[17rem] pointer-events-none select-none">
               <img
                 src="/img/gta.jpg"
-                alt=""
+                alt="Portrait of Gordon with his cat Pixel"
+                title="Gordon with his cat Pixel"
                 width={1440}
                 height={1439}
                 fetchPriority="high"
