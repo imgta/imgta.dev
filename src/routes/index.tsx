@@ -80,8 +80,8 @@ function Index() {
                 src="/img/gta.jpg"
                 alt="Portrait of Gordon with his cat Pixel"
                 title="Gordon with his cat Pixel"
-                width={1440}
-                height={1439}
+                width={600}
+                height={600}
                 fetchPriority="high"
                 loading="eager"
                 decoding="async"

@@ -62,7 +62,7 @@ const PROJECTS: Project[] = [
     },
     covers: [
       { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview', width: 1174, height: 731 },
-      { src: '/img/vibby-full.webp', alt: 'Video Blog AI page preview', width: 1200, height: 6696 },
+      { src: '/img/vibby-full.avif', alt: 'Video Blog AI page preview', width: 1200, height: 6696 },
     ],
   },
   {
@@ -83,7 +83,7 @@ const PROJECTS: Project[] = [
     links: { live: { href: 'https://nootrient.co' } },
     covers: [
       { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
-      { src: '/img/noot-ad-page.webp', alt: 'Nootrient ads conversion page', width: 1127, height: 5296 },
+      { src: '/img/noot-ad-page.avif', alt: 'Nootrient ads conversion page', width: 1127, height: 5296 },
     ],
   },
   {
@@ -104,7 +104,7 @@ const PROJECTS: Project[] = [
     links: { demo: { href: 'https://wisp-eta.vercel.app' } },
     covers: [
       { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
-      { src: '/img/wisp-full.png', alt: 'Word Wisp page preview', width: 1127, height: 1998 },
+      { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 1127, height: 1998 },
     ],
   },
   {
@@ -124,7 +124,7 @@ const PROJECTS: Project[] = [
     links: { code: { href: 'https://github.com/imgta/vialect' } },
     covers: [
       { src: '/img/vial-preview.png', alt: 'Vialect preview', width: 1127, height: 578 },
-      { src: '/img/vial-full.webp', alt: 'Vialect page preview', width: 1500, height: 2507 },
+      { src: '/img/vial-full.avif', alt: 'Vialect page preview', width: 1500, height: 2507 },
     ],
   },
   {
@@ -145,8 +145,8 @@ const PROJECTS: Project[] = [
     endDate: '2023-11',
     links: {},
     covers: [
-      { src: '/img/play-preview.jpg', alt: 'playtrace preview', width: 1000, height: 763 },
-      { src: '/img/play-full.webp', alt: 'playtrace page preview', width: 1000, height: 3800 },
+      { src: '/img/play-preview.avif', alt: 'playtrace preview', width: 1000, height: 763 },
+      { src: '/img/play-full.avif', alt: 'playtrace page preview', width: 1000, height: 3800 },
     ],
   },
 ];
@@ -299,8 +299,8 @@ function ProjectCard({ project }: { project: Project; }) {
       <section className="mt-8">
         <figure
           ref={figureRef}
-          className={cn('relative overflow-hidden aspect-[media]')}
           style={{ height: lockHeight }}
+          className="relative overflow-hidden aspect-[media]"
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
           onClick={handleClick}
@@ -331,10 +331,11 @@ function ProjectCard({ project }: { project: Project; }) {
                 className="w-full h-auto object-cover pointer-events-none"
                 src={full.src}
                 alt={full.alt}
-                title={full.alt}
                 width={full.width}
                 height={full.height}
-                fetchPriority="high"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
               />
             </div>
           ) : (
@@ -351,15 +352,16 @@ function ProjectCard({ project }: { project: Project; }) {
               }}
               src={full.src}
               alt={full.alt}
-              title={full.alt}
               width={full.width}
               height={full.height}
+              loading="eager"
+              decoding="sync"
               fetchPriority="high"
             />
           )}
 
           {project.archived &&
-            <figcaption className="absolute left-3 top-3 flex gap-2">
+            <figcaption className="absolute top-3 left-1/2 -translate-x-1/2">
               <Badge variant="destructive">archived</Badge>
             </figcaption>
           }
