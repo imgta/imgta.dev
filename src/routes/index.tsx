@@ -23,7 +23,7 @@ function Index() {
     <div className="flex justify-center max-w-4xl mx-auto">
       <div>
         <svg aria-hidden="true"
-          className="absolute inset-x-0 top-[5rem] left-0 min-h-screen w-full -z-10
+          className="absolute inset-x-0 top-20 left-0 min-h-screen w-full -z-10
                       stroke-content-200/70 dark:stroke-content/50
                       mask-[radial-gradient(32rem_32rem_at_center,#fff,transparent)]"
         >
@@ -36,28 +36,35 @@ function Index() {
                             justify-center items-start"
         >
           <div>
-            <p className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 tracking-wide">Hi there.</p>
-            <h1 className="font-neuvetica text-3xl md:text-[2rem]/10 lg:text-4xl text-content-700/90 dark:text-content-400/90 sm:tracking-[0.0125em] md:text-pretty">
+            <p className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">
+              Hi there.
+            </p>
+            <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-0.05rem] text-pretty">
               I&#700;m Gordon, a full-stack engineer who builds expressive apps
             </h1>
 
-            <div className="font-neuvetica flex sm:grid items-start justify-between mt-4 sm:mt-0">
-              <address className="mt-1 sm:mt-8 mb-4 flex items-end gap-1 sm:gap-1.5 text-content-800/95 dark:text-foreground">
-                <MapPin className="size-[1.1rem] scale-y-105 origin-bottom stroke-gt-600 dark:stroke-gt-700 order-last sm:order-first" />
-                <span className="leading-4 font-normal tracking-wider">
-                  based in Boston, MA
+            <div className="font-neuvetica flex sm:grid items-start justify-between mt-[1.8rem] sm:mt-0">
+              <address
+                className="flex items-end gap-1 sm:gap-1.5
+                          mt-1 sm:mt-[3.3rem] mb-1
+                          text-content-800/95 dark:text-foreground"
+              >
+                <MapPin className="size-4 scale-y-110 origin-bottom stroke-gt-600 dark:stroke-gt-700 order-last sm:order-first" />
+                <span className="leading-4 font-medium text-[.9rem] [word-spacing:.025rem]">
+                  based in
+                  <span className="tracking-wide"> Boston, MA</span>
                 </span>
               </address>
 
-              <nav aria-label="Social" className="sm:p-4 sm:pt-2 order-first sm:order-none">
-                <h2 className="font-medium text-lg tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4 pb-1">
+              <nav aria-label="Social" className="sm:p-2 sm:pt-2 order-first sm:order-0">
+                <h2 className="font-medium tracking-wide text-base text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4 pb-0.5">
                   socials
                 </h2>
                 <ul>
                   {SOCIALS.map(({ name, href }) =>
                     <li
                       key={name}
-                      className="w-fit border-l border-border pl-4"
+                      className="w-fit border-l border-border pl-1.5 hover:border-gt-300/70"
                     >
                       <HighlightLink
                         href={href}
@@ -65,7 +72,9 @@ function Index() {
                         aria-label={name}
                         onClick={() => umami.track('social_click', { platform: name.toLowerCase() })}
                       >
-                        <span className="pl-1 dark:text-foreground">{name}</span>
+                        <span className="pl-3.5 dark:text-foreground">
+                          {name}
+                        </span>
                       </HighlightLink>
                     </li>
                   )}
@@ -75,7 +84,7 @@ function Index() {
 
           </div>
           <figure className="order-first md:order-last flex justify-center md:justify-start">
-            <div className="size-64 lg:size-[17rem] pointer-events-none select-none">
+            <div className="size-64 lg:size-68 pointer-events-none select-none">
               <img
                 src="/img/gta.jpg"
                 alt="Portrait of Gordon with his cat Pixel"
@@ -108,13 +117,14 @@ function Index() {
               </blockquote>
             </Header>
           </div>
+
           <Projects />
         </section>
 
         {/* CONTACT */}
         <section className="isolate my-24 max-w-md px-4 sm:max-w-xl mx-auto">
           <div>
-            <Header heading="contact" cli="ping imgta.dev" align="center">
+            <Header heading="contact me" cli="ping imgta.dev" align="center">
               <p className="font-neuvetica text-lg tracking-wider sm:tracking-[0.075em] text-left sm:text-center">
                 Let&#700;s collaborate, talk shop, and geek out.
               </p>
@@ -123,18 +133,20 @@ function Index() {
           <div className="mt-8 sm:mt-12 ml-auto max-w-sm sm:max-w-xl md:max-w-none">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 md:flex md:justify-evenly">
               {CONTACTS.map(({ label, href, text, ariaLabel, title }) => (
-                <div key={label} className="font-neuvetica w-1/3 sm:pl-6">
-                  <h3 className="font-medium text-[1.125rem]/7 tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-6">
+                <div key={label} className="font-neuvetica w-fit">
+                  <h3 className="font-medium text-[1.125rem]/7 tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4">
                     {label}
                   </h3>
-                  <address className="tracking-wide not-italic border-l border-border pt-0 sm:pt-2 pl-6">
+                  <address className="tracking-wide not-italic border-l border-border pt-1 pl-2 hover:border-gt-300/70">
                     <HighlightLink
                       href={href}
                       title={title}
                       aria-label={ariaLabel}
                       onClick={() => umami.track('contact_click', { type: title.toLowerCase() })}
                     >
-                      <span className="sm:ml-0">{text}</span>
+                      <span className="pl-4 sm:ml-0">
+                        {text}
+                      </span>
                     </HighlightLink>
                   </address>
                 </div>

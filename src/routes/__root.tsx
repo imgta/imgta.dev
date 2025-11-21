@@ -36,7 +36,7 @@ const navLinks: NavigationLink[] = [
     name: 'Contact',
     title: 'Contact info',
     to: '/',
-    hash: 'contact',
+    hash: 'contact-me',
     activeOptions: { exact: true, includeHash: true }
   },
   {
@@ -97,7 +97,7 @@ export const Route = createRootRoute({
                     className="font-dankmono lowercase text-[.92rem] tracking-tight px-0
                               text-gt-900 dark:text-content-400
                               hover:text-gt-700 dark:hover:text-gt-600
-                              [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-[0.5rem]
+                              [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8
                               [&.active]:font-semibold [&.active]:text-gt-700"
                   >
                     {link.to

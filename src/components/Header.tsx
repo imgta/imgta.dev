@@ -37,12 +37,14 @@ export function Header({
   return (
     <section
       id={hashId}
-      className="scroll-mt-[6.5rem]"
+      className="scroll-mt-26"
     >
       <div className={cn('flex', headerClass)}>
         <div>
           {cli &&
-            <samp className={cn('flex items-center gap-1 text-gt-700/50 dark:text-gt-50/30 tracking-[-0.075em] select-none', cliJustify, cliMargin)}>
+            <samp
+              className={cn('flex items-center gap-1 text-gt-700/50 dark:text-gt-50/30 tracking-[-0.075em] select-none -mb-1', cliJustify, cliMargin)}
+            >
               <span className="font-inter text-content-800/25 dark:text-gt-500/55 text-xs scale-y-125 scale-x-75">&gt;</span>
               <p className="font-dankmono text-sm">{cli}</p>
             </samp>

@@ -272,7 +272,7 @@ function ProjectCard({ project }: { project: Project; }) {
                       >
                         <p className="flex gap-1.5 text-foreground">
                           <span>{Icon}</span>
-                          <span className="text-[.9rem] tracking-tighter">
+                          <span className="text-[.9rem] -tracking-[.075em]">
                             {label}
                           </span>
                         </p>

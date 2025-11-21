@@ -58,48 +58,45 @@ function computeBitmasks(techs: TechItem[], tagIndex: Map<string, number>) {
 }
 
 const tagIndices = mapTagBitPosition(STACK);
-const techBitmasks = computeBitmasks(STACK, tagIndices);
+const techBitmasks: (TechItem & { mask: number; })[] = computeBitmasks(STACK, tagIndices);
 
 //------------------------------------------------------------
 
 export function TechStack() {
   const [hoverMask, setHoverMask] = useState<number>(0);
 
-  function updateBitmask(e: React.SyntheticEvent<HTMLElement>) {
-    const el = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-id]');
-    const mask = el ? Number(el.dataset.mask) : 0;
-    if (!Number.isNaN(mask)) setHoverMask(mask);
-  }
-
-  function clearBitmask(e: React.SyntheticEvent<HTMLElement>) {
-    const ul = e.currentTarget as HTMLElement;
-    if (!ul.contains((e as any).relatedTarget)) setHoverMask(0);
+  function handleBlur(e: React.FocusEvent<HTMLUListElement>) {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setHoverMask(0); // clear bitmask only when focus moves outside of <ul>
+    }
   }
 
   return (
-    <ul role="list" aria-labelledby="skills"
+    <ul
+      role="list" aria-labelledby="skills"
       className="grid grid-cols-3 sm:grid-cols-5 gap-y-6 sm:gap-y-8 sm:gap-x-4 xl:gap-x-8"
-      onMouseOver={updateBitmask}
-      onMouseOut={clearBitmask}
-      onFocus={updateBitmask}
-      onBlur={clearBitmask}
+      onMouseLeave={() => setHoverMask(0)}
+      onBlur={handleBlur}
     >
       {techBitmasks.map(({ key, mask }) => {
         const tech = TECHS[key];
         if (!tech) return null;
 
-        const active = hoverMask !== 0 && (mask & hoverMask) !== 0;
-        const dim = hoverMask !== 0 && !active;
+        const { name, href } = tech;
+
+        const active = !!(mask & hoverMask);
+        const dim = !!hoverMask && !active;
 
         return (
-          <li key={tech.name} className="space-y-2">
+          <li
+            className="space-y-2"
+            key={name}
+          >
             <a
-              title={tech.name}
-              href={tech.href}
               target="_blank" rel="noopener noreferrer"
-              aria-label={`Visit the official ${tech.name} website`}
-              data-id={tech.name}
-              data-mask={mask}
+              aria-label={`Visit the official ${name} website`}
+              title={name}
+              href={href}
               className={cn(
                 'flex justify-center my-1.5 transition-[transform,opacity,filter] duration-200 ease-in-out',
                 {
@@ -107,12 +104,17 @@ export function TechStack() {
                   'opacity-25 grayscale-50': dim,
                 }
               )}
+              onMouseEnter={() => setHoverMask(mask)}
+              onFocus={() => setHoverMask(mask)}
             >
-              <IconSvg name={tech.name} className="size-9" />
+              <IconSvg
+                className="size-9"
+                name={name}
+              />
             </a>
 
             <p className="block truncate text-center pointer-events-none text-xs sm:text-sm text-foreground dark:text-content-400/90">
-              {tech.name}
+              {name}
             </p>
           </li>
         );
@@ -123,12 +125,12 @@ export function TechStack() {
 
 //------------------------------------------------------------
 
-interface TechFlexProps { stack: string[]; iconClass?: string; }
+interface TechFlexProps {
+  stack: string[];
+  iconClass?: string;
+}
 
-export function TechFlex({
-  stack,
-  iconClass = '',
-}: TechFlexProps) {
+export function TechFlex({ stack, iconClass = '' }: TechFlexProps) {
   return (
     <section className="flex flex-row items-center mx-auto gap-1 sm:gap-2">
       {stack.map(name => {
@@ -136,10 +138,13 @@ export function TechFlex({
           .replace(/^aws\s+/i, '')  // strip leading 'AWS'
           .replace(/[\s.]+/g, '')   // strip whitespace, periods
           .toLowerCase();
-        const tech = TECHS[key];
-        const { href } = TECHS[key] ?? '#';
 
-        return (tech &&
+        const tech = TECHS[key];
+        if (!tech) return null;
+
+        const href = tech.href ?? '#';
+
+        return (
           <a
             key={key}
             href={href}
@@ -147,10 +152,13 @@ export function TechFlex({
             target='_blank' rel="noopener noreferrer"
             className="group flex hover:cursor-pointer"
           >
-            <IconSvg name={name} className={cn(
-              'size-7 group-hover:saturate-150 group-hover:brightness-125',
-              iconClass,
-            )} />
+            <IconSvg
+              className={cn(
+                'size-7 group-hover:saturate-150 group-hover:brightness-125',
+                iconClass,
+              )}
+              name={name}
+            />
             <span
               className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
               font-neuvetica font-medium text-sm text-foreground/80 tracking-wider lowercase
@@ -159,9 +167,9 @@ export function TechFlex({
             >
               {name}
             </span>
-          </a>);
-      }
-      )}
+          </a>
+        );
+      })}
     </section>
   );
 }
