@@ -79,7 +79,7 @@ importers:
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.6)
       '@types/umami':
-        specifier: ^2.10.1
+        specifier: 2.10.1
         version: 2.10.1
       '@vitejs/plugin-react':
         specifier: 5.1.1
