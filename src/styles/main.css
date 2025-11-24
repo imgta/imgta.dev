@@ -121,7 +121,8 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  --bg-selection: oklch(0.7718 0.1059 277.76 / 0.25);
+  /* --bg-selection: oklch(0.7718 0.1059 277.76 / 0.25); */
+  --bg-selection: rgba(245, 222, 249, 0.254);
   --text-selection: var(--gt-50);
 }
 

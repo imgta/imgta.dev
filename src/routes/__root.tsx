@@ -1,10 +1,10 @@
-import { createRootRoute, HeadContent, Link, type LinkProps, Outlet } from '@tanstack/react-router';
+import { createRootRoute, HeadContent, Link, Outlet, type LinkProps } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Toaster } from '@/components/ui/sonner';
-import { SOCIALS } from '@/utils/meta';
 import { IconSvg } from '@/components/IconSvg';
 import { Button } from '@/components/ui/button';
+import { SOCIALS } from '@/utils/meta';
 import '@/styles/main.css';
 
 //------------------------------------------------------------
@@ -67,13 +67,14 @@ export const Route = createRootRoute({
               <div className="flex items-center gap-8">
 
                 <section className="hidden sm:flex sm:flex-1">
-                  <Link className="flex items-center text-3xl gap-2 group hover:cursor-pointer"
+                  <Link
+                    className="flex items-center text-3xl gap-2 hover:cursor-pointer group"
                     onClick={scrollTop}
                     to="/"
                   >
                     <span className="font-inter font-extralight text-xl leading-none scale-y-150
                     text-content-700 group-hover:text-gt-500 dark:text-content-400 dark:group-hover:text-gt-600 group-hover:font-light
-                    group-hover:-rotate-90 transition-transform duration-200 ease-in-out"
+                    group-hover:-rotate-90 transition-[rotate,scale] duration-200 ease-in-out"
                     >
                       &gt;
                     </span>
@@ -92,8 +93,11 @@ export const Route = createRootRoute({
                   </Link>
                 </section>
 
-                {navLinks.map(link => (
-                  <Button asChild key={link.name} variant="link"
+                {navLinks.map(link =>
+                  <Button
+                    asChild
+                    variant="link"
+                    key={link.name}
                     className="font-dankmono lowercase text-[.92rem] tracking-tight px-0
                               text-gt-900 dark:text-content-400
                               hover:text-gt-700 dark:hover:text-gt-600
@@ -104,7 +108,7 @@ export const Route = createRootRoute({
                       ? <Link {...link}>{link.name}</Link>
                       : <a {...link}>{link.name}</a>}
                   </Button>
-                ))}
+                )}
 
                 <div className="ml-auto">
                   <ThemeToggle />
@@ -122,10 +126,10 @@ export const Route = createRootRoute({
             <div className="mx-auto max-w-6xl overflow-hidden px-6 lg:px-8 py-4 sm:py-8">
               <div className="mt-6 lg:mt-8">
                 <ul className="flex justify-center gap-x-12">
-                  {SOCIALS.map(social => (
+                  {SOCIALS.map(social =>
                     <li
                       key={social.name}
-                      className="text-foreground hover:scale-125 duration-75"
+                      className="text-foreground transition-[scale] hover:scale-125 duration-75"
                     >
                       <a
                         href={social.href}
@@ -137,7 +141,7 @@ export const Route = createRootRoute({
                         <IconSvg name={social.name} aria-hidden="true" className="size-7" />
                       </a>
                     </li>
-                  ))}
+                  )}
                 </ul>
               </div>
 

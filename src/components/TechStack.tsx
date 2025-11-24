@@ -98,7 +98,7 @@ export function TechStack() {
               title={name}
               href={href}
               className={cn(
-                'flex justify-center my-1.5 transition-[transform,opacity,filter] duration-200 ease-in-out',
+                'flex justify-center my-1.5 transition-[opacity,filter] duration-150 ease-in-out',
                 {
                   'scale-110': active,
                   'opacity-25 grayscale-50': dim,

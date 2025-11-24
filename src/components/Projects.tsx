@@ -341,8 +341,8 @@ function ProjectCard({ project }: { project: Project; }) {
           ) : (
             <img
               className={cn(
-                `absolute inset-0 w-full h-auto object-cover cursor-pointer`,
-                'transition-transform ease-linear',
+                'absolute inset-0 w-full h-auto object-cover cursor-pointer',
+                'transition-[opacity,translate] ease-linear',
                 hovering ? 'opacity-100' : 'opacity-0',
               )}
               style={{

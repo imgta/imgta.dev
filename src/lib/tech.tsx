@@ -1,7 +1,7 @@
 export interface TechStack {
   name: string;
   href?: string;
-  icon: any;
+  icon: React.JSX.Element;
 }
 
 export const TECHS: Record<string, TechStack> = {

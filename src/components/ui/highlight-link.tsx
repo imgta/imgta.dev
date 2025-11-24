@@ -1,14 +1,10 @@
-import { Button } from '@/components/ui/button';
 import { Link, type LinkProps } from '@tanstack/react-router';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-export interface HighlightLinkProps
-  extends Omit<React.ComponentProps<typeof Button>,
-    'variant' | 'asChild'
-  >,
-  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    'href' | 'target' | 'rel' | 'title' | 'aria-label'
-  >,
+export interface HighlightLinkProps extends
+  Omit<React.ComponentProps<typeof Button>, 'variant' | 'asChild'>,
+  Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'target' | 'rel' | 'title' | 'aria-label'>,
   Pick<LinkProps, 'to' | 'hash' | 'activeProps'> { }
 
 export function HighlightLink({
