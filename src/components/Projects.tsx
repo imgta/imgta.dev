@@ -46,16 +46,7 @@ const PROJECTS: Project[] = [
     logo: 'videoblogai',
     cli: 'npx nuxthub deploy',
     summary: 'Co-founder, full-stack software engineer of an AI-powered blogging platform for converting and transforming videos, articles, and user inputs into SEO-optimized blog posts and content clusters.',
-    techStack: [
-      'Nuxt',
-      'FastAPI',
-      'Drizzle',
-      'Stripe',
-      'NGINX',
-      'Docker',
-      'Oracle',
-      'Cloudflare',
-    ],
+    techStack: ['Nuxt', 'FastAPI', 'Drizzle', 'Stripe', 'NGINX', 'Docker', 'Oracle', 'Cloudflare'],
     startDate: '2024-01-08',
     links: {
       live: { href: 'https://videoblog.ai?utm_source=imgta.dev&utm_medium=referral' },
@@ -70,15 +61,7 @@ const PROJECTS: Project[] = [
     logo: 'nootrient',
     cli: 'shopify theme push',
     summary: 'Shopify e-commerce store for a creative lifestyle supplements brand, core WordPress (WooCommerce) data migrations, SEO-optimizations with brand-aligned copywriting, and custom, responsive design.',
-    techStack: [
-      'Shopify',
-      'WordPress',
-      'Python',
-      'HTML',
-      'CSS',
-      'SEO',
-      'Copywriting',
-    ],
+    techStack: ['Shopify', 'WordPress', 'Python', 'HTML', 'CSS', 'SEO', 'Copywriting'],
     startDate: '2025-07',
     links: { live: { href: 'https://nootrient.co' } },
     covers: [
@@ -90,15 +73,7 @@ const PROJECTS: Project[] = [
     name: 'Word Wisp',
     cli: 'docker-compose up -d',
     summary: 'An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
-    techStack: [
-      'React',
-      'Next.js',
-      'Drizzle',
-      'Neon',
-      'Chroma',
-      'Docker',
-      'AWS EC2',
-    ],
+    techStack: ['React', 'Next.js', 'Drizzle', 'Neon', 'Chroma', 'Docker', 'AWS EC2'],
     startDate: '2025-05',
     endDate: '2025-05',
     links: { demo: { href: 'https://wisp-eta.vercel.app' } },
@@ -111,14 +86,7 @@ const PROJECTS: Project[] = [
     name: 'Vialect',
     cli: 'streamlit run app.py',
     summary: 'A Streamlit (Python) video/audio transcriber app that generates timestamped transcripts and summaries with TTS narration, featuring FFMPEG media preprocessing, speaker diarization, and cross-platform video URL intake.',
-    techStack: [
-      'Streamlit',
-      'Python',
-      'OpenAI',
-      'HuggingFace',
-      'FFMPEG',
-      'PyTorch',
-    ],
+    techStack: ['Streamlit', 'Python', 'OpenAI', 'HuggingFace', 'FFMPEG', 'PyTorch'],
     startDate: '2023-11',
     endDate: '2023-12',
     links: { code: { href: 'https://github.com/imgta/vialect' } },
@@ -132,22 +100,14 @@ const PROJECTS: Project[] = [
     name: 'playtrace',
     cli: 'npx strapi start',
     summary: 'playtrace was a full-stack events hosting web app built on Nuxt (frontend) and Strapi CMS (backend), featuring Unsplash/GIPHY cover image search, AWS S3 storage, Google Places autocompletes, and Google Routes for multi-location mapping.',
-    techStack: [
-      'Nuxt',
-      'Strapi',
-      'Supabase',
-      'Cloudflare',
-      'Render',
-      'Google Places',
-      'AWS S3',
-    ],
+    techStack: ['Nuxt', 'Strapi', 'Supabase', 'Cloudflare', 'Render', 'Google Places', 'AWS S3'],
     startDate: '2023-08',
     endDate: '2023-11',
     links: {},
     covers: [
       { src: '/img/play-preview.avif', alt: 'playtrace preview', width: 1000, height: 763 },
-      { src: '/img/play-full.avif', alt: 'playtrace page preview', width: 1000, height: 3800 },
-    ],
+      { src: '/img/play-full.avif', alt: 'playtrace page preview', width: 1000, height: 3800 }
+    ]
   },
 ];
 
@@ -305,13 +265,12 @@ function ProjectCard({ project }: { project: Project; }) {
           onMouseLeave={onLeave}
           onClick={handleClick}
         >
-          <img
-            className={cn(
-              `absolute inset-0 w-full h-auto object-cover`,
-              project.archived && 'grayscale-[.95] brightness-90',
-              hovering && 'opacity-0',
-              manual && 'hidden',
-            )}
+          <img className={cn(
+            `absolute inset-0 w-full h-auto object-cover`,
+            project.archived && 'grayscale-[.95] brightness-90',
+            hovering && 'opacity-0',
+            manual && 'hidden',
+          )}
             src={preview.src}
             alt={preview.alt}
             title={preview.alt}
@@ -320,11 +279,10 @@ function ProjectCard({ project }: { project: Project; }) {
             loading="lazy"
             decoding="async"
           />
-
           {manual ? (
             <div
               ref={scrollerRef}
-              className="absolute inset-0 size-full object-cover overflow-y-auto cursor-n-resize"
+              className="absolute inset-0 size-full object-cover cursor-n-resize"
               style={{ WebkitOverflowScrolling: 'touch' }}   /* iOS momentum */
             >
               <img
@@ -342,7 +300,7 @@ function ProjectCard({ project }: { project: Project; }) {
             <img
               className={cn(
                 'absolute inset-0 w-full h-auto object-cover cursor-pointer',
-                'transition-[opacity,translate] ease-linear',
+                'transition-[transform] ease-linear',
                 hovering ? 'opacity-100' : 'opacity-0',
               )}
               style={{
