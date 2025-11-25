@@ -3,10 +3,8 @@ import { createMetaTags, SOCIALS, CONTACTS } from '@/utils/meta';
 import { HighlightLink } from '@/components/ui/highlight-link';
 import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
-import { Header } from '@/components/Header';
 import { MapPin } from '@/components/IconSvg';
-
-//------------------------------------------------------------
+import { Header } from '@/components/Header';
 
 export const Route = createFileRoute('/')({
   head: () => createMetaTags({
@@ -24,8 +22,8 @@ function Index() {
       <div>
         <svg aria-hidden="true"
           className="absolute inset-x-0 top-20 left-0 min-h-screen w-full -z-10
-                      stroke-content-200/70 dark:stroke-content/50
-                      mask-[radial-gradient(32rem_32rem_at_center,#fff,transparent)]"
+                    stroke-content-200/70 dark:stroke-content/50
+                    mask-[radial-gradient(32rem_32rem_at_center,#fff,transparent)]"
         >
           <defs><pattern id="gt-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse"><path d="M.5 200V.5H200" fill="none" /></pattern></defs><svg x="50%" y="-1" className="overflow-visible fill-card/35 dark:fill-card/70"><path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" /></svg><rect width="100%" height="100%" fill="url(#gt-grid)" />
         </svg>
@@ -36,11 +34,13 @@ function Index() {
                             justify-center items-start"
         >
           <div>
-            <p className="font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">
-              Hi there.
-            </p>
+            <p className="marker font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">Hi there.</p>
             <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-0.05rem] text-pretty">
-              I&#700;m Gordon, a full-stack engineer who builds expressive apps
+              I&#700;m
+              <span className="marker selection:text-content-800 dark:selection:text-gt-600 selection:bg-amber-100/75 dark:selection:bg-transparent ">
+                {' Gordon, a full-stack engineer '}
+              </span>{' '}
+              who builds expressive apps
             </h1>
 
             <div className="font-neuvetica flex sm:grid items-start justify-between mt-[1.8rem] sm:mt-0">
@@ -64,7 +64,7 @@ function Index() {
                   {SOCIALS.map(({ name, href }) =>
                     <li
                       key={name}
-                      className="w-fit border-l border-border pl-1.5 hover:border-gt-300/70"
+                      className="w-fit border-l border-border pl-2 hover:border-gt-300/70"
                     >
                       <HighlightLink
                         href={href}

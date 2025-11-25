@@ -1,13 +1,13 @@
 import { createRootRoute, HeadContent, Link, Outlet, type LinkProps } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { Toaster } from '@/components/ui/sonner';
 import { IconSvg } from '@/components/IconSvg';
+import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { SOCIALS } from '@/utils/meta';
+import { cn } from '@/lib/utils';
 import '@/styles/main.css';
-
-//------------------------------------------------------------
 
 interface NavigationLink extends
   Pick<React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -53,7 +53,16 @@ const navLinks: NavigationLink[] = [
 
 export const Route = createRootRoute({
   component: () => {
-    const scrollTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    const pageY = () => (document.documentElement.scrollTop || document.body.scrollTop) || window.pageYOffset;
+    const [scrollY, setScrollY] = useState<number>(pageY());
+
+    useEffect(() => {
+      const controller = new AbortController();
+      const { signal } = controller;
+      window.addEventListener('scroll', () => setScrollY(pageY()), { passive: true, signal });
+
+      return () => controller.abort();
+    });
 
     return (
       <>
@@ -66,32 +75,37 @@ export const Route = createRootRoute({
             <nav className="max-w-5xl mx-auto p-8">
               <div className="flex items-center gap-8">
 
-                <section className="hidden sm:flex sm:flex-1">
+                <abbr className="hidden sm:flex sm:flex-1">
                   <Link
                     className="flex items-center text-3xl gap-2 hover:cursor-pointer group"
-                    onClick={scrollTop}
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     to="/"
                   >
-                    <span className="font-inter font-extralight text-xl leading-none scale-y-150
-                    text-content-700 group-hover:text-gt-500 dark:text-content-400 dark:group-hover:text-gt-600 group-hover:font-light
-                    group-hover:-rotate-90 transition-[rotate,scale] duration-200 ease-in-out"
-                    >
+                    <span className={cn(
+                      'font-inter font-extralight text-xl leading-none scale-y-150',
+                      'text-content-700 group-hover:text-gt-600 group-hover:font-light',
+                      'dark:text-gt-500 dark:group-hover:text-gt-600',
+                      scrollY < 10 ? 'grayscale-75 opacity-30' : 'group-hover:-rotate-90',
+                      'transition-[rotate,scale,filter,opacity,color,font-weight] duration-200 ease-in-out',
+                    )}>
                       &gt;
                     </span>
                     <p className="font-neuvetica tracking-[0.07em]">
-                      <span className="font-light text-content-500 dark:text-content-600
-                                      group-hover:text-content-700 dark:group-hover:text-content-250"
+                      <span className="marker font-light text-content-500 dark:text-content-400
+                        selection:text-content-500 dark:selection:text-content-400
+                        group-hover:text-content-700 dark:group-hover:text-content-250"
                       >
                         im
                       </span>
-                      <span className="font-normal text-content-700 dark:text-content-400
-                                      group-hover:text-gt-700 dark:group-hover:text-gt-600"
+                      <span className="marker font-normal text-content-700 dark:text-gt-500
+                        selection:text-content-700 dark:selection:text-gt-500
+                        group-hover:text-gt-700 dark:group-hover:text-gt-600"
                       >
                         gta
                       </span>
                     </p>
                   </Link>
-                </section>
+                </abbr>
 
                 {navLinks.map(link =>
                   <Button

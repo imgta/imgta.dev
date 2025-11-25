@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 type AlignKeyword = 'left' | 'center' | 'right';
 type AlignType = AlignKeyword | `${AlignKeyword} ${AlignKeyword}`;
