@@ -7,6 +7,7 @@ import { HighlightLink } from '@/components/ui/highlight-link';
 import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
 import { useElementWidth } from '@/hooks/useElementWidth';
 import { formatDate } from '@/utils/misc';
+import { Image } from '@unpic/react';
 import { cn } from '@/lib/utils';
 
 interface ProjectCoverImage {
@@ -53,7 +54,7 @@ const PROJECTS: Project[] = [
     },
     covers: [
       { src: '/img/vibby-preview.jpg', alt: 'Video Blog AI preview', width: 1174, height: 731 },
-      { src: '/img/vibby-full.avif', alt: 'Video Blog AI page preview', width: 1200, height: 6696 },
+      { src: '/img/vibby-full.avif', alt: 'Video Blog AI page preview', width: 768, height: 4285 },
     ],
   },
   {
@@ -66,7 +67,7 @@ const PROJECTS: Project[] = [
     links: { live: { href: 'https://nootrient.co' } },
     covers: [
       { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
-      { src: '/img/noot-ad-page.avif', alt: 'Nootrient ads conversion page', width: 1127, height: 5296 },
+      { src: '/img/noot-ad-page.webp', alt: 'Nootrient ad landing page', width: 768, height: 3609 },
     ],
   },
   {
@@ -79,7 +80,7 @@ const PROJECTS: Project[] = [
     links: { demo: { href: 'https://wisp-eta.vercel.app' } },
     covers: [
       { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
-      { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 1127, height: 1998 },
+      { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 768, height: 1362 },
     ],
   },
   {
@@ -92,7 +93,7 @@ const PROJECTS: Project[] = [
     links: { code: { href: 'https://github.com/imgta/vialect' } },
     covers: [
       { src: '/img/vial-preview.png', alt: 'Vialect preview', width: 1127, height: 578 },
-      { src: '/img/vial-full.avif', alt: 'Vialect page preview', width: 1500, height: 2507 },
+      { src: '/img/vial-full.webp', alt: 'Vialect page preview', width: 768, height: 1284 },
     ],
   },
   {
@@ -265,8 +266,7 @@ function ProjectCard({ project }: { project: Project; }) {
           onMouseLeave={onLeave}
           onClick={handleClick}
         >
-          <img className={cn(
-            `absolute inset-0 w-full h-auto object-cover`,
+          <Image className={cn(
             project.archived && 'grayscale-[.95] brightness-90',
             hovering && 'opacity-0',
             manual && 'hidden',
@@ -274,48 +274,45 @@ function ProjectCard({ project }: { project: Project; }) {
             src={preview.src}
             alt={preview.alt}
             title={preview.alt}
-            width={preview.width}
             height={preview.height}
-            loading="lazy"
-            decoding="async"
+            width={768}
+            layout="constrained"
           />
           {manual ? (
             <div
               ref={scrollerRef}
-              className="absolute inset-0 size-full object-cover cursor-n-resize"
-              style={{ WebkitOverflowScrolling: 'touch' }}   /* iOS momentum */
+              className="absolute inset-0 cursor-n-resize overflow-y-auto [-webkit-overflow-scrolling:touch]" /* iOS momentum */
             >
-              <img
-                className="w-full h-auto object-cover pointer-events-none"
+              <Image
+                className="pointer-events-none"
                 src={full.src}
                 alt={full.alt}
-                width={full.width}
                 height={full.height}
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
+                width={768}
+                layout="constrained"
               />
             </div>
           ) : (
-            <img
-              className={cn(
-                'absolute inset-0 w-full h-auto object-cover cursor-pointer',
-                'transition-[transform] ease-linear',
-                hovering ? 'opacity-100' : 'opacity-0',
-              )}
+            <div
               style={{
-                transform: hovering ? `translateY(-${scrollDeltaY}px)` : 'translateY(0)',
-                transitionDuration: hovering ? `${scrollDuration}s` : 'initial',
-                transitionDelay: hovering ? '200ms' : '0s',
-              }}
-              src={full.src}
-              alt={full.alt}
-              width={full.width}
-              height={full.height}
-              loading="eager"
-              decoding="sync"
-              fetchPriority="high"
-            />
+                '--scroll-delta-y': `-${scrollDeltaY}px`,
+                '--scroll-duration': `${scrollDuration}s`,
+              } as React.CSSProperties}>
+              <Image
+                className={cn(
+                  'absolute inset-0 cursor-pointer',
+                  'transition-transform ease-linear',
+                  hovering
+                    ? 'translate-y-(--scroll-delta-y) duration-(--scroll-duration) delay-200'
+                    : 'opacity-0 translate-y-0 delay-0',
+                )}
+                src={full.src}
+                alt={full.alt}
+                height={full.height}
+                width={768}
+                layout="constrained"
+              />
+            </div>
           )}
 
           {project.archived &&
@@ -329,14 +326,13 @@ function ProjectCard({ project }: { project: Project; }) {
   );
 }
 
-
 export function Projects() {
   return (
     <section className="py-16 max-w-3xl mx-auto">
       <div className="space-y-8">
-        {PROJECTS.map(project => (
+        {PROJECTS.map(project =>
           <ProjectCard key={project.name} project={project} />
-        ))}
+        )}
       </div>
     </section>
   );
