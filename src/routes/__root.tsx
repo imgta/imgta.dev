@@ -53,16 +53,22 @@ const navLinks: NavigationLink[] = [
 
 export const Route = createRootRoute({
   component: () => {
-    const pageY = () => (document.documentElement.scrollTop || document.body.scrollTop) || window.pageYOffset;
-    const [scrollY, setScrollY] = useState<number>(pageY());
+    const [scrollY, setScrollY] = useState<number>(0);
 
     useEffect(() => {
+      const pageY = () => window.pageYOffset
+        || (document.documentElement.scrollTop || document.body.scrollTop)
+        || 0;
+      const onScroll = () => setScrollY(pageY());
+
       const controller = new AbortController();
       const { signal } = controller;
-      window.addEventListener('scroll', () => setScrollY(pageY()), { passive: true, signal });
+
+      window.addEventListener('scroll', onScroll, { passive: true, signal });
+      onScroll(); // initial on-mount scrollY
 
       return () => controller.abort();
-    });
+    }, []);
 
     return (
       <>
@@ -112,11 +118,12 @@ export const Route = createRootRoute({
                     asChild
                     variant="link"
                     key={link.name}
-                    className="font-dankmono lowercase text-[.92rem] tracking-tight px-0
-                              text-gt-900 dark:text-content-400
-                              hover:text-gt-700 dark:hover:text-gt-600
-                              [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8
-                              [&.active]:font-semibold [&.active]:text-gt-700"
+                    className={cn('font-dankmono lowercase text-[.92rem] tracking-tight px-0',
+                      'text-gt-900 dark:text-content-400',
+                      'hover:text-gt-700 dark:hover:text-gt-600',
+                      '[&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8',
+                      '[&.active]:font-semibold [&.active]:text-gt-700'
+                    )}
                   >
                     {link.to
                       ? <Link {...link}>{link.name}</Link>

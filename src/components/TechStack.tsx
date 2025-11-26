@@ -3,8 +3,6 @@ import { IconSvg } from '@/components/IconSvg';
 import { TECHS, type TechKey } from '@/lib/tech';
 import { cn } from '@/lib/utils';
 
-//------------------------------------------------------------
-
 interface TechItem {
   key: TechKey;
   tags: string[];

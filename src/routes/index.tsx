@@ -5,6 +5,7 @@ import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
 import { MapPin } from '@/components/IconSvg';
 import { Header } from '@/components/Header';
+import { Image } from '@unpic/react';
 
 export const Route = createFileRoute('/')({
   head: () => createMetaTags({
@@ -29,10 +30,7 @@ function Index() {
         </svg>
 
         {/* HERO */}
-        <section className="mt-16 md:mt-40
-                            grid grid-cols-1 gap-4 md:flex
-                            justify-center items-start"
-        >
+        <section className="mt-16 md:mt-40 grid grid-cols-1 gap-4 md:flex justify-center items-start">
           <div>
             <p className="marker font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">Hi there.</p>
             <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-0.05rem] text-pretty">
@@ -85,18 +83,15 @@ function Index() {
           </div>
           <figure className="order-first md:order-last flex justify-center md:justify-start">
             <div className="size-64 lg:size-68 pointer-events-none select-none">
-              <img
+              <Image
                 src="/img/gta.jpg"
                 alt="Portrait of Gordon with his cat Pixel"
                 title="Gordon with his cat Pixel"
-                width={600}
+                layout="fullWidth"
                 height={600}
-                fetchPriority="high"
                 loading="eager"
-                decoding="async"
-                className="object-cover saturate-[.85]
-                          animate-[morph_7s_ease-in-out_infinite]
-                          transition-[filter]"
+                fetchpriority="high"
+                className="saturate-[.85] animate-[morph_7s_ease-in-out_infinite] transition-[filter]"
               />
             </div>
           </figure>
@@ -132,7 +127,7 @@ function Index() {
           </div>
           <div className="mt-8 sm:mt-12 ml-auto max-w-sm sm:max-w-xl md:max-w-none">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 md:flex md:justify-evenly">
-              {CONTACTS.map(({ label, href, text, ariaLabel, title }) => (
+              {CONTACTS.map(({ label, href, text, ariaLabel, title }) =>
                 <div key={label} className="font-neuvetica w-fit">
                   <h3 className="font-medium text-[1.125rem]/7 tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4">
                     {label}
@@ -150,7 +145,7 @@ function Index() {
                     </HighlightLink>
                   </address>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </section>
