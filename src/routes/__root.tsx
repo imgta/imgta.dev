@@ -42,7 +42,7 @@ const navLinks: NavigationLink[] = [
   {
     name: 'CV',
     title: 'Google Drive link',
-    href: 'https://drive.google.com/file/d/11FBcQsXcVZ-3cU7uAX1mGK19cd1FOIgC/view?usp=sharing',
+    href: 'https://drive.google.com/file/d/1dVjJGAvB7cXL-IGoXp7wVcVZgG2VTxpH/view?usp=sharing',
     target: '_blank',
     rel: 'noopener noreferrer',
     onClick: () => umami.track('cv_click'),
