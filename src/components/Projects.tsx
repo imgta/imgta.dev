@@ -64,7 +64,9 @@ const PROJECTS: Project[] = [
     summary: 'Shopify e-commerce store for a creative lifestyle supplements brand, core WordPress (WooCommerce) data migrations, SEO-optimizations with brand-aligned copywriting, and custom, responsive design.',
     techStack: ['Shopify', 'WordPress', 'Python', 'HTML', 'CSS', 'SEO', 'Copywriting'],
     startDate: '2025-07',
-    links: { live: { href: 'https://nootrient.co' } },
+    links: {
+      live: { href: 'https://nootrient.co' },
+    },
     covers: [
       { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
       { src: '/img/noot-ad-page.webp', alt: 'Nootrient ad landing page', width: 768, height: 3609 },
@@ -73,11 +75,13 @@ const PROJECTS: Project[] = [
   {
     name: 'Word Wisp',
     cli: 'docker-compose up -d',
-    summary: 'An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
+    summary: '(Demo unavailable--project is being migrated off Next.js due to security concerns). An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
     techStack: ['React', 'Next.js', 'Drizzle', 'Neon', 'Chroma', 'Docker', 'AWS EC2'],
     startDate: '2025-05',
     endDate: '2025-05',
-    links: { demo: { href: 'https://wisp-eta.vercel.app' } },
+    links: {
+      // demo: { href: 'https://wisp-eta.vercel.app' },
+    },
     covers: [
       { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
       { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 768, height: 1362 },
@@ -216,7 +220,7 @@ function ProjectCard({ project }: { project: Project; }) {
           }
           <div className="space-y-2 sm:space-y-0">
             <div className="flex justify-between sm:justify-start items-center gap-x-1">
-              {(!project.archived && actions.length) &&
+              {(!project.archived && actions.length > 0) &&
                 <>
                   <div className="flex gap-4 group">
                     {actions.map(({ href, label, title, Icon }) =>
@@ -225,11 +229,9 @@ function ProjectCard({ project }: { project: Project; }) {
                         href={href}
                         title={`${project.name} ${title}`}
                         aria-label={`Link to ${project.name}'s ${title}`}
-                        onClick={() =>
-                          umami.track('project_view', {
-                            name: project.name.toLowerCase().replace(/[\s]+/g, '_')
-                          })
-                        }
+                        onClick={() => umami.track('project_view', {
+                          name: project.name.toLowerCase().replace(/[\s]+/g, '_')
+                        })}
                       >
                         <p className="flex gap-1.5 text-foreground/90 hover:text-foreground">
                           <span>{Icon}</span>

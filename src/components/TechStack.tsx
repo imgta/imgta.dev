@@ -86,8 +86,7 @@ export function TechStack() {
         const dim = !!hoverMask && !active;
 
         return (
-          <li
-            className="space-y-2"
+          <li className="space-y-2"
             key={name}
           >
             <a
