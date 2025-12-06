@@ -152,17 +152,17 @@ export function TechFlex({ stack, iconClass = '' }: TechFlexProps) {
           >
             <IconSvg
               className={cn(
-                'size-7 group-hover:saturate-150 group-hover:brightness-125',
+                'size-7 group-hover:saturate-110 group-hover:brightness-110 transition-[filter]',
                 iconClass,
               )}
               name={name}
             />
-            <span
-              className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap
-              font-neuvetica font-medium text-sm text-foreground/80 tracking-wider lowercase
-              group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1
-              transition-[max-width,padding-left] duration-250 ease-in-out"
-            >
+            <span className={cn(
+              'max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap [word-spacing:-0.05rem]',
+              'font-neuvetica font-semibold text-sm text-foreground/80 tracking-[.0125em] lowercase',
+              'group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1 group-hover:-translate-y-1',
+              'transition-[max-width,padding-left,translate] duration-250 ease-in-out',
+            )}>
               {name}
             </span>
           </a>

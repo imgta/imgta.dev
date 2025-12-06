@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Header } from '@/components/Header';
-import { TechFlex } from '@/components/TechStack';
-import { HighlightLink } from '@/components/ui/highlight-link';
 import { IconSvg, ExternalLink, LiveLink } from '@/components/IconSvg';
+import { HighlightLink } from '@/components/HighlightLink';
+import { CmdHeading } from '@/components/CmdHeading';
+import { TechFlex } from '@/components/TechStack';
 import { useElementWidth } from '@/hooks/useElementWidth';
 import { formatDate } from '@/utils/misc';
 import { Image } from '@unpic/react';
@@ -107,7 +107,7 @@ const PROJECTS: Project[] = [
     links: {},
     covers: [
       { src: '/img/play-preview.avif', alt: 'playtrace preview', width: 1000, height: 763 },
-      { src: '/img/play-full.avif', alt: 'playtrace page preview', width: 1000, height: 3800 }
+      { src: '/img/play-full.webp', alt: 'playtrace page preview', width: 768, height: 2918 }
     ]
   },
 ];
@@ -190,15 +190,15 @@ function ProjectCard({ project }: { project: Project; }) {
   //------------------------------------------------------------
 
   return (
-    <Card className="overflow-hidden p-0 gap-0 bg-card/75 border-none shadow-md">
+    <Card className="overflow-hidden p-0 gap-0 bg-card border-none shadow-md">
       <section>
         {/* HEADING */}
         <div className="space-y-4 sm:space-y-0 sm:flex justify-between items-end px-8 pt-6">
           <div className="hidden sm:block">
-            <Header heading={project.name.toLowerCase()} cli={project.cli} />
+            <CmdHeading heading={project.name.toLowerCase()} cli={project.cli} />
           </div>
           <div className="sm:hidden">
-            <Header heading={project.name.toLowerCase()} align="center center" />
+            <CmdHeading heading={project.name.toLowerCase()} align="center center" />
           </div>
           <div className="max-w-fit sm:mx-0 mx-auto">
             <TechFlex stack={project.techStack} iconClass="size-5.5 sm:size-6" />
@@ -218,7 +218,7 @@ function ProjectCard({ project }: { project: Project; }) {
             <div className="flex justify-between sm:justify-start items-center gap-x-1">
               {(!project.archived && actions.length) &&
                 <>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 group">
                     {actions.map(({ href, label, title, Icon }) =>
                       <HighlightLink
                         key={label}
@@ -231,16 +231,16 @@ function ProjectCard({ project }: { project: Project; }) {
                           })
                         }
                       >
-                        <p className="flex gap-1.5 text-foreground">
+                        <p className="flex gap-1.5 text-foreground/90 hover:text-foreground">
                           <span>{Icon}</span>
-                          <span className="text-[.9rem] -tracking-[.075em]">
+                          <span className="font-bold text-[.9rem] -tracking-[.125em]">
                             {label}
                           </span>
                         </p>
                       </HighlightLink>
                     )}
                   </div>
-                  <span className="hidden sm:block -mt-1 px-2 text-lg text-muted-foreground/80 font-light tracking-tighter">
+                  <span className="hidden sm:block -mt-1.5 px-2 text-lg text-muted-foreground/80 font-light tracking-tighter">
                     \\
                   </span>
                 </>
@@ -249,9 +249,11 @@ function ProjectCard({ project }: { project: Project; }) {
                 {period.length ? period.join(`–`) : period[0]}
               </time>
             </div>
-            <div className="font-neuvetica leading-6 sm:leading-6.5 text-foreground/90 dark:text-foreground/60 tracking-[.0375em] text-pretty">
+
+            <div className="font-neuvetica leading-6 text-foreground/90 dark:text-foreground/65 tracking-[.0375em] [word-spacing:-.025rem] text-pretty">
               {project.summary}
             </div>
+
           </div>
         </div>
       </section>

@@ -1,10 +1,10 @@
 import { createRootRoute, HeadContent, Link, Outlet, type LinkProps } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { useEffect, useState } from 'react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { IconSvg } from '@/components/IconSvg';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
+import { IconSvg } from '@/components/IconSvg';
+import { useEffect, useState } from 'react';
 import { SOCIALS } from '@/utils/meta';
 import { cn } from '@/lib/utils';
 import '@/styles/main.css';
@@ -40,8 +40,8 @@ const navLinks: NavigationLink[] = [
     activeOptions: { exact: true, includeHash: true }
   },
   {
-    name: 'CV',
-    title: 'Google Drive link',
+    name: 'Resume',
+    title: 'Google Drive CV link',
     href: 'https://drive.google.com/file/d/1dVjJGAvB7cXL-IGoXp7wVcVZgG2VTxpH/view?usp=sharing',
     target: '_blank',
     rel: 'noopener noreferrer',
@@ -74,10 +74,10 @@ export const Route = createRootRoute({
       <>
         <HeadContent />
         <div className="min-h-screen flex flex-col">
-          <header
-            className="sticky inset-0 top-0 backdrop-blur-[3px] z-20
-            bg-content-100/70 dark:bg-sidebar/80 border-b border-muted-foreground/10"
-          >
+          <header className={cn(
+            'sticky inset-0 top-0 backdrop-blur-[3px] z-20',
+            'bg-content-100/70 dark:bg-sidebar/90 border-b border-muted-foreground/10',
+          )}>
             <nav className="max-w-5xl mx-auto p-8">
               <div className="flex items-center gap-8">
 
@@ -150,7 +150,7 @@ export const Route = createRootRoute({
                   {SOCIALS.map(social =>
                     <li
                       key={social.name}
-                      className="text-foreground transition-[scale] hover:scale-125 duration-75"
+                      className="text-foreground hover:scale-115 transition-[scale] duration-75 ease-in-out"
                     >
                       <a
                         href={social.href}

@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createMetaTags, SOCIALS, CONTACTS } from '@/utils/meta';
-import { HighlightLink } from '@/components/ui/highlight-link';
+import { HighlightLink } from '@/components/HighlightLink';
+import { CmdHeading } from '@/components/CmdHeading';
 import { TechStack } from '@/components/TechStack';
 import { Projects } from '@/components/Projects';
 import { MapPin } from '@/components/IconSvg';
-import { Header } from '@/components/Header';
 import { Image } from '@unpic/react';
 
 export const Route = createFileRoute('/')({
@@ -60,7 +60,7 @@ function Index() {
                   {SOCIALS.map(({ name, href }) =>
                     <li
                       key={name}
-                      className="w-fit border-l border-border pl-2 hover:border-gt-300/70"
+                      className="w-fit border-l border-border hover:border-gt-300/70 pl-2 py-1 group"
                     >
                       <HighlightLink
                         href={href}
@@ -68,7 +68,7 @@ function Index() {
                         aria-label={name}
                         onClick={() => umami.track('social_click', { platform: name.toLowerCase() })}
                       >
-                        <span className="pl-3.5 dark:text-foreground">
+                        <span className="pl-3.5 h-full">
                           {name}
                         </span>
                       </HighlightLink>
@@ -97,18 +97,18 @@ function Index() {
 
         {/* TECHSTACK */}
         <section className="max-w-xl mx-auto my-24 space-y-8">
-          <Header heading="tech stack" cli="pnpm add" align="center" />
+          <CmdHeading heading="tech stack" cli="pnpm add" align="center" />
           <TechStack />
         </section>
 
         {/* PROJECTS */}
         <section className="my-36">
           <div className="max-w-xl mx-auto">
-            <Header heading="projects" cli="git init">
+            <CmdHeading heading="projects" cli="git init">
               <blockquote className="mx-auto font-neuvetica text-foreground/90 dark:text-muted-foreground text-base tracking-wider max-w-prose">
                 through sheer curiosity, boyish enthusiasm, and voluntary challenge, projects are invitations for <em>thoughtful</em> exploration, <strong>bold</strong> experimentation, and <u>meaningful</u> growth.
               </blockquote>
-            </Header>
+            </CmdHeading>
           </div>
 
           <Projects />
@@ -117,11 +117,11 @@ function Index() {
         {/* CONTACT */}
         <section className="isolate my-24 max-w-md px-4 sm:max-w-xl mx-auto">
           <div>
-            <Header heading="contact me" cli="ping imgta.dev" align="center">
+            <CmdHeading heading="contact me" cli="ping imgta.dev" align="center">
               <p className="font-neuvetica text-lg tracking-wider sm:tracking-[0.075em] text-left sm:text-center">
                 Let&#700;s collaborate, talk shop, and geek out.
               </p>
-            </Header>
+            </CmdHeading>
           </div>
           <div className="mt-8 sm:mt-12 ml-auto max-w-sm sm:max-w-xl md:max-w-none">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 md:flex md:justify-evenly">
@@ -130,14 +130,14 @@ function Index() {
                   <h3 className="font-medium text-[1.125rem]/7 tracking-[0.075em] text-foreground/90 dark:text-gt-600 border-l border-gt-600 dark:border-gt-700 pl-4">
                     {label}
                   </h3>
-                  <address className="tracking-wide not-italic border-l border-border pt-1 pl-2 hover:border-gt-300/70">
+                  <address className="tracking-wide not-italic border-l border-border py-1 pl-2 hover:border-gt-300/70 group">
                     <HighlightLink
                       href={href}
                       title={title}
                       aria-label={ariaLabel}
                       onClick={() => umami.track('contact_click', { type: title.toLowerCase() })}
                     >
-                      <span className="pl-4 sm:ml-0">
+                      <span className="pl-4 sm:ml-0 -tracking-[.0125em] [word-spacing:-.1rem]">
                         {text}
                       </span>
                     </HighlightLink>

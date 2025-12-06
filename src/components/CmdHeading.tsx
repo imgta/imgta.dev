@@ -3,19 +3,19 @@ import { cn } from '@/lib/utils';
 type AlignKeyword = 'left' | 'center' | 'right';
 type AlignType = AlignKeyword | `${AlignKeyword} ${AlignKeyword}`;
 
-interface HeaderProps {
+interface CmdHeadingProps {
   heading: string;
   cli?: string;
   align?: AlignType;
   children?: React.ReactNode,
 }
 
-export function Header({
+export function CmdHeading({
   heading,
   cli,
   align = 'left left',
   children
-}: HeaderProps) {
+}: CmdHeadingProps) {
   const hashId = heading.replace(' ', '-').toLowerCase();
 
   const justifyMap = {
@@ -44,7 +44,8 @@ export function Header({
           {cli &&
             <samp
               className={cn(
-                'flex items-center gap-1 -mb-1 select-none text-gt-700/50 dark:text-gt-50/30 tracking-[-0.075em]', cliJustify,
+                'flex items-center gap-1 -mb-1 select-none text-gt-700/50 dark:text-gt-50/30 tracking-[-0.075em]',
+                cliJustify,
                 cliMargin,
               )}
             >
@@ -52,7 +53,7 @@ export function Header({
               <p className="font-dankmono text-sm">{cli}</p>
             </samp>
           }
-          <h2 className="font-neuvetica text-3xl text-foreground/90 leading-none">
+          <h2 className="font-neuvetica text-3xl text-foreground/90 leading-none tracking-[.0125em] [word-spacing:-0.075rem]">
             {heading}
           </h2>
         </div>
