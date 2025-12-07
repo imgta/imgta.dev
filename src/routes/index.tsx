@@ -40,11 +40,7 @@ function Index() {
             </h1>
 
             <div className="font-neuvetica flex sm:grid items-start justify-between mt-[1.8rem] sm:mt-0">
-              <address
-                className="flex items-end gap-1 sm:gap-1.5
-                          mt-1 sm:mt-[3.3rem] mb-1
-                          text-content-800/95 dark:text-foreground"
-              >
+              <address className="flex items-end gap-1 sm:gap-1.5 my-1 sm:mt-[3.3rem] text-content-800/95 dark:text-foreground">
                 <MapPin className="size-4 scale-y-110 origin-bottom stroke-gt-600 dark:stroke-gt-700 order-last sm:order-first" />
                 <span className="leading-4 font-medium text-[.9rem] [word-spacing:.025rem]">
                   based in

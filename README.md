@@ -1,2 +1,6 @@
 # imgta.dev
-My devfolio website built using React, Vite, TanStack Router, Tailwind CSS, Umami (self-hosted) analytics tracking, and Vercel deployment.
+My devfolio website deployed to Vercel, built using:
+- React + [Vite](https://vite.dev)
+- [TanStack Router](https://tanstack.com/router/latest)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Umami](https://umami.is) Analytics (serverless, self-hosted)

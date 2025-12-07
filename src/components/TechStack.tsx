@@ -70,8 +70,7 @@ export function TechStack() {
   }
 
   return (
-    <ul
-      role="list" aria-labelledby="skills"
+    <ul role="list" aria-labelledby="skills"
       className="grid grid-cols-3 sm:grid-cols-5 gap-y-6 sm:gap-y-8 sm:gap-x-4 xl:gap-x-8"
       onMouseLeave={() => setHoverMask(0)}
       onBlur={handleBlur}

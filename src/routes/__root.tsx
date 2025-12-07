@@ -97,16 +97,18 @@ export const Route = createRootRoute({
                       &gt;
                     </span>
                     <p className="font-neuvetica tracking-[0.07em]">
-                      <span className="marker font-light text-content-500 dark:text-content-400
-                        selection:text-content-500 dark:selection:text-content-400
-                        group-hover:text-content-700 dark:group-hover:text-content-250"
-                      >
+                      <span className={cn(
+                        'marker font-light text-content-500 dark:text-content-400',
+                        'selection:text-content-500 dark:selection:text-content-400',
+                        'group-hover:text-content-700 dark:group-hover:text-content-250',
+                      )}>
                         im
                       </span>
-                      <span className="marker font-normal text-content-700 dark:text-gt-500
-                        selection:text-content-700 dark:selection:text-gt-500
-                        group-hover:text-gt-700 dark:group-hover:text-gt-600"
-                      >
+                      <span className={cn(
+                        'marker font-normal text-content-700 dark:text-gt-500',
+                        'selection:text-content-700 dark:selection:text-gt-500',
+                        'group-hover:text-gt-700 dark:group-hover:text-gt-600',
+                      )}>
                         gta
                       </span>
                     </p>
