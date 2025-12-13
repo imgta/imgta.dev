@@ -13,7 +13,7 @@ export const DEFAULT_META = {
   twitterHandle: '@gta_codes',
   siteName: 'imgta.dev',
   title: 'Gordon Ta', // base title prefix
-  defaultImage: '/og-image.png',
+  defaultImage: '/og-image.webp',
   locale: 'en_US',
 };
 

@@ -83,6 +83,7 @@ export const Route = createRootRoute({
 
                 <abbr className="hidden sm:flex sm:flex-1">
                   <Link
+                    title="Home"
                     className="flex items-center text-3xl gap-2 hover:cursor-pointer group"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     to="/"
