@@ -75,7 +75,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Word Wisp',
     cli: 'docker-compose up -d',
-    summary: '(Demo unavailable--project is being migrated off Next.js due to security concerns). An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
+    summary: '(Demo unavailable--project is currently being migrated and updated). An AI co-authoring tool for writing in classic literary styles via semantic retrieval over Project Gutenberg text, enabling contextually accurate rewrites. Built on Next.js (App Router), Neon serverless Postgres, Chroma vector database, and AWS EC2.',
     techStack: ['React', 'Next.js', 'Drizzle', 'Neon', 'Chroma', 'Docker', 'AWS EC2'],
     startDate: '2025-05',
     endDate: '2025-05',

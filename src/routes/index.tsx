@@ -81,8 +81,8 @@ function Index() {
                 src="/img/gta.jpg"
                 alt="Portrait of Gordon with his cat Pixel"
                 title="Gordon with his cat Pixel"
-                layout="fullWidth"
                 height={600}
+                width={600}
                 loading="eager"
                 fetchpriority="high"
                 className="saturate-[.85] animate-[morph_7s_ease-in-out_infinite] transition-[filter]"
