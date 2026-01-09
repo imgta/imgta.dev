@@ -70,7 +70,9 @@ export function TechStack() {
   }
 
   return (
-    <ul role="list" aria-labelledby="skills"
+    <ul
+      role="list"
+      aria-labelledby="skills"
       className="grid grid-cols-3 sm:grid-cols-5 gap-y-6 sm:gap-y-8 sm:gap-x-4 xl:gap-x-8"
       onMouseLeave={() => setHoverMask(0)}
       onBlur={handleBlur}
@@ -85,23 +87,25 @@ export function TechStack() {
         const dim = !!hoverMask && !active;
 
         return (
-          <li className="space-y-2"
+          <li
             key={name}
+            className="space-y-2"
           >
             <a
-              target="_blank" rel="noopener noreferrer"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label={`Visit the official ${name} website`}
               title={name}
               href={href}
+              onMouseEnter={() => setHoverMask(mask)}
+              onFocus={() => setHoverMask(mask)}
               className={cn(
                 'flex justify-center my-1.5 transition-[opacity,filter] duration-150 ease-in-out',
                 {
-                  'scale-110': active,
                   'opacity-25 grayscale-50': dim,
+                  'scale-110': active,
                 }
               )}
-              onMouseEnter={() => setHoverMask(mask)}
-              onFocus={() => setHoverMask(mask)}
             >
               <IconSvg
                 className="size-9"
@@ -126,7 +130,10 @@ interface TechFlexProps {
   iconClass?: string;
 }
 
-export function TechFlex({ stack, iconClass = '' }: TechFlexProps) {
+export function TechFlex({
+  stack,
+  iconClass = '',
+}: TechFlexProps) {
   return (
     <section className="flex flex-row items-center mx-auto gap-1 sm:gap-2">
       {stack.map(name => {
@@ -145,22 +152,23 @@ export function TechFlex({ stack, iconClass = '' }: TechFlexProps) {
             key={key}
             href={href}
             title={name}
-            target='_blank' rel="noopener noreferrer"
+            target='_blank'
+            rel="noopener noreferrer"
             className="group flex hover:cursor-pointer"
           >
             <IconSvg
+              name={name}
               className={cn(
                 'size-7 group-hover:saturate-110 group-hover:brightness-110 transition-[filter]',
                 iconClass,
               )}
-              name={name}
             />
-            <span className={cn(
-              'max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap [word-spacing:-0.05rem]',
-              'font-neuvetica font-semibold text-sm text-foreground/80 tracking-[.0125em] lowercase',
-              'group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1 group-hover:-translate-y-1',
-              'transition-[max-width,padding-left,translate] duration-250 ease-in-out',
-            )}>
+            <span
+              className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap [word-spacing:-0.05rem]
+              font-neuvetica font-semibold text-sm text-foreground/80 tracking-[.0125em] lowercase
+              group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1 group-hover:-translate-y-1
+              transition-[max-width,padding-left,translate] duration-250 ease-in-out"
+            >
               {name}
             </span>
           </a>

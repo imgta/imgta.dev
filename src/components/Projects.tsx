@@ -68,7 +68,7 @@ const PROJECTS: Project[] = [
       live: { href: 'https://nootrient.co' },
     },
     covers: [
-      { src: '/img/noot-preview.jpg', alt: 'Nootrient preview', width: 1176, height: 845 },
+      { src: '/img/noot-preview.avif', alt: 'Nootrient preview', width: 1176, height: 845 },
       { src: '/img/noot-ad-page.webp', alt: 'Nootrient ad landing page', width: 768, height: 3609 },
     ],
   },
@@ -265,22 +265,28 @@ function ProjectCard({ project }: { project: Project; }) {
         <figure
           ref={figureRef}
           style={{ height: lockHeight }}
-          className="relative overflow-hidden aspect-[media]"
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
           onClick={handleClick}
+          className="relative overflow-hidden aspect-[media]"
         >
-          <Image className={cn(
-            project.archived && 'grayscale-[.95] brightness-90',
-            hovering && 'opacity-0',
-            manual && 'hidden',
-          )}
+          <Image
             src={preview.src}
             alt={preview.alt}
             title={preview.alt}
             height={preview.height}
             width={768}
             layout="constrained"
+            decoding="async"
+            loading="lazy"
+            className={cn(
+              'transition-[filter,opacity,display]',
+              {
+                'grayscale-[.95] brightness-90': project.archived,
+                'opacity-0': hovering,
+                'hidden': manual,
+              },
+            )}
           />
           {manual ? (
             <div
@@ -288,12 +294,13 @@ function ProjectCard({ project }: { project: Project; }) {
               className="absolute inset-0 cursor-n-resize overflow-y-auto [-webkit-overflow-scrolling:touch]" /* iOS momentum */
             >
               <Image
-                className="pointer-events-none"
                 src={full.src}
                 alt={full.alt}
                 height={full.height}
                 width={768}
+                decoding="async"
                 layout="constrained"
+                className="pointer-events-none"
               />
             </div>
           ) : (

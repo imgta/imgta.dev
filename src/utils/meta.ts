@@ -1,39 +1,38 @@
 export interface MetaConfig {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   url?: string;
   image?: string;
   type?: 'website' | 'article' | 'profile';
   publishDate?: string;
   modifiedDate?: string;
+  cssUrl?: string;
 }
 
 export const DEFAULT_META = {
   author: 'imgta',
   twitterHandle: '@gta_codes',
   siteName: 'imgta.dev',
-  title: 'Gordon Ta', // base title prefix
+  titlePrefix: 'Gordon Ta',
   defaultImage: '/og-image.webp',
   locale: 'en_US',
 };
 
-export function createMetaTags(config: MetaConfig) {
-  const {
-    title: pageTitle,
-    description,
-    url = import.meta.env.VITE_SITE_URL,
-    image = DEFAULT_META.defaultImage,
-    type = 'website',
-    publishDate,
-    modifiedDate,
-  } = config;
-
-  // title prefixing
-  const title = `${DEFAULT_META.title} | ${pageTitle}`;
+export function createMetaTags({
+  title = DEFAULT_META.titlePrefix + ' | Full-Stack Software Engineer',
+  description = 'Full-stack Engineer, Co-founder @ Video Blog AI, skilled in React, Nuxt, FastAPI. From biotech labs to browser tabs, I build expressive, AI-powered software to drive impact with creativity.',
+  url = import.meta.env.VITE_SITE_URL,
+  image = DEFAULT_META.defaultImage,
+  type = 'website',
+  cssUrl,
+  publishDate,
+  modifiedDate,
+}: MetaConfig) {
 
   const tags = [
     { title },
     { name: 'description', content: description },
+    // { name: 'darkreader-lock' }, // disable darkreader's darkmode
 
     // open graph
     { property: 'og:title', content: title },
@@ -78,8 +77,18 @@ export function createMetaTags(config: MetaConfig) {
 
   const links = [
     { rel: 'canonical', href: url },
-    { rel: 'icon', href: '/favicon.ico' },
+    // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    // { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    // { rel: 'stylesheet', href: '/fonts/index.css' },
+
+    // any other .css stylesheets passed through
+    ...(cssUrl ? [{ rel: 'stylesheet', href: cssUrl }] : [])
   ];
+
+  // const scripts = [
+  //   // umami analytics tracker
+  //   { defer: true, src: 'https://trace.imgta.dev/script.js', 'data-website-id': 'd62510aa-366a-444c-b7d3-e26f77af6d4d' }
+  // ];
 
   return { meta: tags, links };
 }

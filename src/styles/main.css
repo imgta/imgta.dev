@@ -167,6 +167,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --color-selection: var(--select-bg);
+  --color-text-select: var(--select-text);
 
   --color-gt-50 : var(--gt-50);
   --color-gt-100 : var(--gt-100);
@@ -232,6 +233,32 @@ body {
   scrollbar-width: none;     /* firefox */
   /* hide scrollbar for chrome, safari and opera */
   &::-webkit-scrollbar { display: none; }
+}
+
+@property --bar-1 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: hsl(233, 30%, 40%);
+}
+
+@property --bar-2 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: hsl(233, 20%, 45%);
+}
+
+@property --bar-3 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #3F4896;
+}
+
+@keyframes bar-gradient {
+  to {
+    --bar-1: #312A64;
+    --bar-2: #483F96;
+    --bar-3: #847FAB;
+  }
 }
 
 @keyframes morph {

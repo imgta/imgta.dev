@@ -16,10 +16,10 @@ export function ThemeToggle() {
     <Button
       size="icon"
       variant="ghost"
-      title={inLightMode ? 'Toggle dark mode' : 'Toggle light mode'}
       aria-label="Toggle theme"
-      className="text-muted-foreground hover:text-gt-500 dark:hover:text-gt-500 size-4.5 py-3"
+      title={inLightMode ? 'Toggle dark mode' : 'Toggle light mode'}
       onClick={toggleTheme}
+      className="text-muted-foreground hover:text-gt-500 dark:hover:text-gt-500 size-4.5 py-3"
     >
       {inLightMode && // show moon icon
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

@@ -20,11 +20,12 @@ export function HighlightLink({
 
   const content = (
     <span className="relative">
-      <mark className={cn(
-        'bg-transparent group-hover:before:bg-amber-100/75 dark:group-hover:before:bg-amber-100/60',
-        'text-gt-700 group-hover:text-content-900 dark:text-content-400 dark:group-hover:text-content-100',
-        'before:absolute before:-inset-x-2 before:-inset-y-1 before:-z-1 group-hover:before:z-0',
-      )}>
+      <mark
+        className="bg-transparent group-hover:before:bg-amber-100/75 dark:group-hover:before:bg-amber-100/60
+        text-gt-700 group-hover:text-content-900 dark:text-content-400 dark:group-hover:text-content-100
+        before:absolute before:-inset-x-2 before:-inset-y-1 before:-z-1 group-hover:before:z-0
+        transition-[background-color,color]"
+      >
         <span className="group-hover:opacity-99">
           {children}
         </span>

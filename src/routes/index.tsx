@@ -1,5 +1,5 @@
+import { SOCIALS, CONTACTS } from '@/utils/meta';
 import { createFileRoute } from '@tanstack/react-router';
-import { createMetaTags, SOCIALS, CONTACTS } from '@/utils/meta';
 import { HighlightLink } from '@/components/HighlightLink';
 import { CmdHeading } from '@/components/CmdHeading';
 import { TechStack } from '@/components/TechStack';
@@ -7,29 +7,42 @@ import { Projects } from '@/components/Projects';
 import { MapPin } from '@/components/IconSvg';
 import { Image } from '@unpic/react';
 
-export const Route = createFileRoute('/')({
-  head: () => createMetaTags({
-    title: 'Full-Stack Software Engineer',
-    description: 'Full-stack Engineer, Co-founder @ Video Blog AI, skilled in React, Nuxt, FastAPI. From biotech labs to browser tabs, I build expressive, AI-powered software to drive impact with creativity.',
-  }),
-  component: Index,
-});
-
-//------------------------------------------------------------
+export const Route = createFileRoute('/')({ component: Index });
 
 function Index() {
   return (
     <div className="flex justify-center max-w-4xl mx-auto">
       <div>
-        <svg aria-hidden="true" className="absolute inset-x-0 top-20 left-0 min-h-screen w-full -z-10 stroke-content-200/70 dark:stroke-content/50 mask-[radial-gradient(32rem_32rem_at_center,#fff,transparent)]">
-          <defs><pattern id="gt-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse"><path d="M.5 200V.5H200" fill="none" /></pattern></defs>
-          <svg x="50%" y="-1" className="overflow-visible fill-card/35 dark:fill-card/70"><path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" /></svg>
+
+        <svg
+          aria-hidden="true"
+          className="absolute inset-x-0 top-15 left-0 min-h-screen w-full -z-10
+          mask-[radial-gradient(30rem_36rem_at_center,transparent_50%,#fff)]"
+        >
+          <defs>
+            <pattern id="gt-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+              <path
+                d="M.5 200V.5H200"
+                fill="none"
+                strokeDasharray={4.5}
+                strokeDashoffset={1.25}
+                className="stroke-foreground/24 stroke-[.5]"
+              />
+            </pattern>
+          </defs>
+          <svg
+            x="50%"
+            y="-1"
+            className="overflow-visible fill-text-select/3"
+          >
+            <path d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z" />
+          </svg>
           <rect width="100%" height="100%" fill="url(#gt-grid)" />
         </svg>
 
         {/* HERO */}
         <section className="mt-16 md:mt-40 grid grid-cols-1 gap-4 md:flex justify-center items-start">
-          <div>
+          <div className="antialiased">
             <p className="marker font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">Hi there.</p>
             <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-0.05rem] text-pretty">
               I&#700;m
@@ -73,19 +86,20 @@ function Index() {
                 </ul>
               </nav>
             </div>
-
           </div>
+
           <figure className="order-first md:order-last flex justify-center md:justify-start">
             <div className="size-64 lg:size-68 pointer-events-none select-none">
               <Image
-                src="/img/gta.jpg"
+                src="/img/gta.avif"
                 alt="Portrait of Gordon with his cat Pixel"
                 title="Gordon with his cat Pixel"
                 height={600}
                 width={600}
                 loading="eager"
+                decoding="async"
                 fetchpriority="high"
-                className="saturate-[.85] animate-[morph_7s_ease-in-out_infinite] transition-[filter]"
+                className="saturate-[.85] animate-[morph_7s_ease-in-out_infinite] transition-[filter,border-radius]"
               />
             </div>
           </figure>

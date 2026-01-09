@@ -1,11 +1,20 @@
-import { createRootRoute, HeadContent, Link, Outlet, type LinkProps } from '@tanstack/react-router';
+/// <reference types="vite/client" />
+import {
+  createRootRoute,
+  HeadContent,
+  ClientOnly,
+  Outlet,
+  Link,
+  type LinkProps,
+} from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { createMetaTags, SOCIALS } from '@/utils/meta';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { IconSvg } from '@/components/IconSvg';
 import { useEffect, useState } from 'react';
-import { SOCIALS } from '@/utils/meta';
 import { cn } from '@/lib/utils';
 import '@/styles/main.css';
 
@@ -17,6 +26,7 @@ interface NavigationLink extends
   name: string;
 }
 
+const COPYRIGHT_YEAR = new Date().getFullYear();
 const navLinks: NavigationLink[] = [
   {
     name: 'Skills',
@@ -52,32 +62,44 @@ const navLinks: NavigationLink[] = [
 //------------------------------------------------------------
 
 export const Route = createRootRoute({
-  component: () => {
-    const [scrollY, setScrollY] = useState<number>(0);
+  head: () => createMetaTags({}),
+  component: Root,
+});
 
-    useEffect(() => {
-      const pageY = () => window.pageYOffset
-        || (document.documentElement.scrollTop || document.body.scrollTop)
-        || 0;
-      const onScroll = () => setScrollY(pageY());
+function Root() {
+  const [scrollY, setScrollY] = useState<number>(0);
 
-      const controller = new AbortController();
-      const { signal } = controller;
+  useEffect(() => {
+    const pageY = () => window.pageYOffset
+      || (document.documentElement.scrollTop || document.body.scrollTop)
+      || 0;
+    const onScroll = () => setScrollY(pageY());
 
-      window.addEventListener('scroll', onScroll, { passive: true, signal });
-      onScroll(); // initial on-mount scrollY
+    const controller = new AbortController();
+    const { signal } = controller;
 
-      return () => controller.abort();
-    }, []);
+    window.addEventListener('scroll', onScroll, { signal, passive: true });
+    onScroll(); // initial on-mount scrollY
 
-    return (
-      <>
-        <HeadContent />
-        <div className="min-h-screen flex flex-col">
-          <header className={cn(
-            'sticky inset-0 top-0 backdrop-blur-[3px] z-20',
-            'bg-content-100/70 dark:bg-sidebar/90 border-b border-muted-foreground/10',
-          )}>
+    return () => controller.abort();
+  }, []);
+
+  return (
+    <>
+      <HeadContent />
+      <div className="min-h-screen flex flex-col">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          storageKey="imgta-theme"
+          enableSystem
+          enableColorScheme
+          disableTransitionOnChange
+        >
+          <header
+            className="sticky inset-0 top-0 backdrop-blur-[3px] z-20
+            bg-content-100/70 dark:bg-sidebar/90 border-b border-muted-foreground/10"
+          >
             <nav className="max-w-5xl mx-auto p-8">
               <div className="flex items-center gap-8">
 
@@ -97,19 +119,19 @@ export const Route = createRootRoute({
                     )}>
                       &gt;
                     </span>
-                    <p className="font-neuvetica tracking-[0.07em]">
-                      <span className={cn(
-                        'marker font-light text-content-500 dark:text-content-400',
-                        'selection:text-content-500 dark:selection:text-content-400',
-                        'group-hover:text-content-700 dark:group-hover:text-content-250',
-                      )}>
+                    <p className="font-neuvetica tracking-[0.07em] antialiased">
+                      <span
+                        className="marker font-light text-content-500 dark:text-content-400
+                        selection:text-content-500 dark:selection:text-content-400
+                        group-hover:text-content-700 dark:group-hover:text-content-250"
+                      >
                         im
                       </span>
-                      <span className={cn(
-                        'marker font-normal text-content-700 dark:text-gt-500',
-                        'selection:text-content-700 dark:selection:text-gt-500',
-                        'group-hover:text-gt-700 dark:group-hover:text-gt-600',
-                      )}>
+                      <span
+                        className="marker font-normal text-content-700 dark:text-gt-500
+                        selection:text-content-700 dark:selection:text-gt-500
+                        group-hover:text-gt-700 dark:group-hover:text-gt-600"
+                      >
                         gta
                       </span>
                     </p>
@@ -121,12 +143,11 @@ export const Route = createRootRoute({
                     asChild
                     variant="link"
                     key={link.name}
-                    className={cn('font-dankmono lowercase text-[.92rem] tracking-tight px-0',
-                      'text-gt-900 dark:text-content-400',
-                      'hover:text-gt-700 dark:hover:text-gt-600',
-                      '[&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8',
-                      '[&.active]:font-semibold [&.active]:text-gt-700'
-                    )}
+                    className="font-dankmono lowercase tracking-tight px-0
+                    text-[.92rem] text-gt-900 dark:text-content-400
+                    hover:text-gt-700 dark:hover:text-gt-600
+                    [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8
+                    [&.active]:font-semibold [&.active]:text-gt-700"
                   >
                     {link.to
                       ? <Link {...link}>{link.name}</Link>
@@ -134,9 +155,12 @@ export const Route = createRootRoute({
                   </Button>
                 )}
 
-                <div className="ml-auto">
-                  <ThemeToggle />
-                </div>
+                <ClientOnly>
+                  <div className="ml-auto">
+                    <ThemeToggle />
+                  </div>
+                </ClientOnly>
+
               </div>
             </nav>
           </header>
@@ -156,13 +180,18 @@ export const Route = createRootRoute({
                       className="text-foreground hover:scale-115 transition-[scale] duration-75 ease-in-out"
                     >
                       <a
+                        rel="noopener noreferrer"
+                        target='_blank'
                         href={social.href}
                         title={social.name}
                         aria-label={social.name}
-                        target='_blank' rel="noopener noreferrer"
                       >
                         <span className="sr-only">{social.name}</span>
-                        <IconSvg name={social.name} aria-hidden="true" className="size-7" />
+                        <IconSvg
+                          aria-hidden="true"
+                          name={social.name}
+                          className="size-7"
+                        />
                       </a>
                     </li>
                   )}
@@ -170,13 +199,13 @@ export const Route = createRootRoute({
               </div>
 
               <address className="not-italic mt-6 text-center text-sm/6 text-foreground/50">
-                &copy; {new Date().getFullYear()} Gordon Ta. Happily based in Boston, MA.
+                &copy; {COPYRIGHT_YEAR} Gordon Ta. Happily based in Boston, MA.
               </address>
             </div>
           </footer>
-        </div>
-        <Toaster />
-      </>
-    );
-  }
-});
+          <Toaster />
+        </ThemeProvider>
+      </div>
+    </>
+  );
+}
