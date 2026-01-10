@@ -41,10 +41,9 @@ export function HighlightLink({
       variant="link"
       className={cn('flex justify-start p-0 hover:no-underline h-fit', className)}
     >
-      {
-        to
-          ? <Link to={to}>{content}</Link>
-          : <a href={href} target={target} rel={rel}>{content}</a>
+      {to
+        ? <Link to={to}>{content}</Link>
+        : <a href={href} target={target} rel={rel}>{content}</a>
       }
     </Button>
   );

@@ -97,40 +97,51 @@ function Root() {
           disableTransitionOnChange
         >
           <header
-            className="sticky inset-0 top-0 backdrop-blur-[3px] z-20
-            bg-content-100/70 dark:bg-sidebar/90 border-b border-muted-foreground/10"
+            className={cn(
+              'sticky inset-0 top-0 z-20 transition-[box-shadow,background,backdrop-filter] duration-150 ease-out',
+              scrollY > 10 && 'backdrop-blur-[9.5px] shadow-md shadow-muted-foreground/25 dark:shadow-border/30 bg-slate-100/36 dark:bg-sidebar/60',
+            )}
           >
-            <nav className="max-w-5xl mx-auto p-8">
+            <nav
+              className={cn(
+                'max-w-6xl mx-auto py-8 px-8 transition-[padding-block] duration-250 ease-out',
+                scrollY > 10 && 'py-4',
+              )}
+            >
               <div className="flex items-center gap-8">
 
                 <abbr className="hidden sm:flex sm:flex-1">
                   <Link
                     title="Home"
-                    className="flex items-center text-3xl gap-2 hover:cursor-pointer group"
+                    className="flex items-center text-3xl hover:cursor-pointer antialiased group"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     to="/"
                   >
                     <span className={cn(
-                      'font-inter font-extralight text-xl leading-none scale-y-150',
-                      'text-content-700 group-hover:text-gt-600 group-hover:font-light',
-                      'dark:text-gt-500 dark:group-hover:text-gt-600',
-                      scrollY < 10 ? 'grayscale-75 opacity-30' : 'group-hover:-rotate-90',
+                      'font-inter font-light dark:font-extralight text-xl leading-none mr-2',
+                      'text-content-800/60 group-hover:text-gt-600',
+                      'dark:text-gt-500 dark:group-hover:text-gt-600 scale-y-150',
+                      scrollY < 10
+                        ? 'grayscale-75 opacity-30'
+                        : 'group-hover:-rotate-90 dark:group-hover:font-light',
                       'transition-[rotate,scale,filter,opacity,color,font-weight] duration-200 ease-in-out',
                     )}>
                       &gt;
                     </span>
-                    <p className="font-neuvetica tracking-[0.07em] antialiased">
+                    <p className="font-neuvetica tracking-[0.0725rem]">
                       <span
-                        className="marker font-light text-content-500 dark:text-content-400
+                        className="marker font-light text-content-800/85 dark:text-content-400
                         selection:text-content-500 dark:selection:text-content-400
-                        group-hover:text-content-700 dark:group-hover:text-content-250"
+                        group-hover:text-content-800 dark:group-hover:text-content-250
+                        transition-[color] duration-50"
                       >
                         im
                       </span>
                       <span
-                        className="marker font-normal text-content-700 dark:text-gt-500
+                        className="marker text-gt-700/90 dark:text-gt-500
                         selection:text-content-700 dark:selection:text-gt-500
-                        group-hover:text-gt-700 dark:group-hover:text-gt-600"
+                        group-hover:text-gt-700 dark:group-hover:text-gt-600
+                        transition-[color] duration-50"
                       >
                         gta
                       </span>

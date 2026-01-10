@@ -32,25 +32,39 @@ export function CmdHeading({
 
   const cliMargin =
     (cliKey === 'left') ? '-ml-0.5' :
-      (cliKey === 'right') ? '-mr-0.5' : '';
+      (cliKey === 'right') ? '-mr-0.5'
+        : '';
 
   return (
     <section
       id={hashId}
-      className="scroll-mt-26"
+      className="scroll-mt-20"
     >
       <div className={cn('flex', headerClass)}>
         <div>
           {cli &&
             <samp
+              aria-hidden
               className={cn(
-                'flex items-center gap-1 -mb-1 select-none text-gt-700/50 dark:text-gt-50/30 tracking-[-0.075em]',
+                'flex items-center gap-[.198rem] -mb-1 tracking-[-0.075em] select-none',
                 cliJustify,
                 cliMargin,
               )}
             >
-              <span className="font-inter text-content-800/25 dark:text-gt-500/55 text-xs scale-y-125 scale-x-75">&gt;</span>
-              <p className="font-dankmono text-sm">{cli}</p>
+              <span
+                className="font-inter text-xs dark:font-light
+                text-gt-900/40 dark:text-gt-50/15
+                scale-y-130 scale-x-65"
+              >
+                &gt;
+              </span>
+              <p
+                className="font-dankmono text-sm
+                text-gt-700/70 dark:text-gt-200/35
+                [word-spacing:-1.618px]"
+              >
+                {cli}
+              </p>
             </samp>
           }
           <h2 className="font-neuvetica text-3xl text-foreground/90 leading-none tracking-[.0125em] [word-spacing:-0.075rem]">
@@ -60,7 +74,9 @@ export function CmdHeading({
       </div>
 
       {children &&
-        <div className="mt-4 text-content-900/90 dark:text-content-400/90">{children}</div>
+        <div className="mt-4 text-content-900/90 dark:text-content-400/90">
+          {children}
+        </div>
       }
     </section>
   );

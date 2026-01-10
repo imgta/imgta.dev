@@ -17,8 +17,10 @@ function Index() {
         <svg
           aria-hidden="true"
           className="absolute inset-x-0 top-15 left-0 min-h-screen w-full -z-10
-          mask-[radial-gradient(30rem_36rem_at_center,transparent_50%,#fff)]"
+          mask-[radial-gradient(30rem_36rem_at_center,transparent_50%,#fff)
+          mask-t-from-55% mask-b-from-80%"
         >
+
           <defs>
             <pattern id="gt-grid" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
               <path

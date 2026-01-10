@@ -167,7 +167,8 @@ export function TechFlex({
               className="max-w-0 overflow-x-hidden h-full my-auto whitespace-nowrap [word-spacing:-0.05rem]
               font-neuvetica font-semibold text-sm text-foreground/80 tracking-[.0125em] lowercase
               group-hover:max-w-md group-hover:px-1.5 group-hover:-mr-1 group-hover:-translate-y-1
-              transition-[max-width,padding-left,translate] duration-250 ease-in-out"
+              group-hover:underline underline-offset-1
+              transition-[max-width,padding-left,translate] duration-200 ease-in-out"
             >
               {name}
             </span>
