@@ -58,13 +58,13 @@ export function CmdHeading({
               >
                 &gt;
               </span>
-              <p
+              <span
                 className="font-dankmono text-sm
                 text-gt-700/70 dark:text-gt-200/35
                 [word-spacing:-1.618px]"
               >
                 {cli}
-              </p>
+              </span>
             </samp>
           }
           <h2 className="font-neuvetica text-3xl text-foreground/90 leading-none tracking-[.0125em] [word-spacing:-0.075rem]">
