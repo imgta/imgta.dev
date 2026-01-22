@@ -1,30 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-
-/* @font-face { font-family: 'Dank Mono'; src: url('/fonts/dankmono/DankMono-Regular') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Dank Mono'; src: url('/fonts/dankmono/DankMono-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Dank Mono'; src: url('/fonts/dankmono/DankMono-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
-
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-100.woff2') format('woff2'); font-weight: 100; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-200.woff2') format('woff2'); font-weight: 200; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-300.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-400.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-500.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-700.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-900.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
-
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-100-Italic.woff2') format('woff2'); font-weight: 100; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-200-Italic.woff2') format('woff2'); font-weight: 200; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-300-Italic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-400-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-500-Italic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-700-Italic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Neuvetica'; src: url('/fonts/neuvetica/Neuvetica-900-Italic.woff2') format('woff2'); font-weight: 900; font-style: italic; font-display: swap; } */
 
 :root {
   color-scheme: light dark;
