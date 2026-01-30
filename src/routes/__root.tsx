@@ -87,7 +87,7 @@ function Root() {
   return (
     <>
       <HeadContent />
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-dvh flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -16,7 +16,7 @@ function Index() {
 
         <svg
           aria-hidden="true"
-          className="absolute inset-x-0 top-15 left-0 min-h-screen w-full -z-10
+          className="absolute inset-x-0 top-15 left-0 min-h-dvh w-full -z-10
           mask-[radial-gradient(30rem_36rem_at_center,transparent_50%,#fff)
           mask-t-from-55% mask-b-from-80%"
         >
@@ -45,10 +45,10 @@ function Index() {
         {/* HERO */}
         <section className="mt-16 md:mt-40 grid grid-cols-1 gap-4 md:flex justify-center items-start">
           <div className="antialiased">
-            <p className="marker font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-0.125rem]">Hi there.</p>
-            <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-0.05rem] text-pretty">
+            <p className="marker font-neuvetica font-bold text-7xl text-gt-600 dark:text-gt-700 [word-spacing:-.1rem]">Hi there.</p>
+            <h1 className="font-neuvetica text-[1.9rem]/8.75 text-content-700/90 dark:text-content-400/90 [word-spacing:-.05rem] text-pretty">
               I&#700;m
-              <span className="marker selection:text-content-800 dark:selection:text-gt-600 selection:bg-amber-100/75 dark:selection:bg-transparent ">
+              <span className="marker selection:text-content-800 dark:selection:text-gt-600 selection:bg-amber-100/75 dark:selection:bg-transparent">
                 {' Gordon, a full-stack engineer '}
               </span>{' '}
               who builds expressive apps
