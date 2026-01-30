@@ -79,12 +79,10 @@ const PROJECTS: Project[] = [
     techStack: ['React', 'Next.js', 'Drizzle', 'Neon', 'Chroma', 'Docker', 'AWS EC2'],
     startDate: '2025-05',
     endDate: '2025-05',
-    links: {
-      // demo: { href: 'https://wisp-eta.vercel.app' },
-    },
+    links: {},
     covers: [
-      { src: '/img/wisp-preview.png', alt: 'Word Wisp preview', width: 1278, height: 850 },
-      { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 768, height: 1362 },
+      { src: '/img/wisp-preview.webp', alt: 'Word Wisp preview', width: 960, height: 479 },
+      { src: '/img/wisp-full.webp', alt: 'Word Wisp page preview', width: 768, height: 1823 },
     ],
   },
   {
