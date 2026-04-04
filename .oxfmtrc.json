@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [],
+  "arrowParens": "avoid",
+  "sortPackageJson": true,
+  "sortTailwindcss": { "functions": ["clsx", "cn", "cva", "tw"] },
+  "trailingComma": "all"
+}

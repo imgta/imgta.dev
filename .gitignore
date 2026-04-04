@@ -23,7 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
-.env
-.test*
-.tanstack
 .dev
+.env
+.test
+
+.claude
+.agents
+.tanstack
+AGENTS.md
+CLAUDE.md

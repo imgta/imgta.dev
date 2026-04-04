@@ -170,7 +170,9 @@ const Theme = ({
 
       try { // save to storage
         localStorage.setItem(storageKey, newTheme);
-      } catch { } // localStorage might not be available
+      } catch {
+        // localStorage might not be available
+      }
     },
     [theme, storageKey]
   );
@@ -286,7 +288,9 @@ const getTheme = (key: string, fallback?: string) => {
   let theme: string | undefined;
   try {
     theme = localStorage.getItem(key) || undefined;
-  } catch { } // localStorage might not be available
+  } catch {
+    // localStorage might not be available
+  }
 
   return theme || fallback;
 };
@@ -383,6 +387,8 @@ export const script = (
       const isSystem = enableSystem && themeName === 'system';
       const theme = isSystem ? resolveSystemTheme() : themeName;
       updateDOM(theme);
-    } catch { } // localStorage might not be available
+    } catch {
+      // localStorage might not be available
+    }
   }
 };

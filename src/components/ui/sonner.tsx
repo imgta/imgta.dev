@@ -1,4 +1,4 @@
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/theme/ThemeProvider';
 import { type ToasterProps, Toaster as Sonner } from 'sonner';
 
 const Toaster = ({ ...props }: ToasterProps) => {

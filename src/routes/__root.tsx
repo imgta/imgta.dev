@@ -8,8 +8,7 @@ import {
   type LinkProps,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { ThemeProvider, ThemeToggle } from '@/components/theme';
 import { createMetaTags, SOCIALS } from '@/utils/meta';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
@@ -98,13 +97,13 @@ function Root() {
         >
           <header
             className={cn(
-              'sticky inset-0 top-0 z-20 transition-[box-shadow,background,backdrop-filter] duration-150 ease-out',
+              'sticky inset-0 top-0 z-20 transition-[box-shadow,background,backdrop-filter] duration-150 ease-in-out',
               scrollY > 10 && 'backdrop-blur-[9.5px] shadow-md shadow-muted-foreground/25 dark:shadow-border/30 bg-slate-100/36 dark:bg-sidebar/60',
             )}
           >
             <nav
               className={cn(
-                'max-w-6xl mx-auto py-8 px-8 transition-[padding-block] duration-250 ease-out',
+                'max-w-6xl mx-auto p-8 transition-[padding-block] duration-250 ease-out',
                 scrollY > 10 && 'py-4',
               )}
             >
