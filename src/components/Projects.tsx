@@ -233,7 +233,7 @@ function ProjectCard({ project }: { project: Project; }) {
                       >
                         <p className="flex gap-1.5 text-foreground/90 hover:text-foreground">
                           <span>{Icon}</span>
-                          <span className="font-bold text-[.9rem] -tracking-[.125em]">
+                          <span className="font-bold text-[.9rem] tracking-[-.125em]">
                             {label}
                           </span>
                         </p>

@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "arrowParens": "avoid",
+  "semi": true,
+  "printWidth": 100,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "sortPackageJson": true,
+  "sortTailwindcss": {
+    "stylesheet": "./src/styles/main.css",
+    "functions": ["clsx", "cn", "cva", "tw"],
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    ".output/",
+    ".tanstack/",
+    ".wrangler/",
+    ".github/",
+    "*.min.js",
+    "*.min.css",
+    "*.min.ts",
+    "**/worker-configuration.d.ts",
+    "src/routeTree.gen.ts",
+  ],
+}

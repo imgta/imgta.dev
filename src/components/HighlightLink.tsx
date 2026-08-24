@@ -36,7 +36,6 @@ export function HighlightLink({
   return (
     <Button
       {...buttonProps}
-      asChild
       size={size}
       variant="link"
       className={cn('flex justify-start p-0 hover:no-underline h-fit', className)}

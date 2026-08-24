@@ -1,0 +1,67 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "es2020": true,
+    "node": true
+  },
+  "plugins": [
+    "eslint",
+    "import",
+    "oxc",
+    "node",
+    "promise",
+    "react",
+    "react-perf",
+    "typescript",
+    "unicorn",
+  ],
+  "options": {
+    "typeAware": true
+  },
+  "categories": {
+    "correctness": "warn"
+  },
+  "ignorePatterns": [
+    "dist/**",
+    ".output/**",
+    ".tanstack/**",
+    ".wrangler/**",
+    "src/routeTree.gen.ts",
+    "**/worker-configuration.d.ts"
+  ],
+  "rules": {
+    "curly": [
+      "error",
+      "multi-line"
+    ],
+    "no-unused-vars": "warn",
+    "import/no-anonymous-default-export": "warn",
+    "import/no-cycle": "warn",
+    "oxc/no-optional-chaining": "allow",
+    "oxc/no-accumulating-spread": "error",
+    "oxc/branches-sharing-code": "error",
+    "typescript/no-inferrable-types": "error",
+    "typescript/unified-signatures": "error",
+    "react/jsx-key": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-target-blank": "off",
+    "react/jsx-no-undef": "error",
+    "react/display-name": "error",
+    "react/no-children-prop": "error",
+    "react/no-danger-with-children": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-is-mounted": "error",
+    "react/no-render-return-value": "error",
+    "react/no-string-refs": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": "off",
+    "react/no-unsafe": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+  }
+}
