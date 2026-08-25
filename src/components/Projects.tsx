@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { Card } from "@/components/ui/card";
+import { IconSvg, ExternalLink, LiveLink, Plus } from "@/components/IconSvg";
+import { Accordion } from "@base-ui/react/accordion";
 import { Badge } from "@/components/ui/badge";
-import { IconSvg, ExternalLink, LiveLink } from "@/components/IconSvg";
+import { Card } from "@/components/ui/card";
 import { HighlightLink } from "@/components/HighlightLink";
 import { CmdHeading } from "@/components/CmdHeading";
 import { TechFlex } from "@/components/TechStack";
@@ -20,12 +21,18 @@ interface ProjectCoverImage {
 
 type ProjectLinkMap = Record<"live" | "demo" | "code", { href: string }>;
 
+interface Bullet {
+  label: string;
+  text: string;
+}
+
 interface Project {
   name: string;
   summary: string;
   logo?: string;
   cli?: string;
   covers?: ProjectCoverImage[];
+  bullets?: Bullet[];
   techStack: string[];
   startDate: string;
   endDate?: string;
@@ -52,6 +59,28 @@ const PROJECTS: Project[] = [
     summary:
       "Lead full-stack engineer on eWARP, an agentic budget execution and project management platform for the Defense Innovation Unit (DIU) that resolves Congressional funding, purchase requests, vendor contracts, and financial reports into auditable records of commitments, obligations, and expenditures validated against OUSW(C) benchmarks and tracked by color of money from Treasury accounts down to sub-line item numbers.",
     techStack: ["React", "Next.js", "Django", "Celery", "FastAPI", "PostgreSQL", "Docker"],
+    bullets: [
+      {
+        label: "architecture",
+        text: "Led development of eWARP, DIU’s budget execution platform for tracking Congressionally appropriated defense funding; architected core financial ledger and data extraction pipelines for DoD IL5 deployment.",
+      },
+      {
+        label: "templating",
+        text: "Designed configurable schema-versioned review templates with typed field definitions, so requests for new capture fields are resolved through user configuration--no code changes or redeployment required.",
+      },
+      {
+        label: "evaluation",
+        text: "Developed semi-automated extraction evaluation system with per-field confusion matrices, heatmaps, and HITL review loops to curate SME-corrected outputs as ground truth for LLM-assisted remediation.",
+      },
+      {
+        label: "performance",
+        text: "Optimized memory utilization across Celery worker pods by replacing redundant per-task OCR model loads with reusable singleton instances, eliminating OOM crashes and unnecessary compute scaling.",
+      },
+      {
+        label: "deployment",
+        text: "Cut FedRAMP High deploy time from 2hrs to ~30min via toolchain modernization and Dockerfile pruning.",
+      },
+    ],
     startDate: "2026-01",
     endDate: "2026-07",
     links: {
@@ -139,6 +168,18 @@ const PROJECTS: Project[] = [
 const PX_PER_SEC = 175;
 const MIN_DURATION_S = 6;
 
+export function Projects() {
+  return (
+    <section className="mx-auto max-w-3xl py-16">
+      <div className="space-y-8">
+        {PROJECTS.map(project => (
+          <ProjectCard key={project.name} project={project} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ProjectCard({ project }: { project: Project }) {
   const actions = Object.entries(project.links).map(([kind, { href }]) => {
     const { label, title, Icon } = LINK_META[kind as "live" | "demo" | "code"];
@@ -188,7 +229,7 @@ function ProjectCard({ project }: { project: Project }) {
         <div className="m-4 border-b border-border" />
 
         {/* CONTENT */}
-        <div className="flex items-center gap-4.5 px-6">
+        <div className="grid items-center gap-x-4.5 px-6 sm:grid-cols-[auto_1fr]">
           {project.logo && (
             <div className="my-auto hidden items-center sm:flex">
               <IconSvg className="min-h-20 w-auto sm:min-h-24" name={project.logo} />
@@ -207,7 +248,7 @@ function ProjectCard({ project }: { project: Project }) {
                         aria-label={`Link to ${project.name}'s ${title}`}
                         onClick={() =>
                           umami.track("project_view", {
-                            name: project.name.toLowerCase().replace(/[\s]+/g, "_"),
+                            name: trackName(project.name),
                           })
                         }
                         className="group"
@@ -229,15 +270,63 @@ function ProjectCard({ project }: { project: Project }) {
               </time>
             </div>
 
-            <div className="sm:pr-1.75 font-neuvetica leading-6 tracking-wide text-pretty text-foreground/90 [word-spacing:-.025rem] dark:text-foreground/65">
+            <div className="font-neuvetica leading-6 tracking-wide text-pretty text-foreground/90 [word-spacing:-.025rem] sm:pr-1.75 dark:text-foreground/65">
               {project.summary}
             </div>
           </div>
+          {project.bullets && project.bullets.length > 0 && (
+            <ProjectBullets name={project.name} bullets={project.bullets} />
+          )}
         </div>
       </section>
 
       {project.covers && <ProjectCovers covers={project.covers} archived={project.archived} />}
     </Card>
+  );
+}
+
+interface ProjectBulletsProps {
+  name: string;
+  bullets: Bullet[];
+}
+
+function ProjectBullets({ name, bullets }: ProjectBulletsProps) {
+  return (
+    <Accordion.Root
+      multiple
+      hiddenUntilFound
+      className="mt-4 divide-y divide-border sm:col-span-2 sm:mx-4"
+    >
+      {bullets.map(({ label, text }) => (
+        <Accordion.Item
+          key={label}
+          value={label}
+          onOpenChange={(open, details) => {
+            // browser find-in-page opens a panel with reason 'none'; only count deliberate opens
+            if (open && details.reason === "trigger-press") {
+              void umami.track("project_expand", { name: trackName(name), item: label });
+            }
+          }}
+        >
+          <Accordion.Header>
+            <Accordion.Trigger className="group flex w-full cursor-pointer items-center justify-between rounded-xs py-[.539rem] text-left antialiased select-none">
+              <span className="font-neuvetica text-[.95rem] tracking-wider text-muted-foreground/80 lowercase transition-colors duration-150 group-hover:text-gt-700 group-data-panel-open:text-gt-700 motion-reduce:transition-none dark:group-hover:text-content-400 dark:group-data-panel-open:text-content-400">
+                {label}
+              </span>
+              <Plus
+                aria-hidden
+                className="size-3.75 shrink-0 text-muted-foreground transition-[rotate,color] duration-150 ease-in-out group-hover:text-gt-700 group-data-panel-open:rotate-45 group-data-panel-open:text-gt-700 motion-reduce:transition-none dark:group-hover:text-content-400 dark:group-data-panel-open:text-content-400"
+              />
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Panel className="h-(--accordion-panel-height) overflow-hidden transition-[height] duration-150 ease-in-out data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none [&[hidden]:not([hidden='until-found'])]:hidden">
+            <p className="pb-[.809rem] pl-2.5 font-neuvetica text-[.9125rem] leading-5.25 tracking-wider text-foreground/85 sm:text-pretty dark:text-foreground/65">
+              {text}
+            </p>
+          </Accordion.Panel>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
   );
 }
 
@@ -365,14 +454,6 @@ function ProjectCovers({ covers, archived }: ProjectCoversProps) {
   );
 }
 
-export function Projects() {
-  return (
-    <section className="mx-auto max-w-3xl py-16">
-      <div className="space-y-8">
-        {PROJECTS.map(project => (
-          <ProjectCard key={project.name} project={project} />
-        ))}
-      </div>
-    </section>
-  );
+function trackName(name: string) {
+  return name.toLowerCase().replace(/\s+/g, "_");
 }

@@ -8,6 +8,7 @@ import {
   type ReactNode,
   type Dispatch,
   createContext,
+  useCallback,
   useEffect,
   useState,
   use,
@@ -105,44 +106,37 @@ function Theme({
 }: ThemeProviderProps) {
   const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme));
 
-  function applyAttributesToDOM(resolved: string) {
-    const attributeList = Array.isArray(attribute) ? attribute : [attribute];
-    const attrValues = value ? Object.values(value) : themes;
-    const name = value ? value[resolved] : resolved;
+  const applyTheme = useCallback(
+    (nextTheme?: string) => {
+      if (!nextTheme) return;
 
-    for (const attr of attributeList) {
-      if (attr === "class") {
-        document.documentElement.classList.remove(...attrValues);
-        if (name) document.documentElement.classList.add(name);
-      } else if (attr.startsWith("data-")) {
-        if (name) document.documentElement.setAttribute(attr, name);
-        else document.documentElement.removeAttribute(attr);
-      }
-    }
-  }
+      const resolved = nextTheme === "system" && enableSystem
+        ? getSystemTheme()
+        : nextTheme;
+      const enable = disableTransitionOnChange
+        ? disableAnimation()
+        : null;
 
-  function applyColorScheme(resolved: string) {
-    if (!enableColorScheme) return;
+      applyAttributesToDOM(resolved, attribute, themes, value);
+      if (enableColorScheme) applyColorScheme(resolved, defaultTheme);
 
-    const fallback = colorSchemes.includes(defaultTheme) ? defaultTheme : null;
-    const colorScheme = colorSchemes.includes(resolved) ? resolved : fallback;
-    document.documentElement.style.colorScheme = colorScheme || "";
-  }
-
-  function applyTheme(nextTheme?: string) {
-    if (!nextTheme) return;
-
-    const resolved = nextTheme === "system" && enableSystem ? getSystemTheme() : nextTheme;
-    const enable = disableTransitionOnChange ? disableAnimation() : null;
-
-    applyAttributesToDOM(resolved);
-    applyColorScheme(resolved);
-
-    enable?.();
-  }
+      enable?.();
+    },
+    [
+      attribute,
+      defaultTheme,
+      disableTransitionOnChange,
+      enableColorScheme,
+      enableSystem,
+      themes,
+      value,
+    ],
+  );
 
   function setTheme(newValue: SetStateAction<string>) {
-    const newTheme = typeof newValue === "function" ? newValue(theme ?? "") : newValue;
+    const newTheme = typeof newValue === "function"
+      ? newValue(theme ?? "")
+      : newValue;
     setThemeState(newTheme);
 
     try {
@@ -152,39 +146,42 @@ function Theme({
     }
   }
 
-  function handleMediaQuery(_event: MediaQueryListEvent | MediaQueryList) {
-    if (theme === "system" && enableSystem && !forcedTheme) {
-      applyTheme("system");
-    }
-  }
+  useEffect(
+    function listenToSystemPreference() {
+      if (isServer || !enableSystem || forcedTheme || theme !== "system") return;
 
-  useEffect(function listenToSystemPreference() {
-    if (isServer) return;
+      const media = window.matchMedia(MEDIA);
+      const handleMediaQuery = () => applyTheme("system");
+      // intentionally use deprecated listener methods to support iOS 13 and older browsers
+      media.addListener(handleMediaQuery);
 
-    const media = window.matchMedia(MEDIA);
-    // intentionally use deprecated listener methods to support iOS 13 and older browsers
-    media.addListener(handleMediaQuery);
-    handleMediaQuery(media);
+      return () => media.removeListener(handleMediaQuery);
+    },
+    [applyTheme, enableSystem, forcedTheme, theme],
+  );
 
-    return () => media.removeListener(handleMediaQuery);
-  });
+  useEffect(
+    function syncThemeAcrossTabs() {
+      if (isServer) return;
 
-  useEffect(function syncThemeAcrossTabs() {
-    if (isServer) return;
+      // the other tab already persisted the value, so only local state needs updating
+      const handleStorage = (e: StorageEvent) => {
+        if (e.key !== storageKey) return;
+        setThemeState(e.newValue || defaultTheme);
+      };
 
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key !== storageKey) return;
-      const newTheme = e.newValue || defaultTheme;
-      setTheme(newTheme);
-    };
+      window.addEventListener("storage", handleStorage);
+      return () => window.removeEventListener("storage", handleStorage);
+    },
+    [storageKey, defaultTheme],
+  );
 
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  });
-
-  useEffect(function applyThemeOnChange() {
-    applyTheme(forcedTheme ?? theme);
-  });
+  useEffect(
+    function applyThemeOnChange() {
+      applyTheme(forcedTheme ?? theme);
+    },
+    [applyTheme, forcedTheme, theme],
+  );
 
   const providerValue: UseThemeProps = {
     theme,
@@ -238,7 +235,6 @@ function ThemeScript({
 
   return (
     <script
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: needed to inject script before hydration
       dangerouslySetInnerHTML={{
         __html: `(${script.toString()})(${scriptOptions})`,
       }}
@@ -259,6 +255,37 @@ function getTheme(key: string, fallback?: string) {
   }
 
   return theme || fallback;
+}
+
+function applyAttributesToDOM(
+  resolved: string,
+  attribute: Attribute | Attribute[],
+  themes: string[],
+  value?: ValueObject,
+) {
+  const attributeList = Array.isArray(attribute) ? attribute : [attribute];
+  const attrValues = value ? Object.values(value) : themes;
+  const name = value ? value[resolved] : resolved;
+
+  for (const attr of attributeList) {
+    if (attr === "class") {
+      document.documentElement.classList.remove(...attrValues);
+      if (name) document.documentElement.classList.add(name);
+    } else if (attr.startsWith("data-")) {
+      if (name) document.documentElement.setAttribute(attr, name);
+      else document.documentElement.removeAttribute(attr);
+    }
+  }
+}
+
+function applyColorScheme(resolved: string, defaultTheme: string) {
+  const fallback = colorSchemes.includes(defaultTheme)
+    ? defaultTheme
+    : null;
+  const colorScheme = colorSchemes.includes(resolved)
+    ? resolved
+    : fallback;
+  document.documentElement.style.colorScheme = colorScheme || "";
 }
 
 function disableAnimation() {
@@ -328,8 +355,12 @@ export function script(options: ThemeScriptOptions) {
   function setColorScheme(theme: string) {
     if (!enableColorScheme) return;
 
-    const fallback = systemThemes.includes(defaultTheme) ? defaultTheme : null;
-    const colorScheme = systemThemes.includes(theme) ? theme : fallback;
+    const fallback = systemThemes.includes(defaultTheme)
+      ? defaultTheme
+      : null;
+    const colorScheme = systemThemes.includes(theme)
+      ? theme
+      : fallback;
     el.style.colorScheme = colorScheme || "";
   }
 
@@ -348,7 +379,6 @@ export function script(options: ThemeScriptOptions) {
       const theme = isSystem ? resolveSystemTheme() : themeName;
       updateDOM(theme);
     } catch (error) {
-      // pre-hydration inline script — consola unavailable
       console.warn("[theme] localStorage unavailable", error);
       updateDOM(enableSystem && defaultTheme === "system" ? resolveSystemTheme() : defaultTheme);
     }
