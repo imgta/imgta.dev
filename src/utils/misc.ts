@@ -112,7 +112,7 @@ export function formatDate(input: Date | string | number, options: FormatDateOpt
  * ```
  */
 export function debounce<T extends (...args: any[]) => any>
-  (func: T, delay: number = 75):
+  (func: T, delay = 75):
   (...args: Parameters<T>) => void {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
   return function (this: ThisParameterType<T>, ...args: Parameters<T>): void {
