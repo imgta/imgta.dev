@@ -9,7 +9,8 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    tanstackRouter({ // ensure tanstackRouter is passed before react
+    tanstackRouter({
+      // ensure tanstackRouter is passed before react
       target: 'react',
       autoCodeSplitting: true, // automatically splits new routes
     }),

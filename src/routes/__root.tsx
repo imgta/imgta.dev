@@ -7,8 +7,7 @@ import {
   type LinkProps,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { ThemeProvider, ThemeToggle } from '@/components/theme';
 import { createMetaTags, SOCIALS } from '@/utils/meta';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
