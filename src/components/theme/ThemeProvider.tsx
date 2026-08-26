@@ -1,12 +1,3 @@
-// import { ThemeProvider as NextThemesProvider } from 'next-themes';
-// export function ThemeProvider({
-//   children,
-//   ...props
-// }: React.ComponentProps<typeof NextThemesProvider>) {
-//   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
-// }
-
-//  above approach with `next-themes` also works
 // `next-themes` code reworked for tanstack, adapted from:
 // - https://github.com/augiwan/tanstack-theme-kit
 // - https://gist.github.com/WellDone2094/16107a2a9476b28a5b394bee3fa1b8a3
@@ -18,12 +9,10 @@ import {
   type Dispatch,
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useState,
-  useMemo,
-  memo,
-} from 'react';
+  use,
+} from "react";
 
 type ValueObject = {
   [themeName: string]: string;
@@ -33,198 +22,174 @@ export type UseThemeProps = {
   /** List of all available theme names */
   themes: string[];
   /** Forced theme name for the current page */
-  forcedTheme?: string | undefined;
+  forcedTheme?: string;
   /** Update the theme */
   setTheme: Dispatch<SetStateAction<string>>;
   /** Active theme name */
-  theme?: string | undefined;
-  /** If enableSystem is true, returns the System theme preference ('dark' or 'light'), regardless what the active theme is */
-  systemTheme?: 'dark' | 'light' | undefined;
+  theme?: string;
+  /** If enableSystem is true, returns the System theme preference ("dark" or "light"), regardless what the active theme is */
+  systemTheme?: "dark" | "light";
 };
 
-export type Attribute = `data-${string}` | 'class';
+export type Attribute = `data-${string}` | "class";
 
 export interface ThemeProviderProps extends PropsWithChildren {
   /** List of all available theme names */
-  themes?: string[] | undefined;
+  themes?: string[];
   /** Forced theme name for the current page */
-  forcedTheme?: string | undefined;
+  forcedTheme?: string;
   /** Whether to switch between dark and light themes based on prefers-color-scheme */
-  enableSystem?: boolean | undefined;
+  enableSystem?: boolean;
   /** Disable all CSS transitions when switching themes */
-  disableTransitionOnChange?: boolean | undefined;
+  disableTransitionOnChange?: boolean;
   /** Whether to indicate to browsers which color scheme is used (dark or light) for built-in UI like inputs and buttons */
-  enableColorScheme?: boolean | undefined;
+  enableColorScheme?: boolean;
   /** Key used to store theme setting in localStorage */
-  storageKey?: string | undefined;
+  storageKey?: string;
   /** Default theme name (for v0.0.12 and lower the default was light). If `enableSystem` is false, the default theme is light */
-  defaultTheme?: string | undefined;
+  defaultTheme?: string;
   /** HTML attribute modified based on the active theme. Accepts `class`, `data-*` (meaning any data attribute, `data-mode`, `data-color`, etc.), or an array which could include both */
-  attribute?: Attribute | Attribute[] | undefined;
+  attribute?: Attribute | Attribute[];
   /** Mapping of theme name to HTML attribute value. Object where key is the theme name and value is the attribute value */
-  value?: ValueObject | undefined;
+  value?: ValueObject;
   /** Nonce string to pass to the inline script for CSP headers */
-  nonce?: string | undefined;
+  nonce?: string;
 }
 
-const colorSchemes = ['light', 'dark'];
-const MEDIA = '(prefers-color-scheme: dark)';
-const isServer = typeof window === 'undefined';
-const ThemeContext = createContext<UseThemeProps | undefined>(undefined);
-const defaultContext: UseThemeProps = {
-  setTheme: () => { /* no-op */ },
-  themes: [],
+/** Options serialized into the inline theme bootstrap script. */
+export type ThemeScriptOptions = {
+  attribute: Attribute | Attribute[];
+  storageKey: string;
+  defaultTheme: string;
+  themes: string[];
+  enableSystem: boolean;
+  enableColorScheme: boolean;
+  forcedTheme?: string;
+  value?: ValueObject;
 };
 
-export const useTheme = () => useContext(ThemeContext) ?? defaultContext;
+const colorSchemes = ["light", "dark"];
+const MEDIA = "(prefers-color-scheme: dark)";
+const isServer = typeof window === "undefined";
+const ThemeContext = createContext<UseThemeProps | undefined>(undefined);
+const defaultContext: UseThemeProps = {
+  setTheme: () => {
+    /* no-op */
+  },
+  themes: [],
+};
+const defaultThemes = ["light", "dark"];
 
-export const ThemeProvider = (props: ThemeProviderProps): ReactNode => {
-  const context = useContext(ThemeContext);
-  // ignore nested context providers, just pass children
+export function useTheme() {
+  return use(ThemeContext) ?? defaultContext;
+}
+
+export function ThemeProvider(props: ThemeProviderProps): ReactNode {
+  const context = use(ThemeContext);
   if (context) return props.children;
 
   return <Theme {...props} />;
-};
+}
 
-const defaultThemes = ['light', 'dark'];
-
-const Theme = ({
+function Theme({
   forcedTheme,
   disableTransitionOnChange = false,
   enableSystem = true,
   enableColorScheme = true,
-  storageKey = 'theme',
+  storageKey = "theme",
   themes = defaultThemes,
-  defaultTheme = enableSystem ? 'system' : 'light',
-  attribute = 'data-theme',
+  defaultTheme = enableSystem ? "system" : "light",
+  attribute = "data-theme",
   value,
   children,
   nonce,
-}: ThemeProviderProps) => {
+}: ThemeProviderProps) {
   const [theme, setThemeState] = useState(() => getTheme(storageKey, defaultTheme));
 
-  const applyClassAttribute = useCallback((attrValues: string[], name?: string) => {
-    const d = document.documentElement;
-    d.classList.remove(...attrValues);
-    if (name) d.classList.add(name);
-  }, []);
+  const applyTheme = useCallback(
+    (nextTheme?: string) => {
+      if (!nextTheme) return;
 
-  const applyDataAttribute = useCallback((attr: string, name?: string) => {
-    const d = document.documentElement;
-    if (name) d.setAttribute(attr, name);
-    else d.removeAttribute(attr);
-  }, []);
+      const resolved = nextTheme === "system" && enableSystem
+        ? getSystemTheme()
+        : nextTheme;
+      const enable = disableTransitionOnChange
+        ? disableAnimation()
+        : null;
 
-  const applyAttributesToDOM = useCallback((resolved: string) => {
-    const attributeList = Array.isArray(attribute) ? attribute : [attribute];
-    const attrValues = value ? Object.values(value) : themes;
-    const name = value ? value[resolved] : resolved;
+      applyAttributesToDOM(resolved, attribute, themes, value);
+      if (enableColorScheme) applyColorScheme(resolved, defaultTheme);
 
-    for (const attr of attributeList) {
-      if (attr === 'class') {
-        applyClassAttribute(attrValues, name);
-      } else if (attr.startsWith('data-')) {
-        applyDataAttribute(attr, name);
-      }
-    }
-  }, [attribute, themes, value, applyClassAttribute, applyDataAttribute]);
-
-  const applyColorScheme = useCallback((resolved: string) => {
-    if (!enableColorScheme) return;
-
-    const fallback = colorSchemes.includes(defaultTheme)
-      ? defaultTheme
-      : null;
-    const colorScheme = colorSchemes.includes(resolved) ? resolved : fallback;
-    document.documentElement.style.colorScheme = colorScheme || '';
-  }, [enableColorScheme, defaultTheme]);
-
-  // apply selected theme function (light, dark, system)
-  const applyTheme = useCallback((nextTheme?: string) => {
-    if (!nextTheme) return;
-
-    const resolved = nextTheme === 'system' && enableSystem
-      ? getSystemTheme()
-      : nextTheme;
-
-    const enable = disableTransitionOnChange ? disableAnimation() : null;
-
-    applyAttributesToDOM(resolved);
-    applyColorScheme(resolved);
-
-    enable?.();
-  }, [
-    enableSystem,
-    disableTransitionOnChange,
-    applyAttributesToDOM,
-    applyColorScheme,
-  ]);
-
-  // set theme state and save to local storage
-  const setTheme = useCallback(
-    (newValue: SetStateAction<string>) => {
-      const newTheme = typeof newValue === 'function'
-        ? newValue(theme ?? '')
-        : newValue;
-      setThemeState(newTheme);
-
-      try { // save to storage
-        localStorage.setItem(storageKey, newTheme);
-      } catch {
-        // localStorage might not be available
-      }
+      enable?.();
     },
-    [theme, storageKey]
+    [
+      attribute,
+      defaultTheme,
+      disableTransitionOnChange,
+      enableColorScheme,
+      enableSystem,
+      themes,
+      value,
+    ],
   );
 
-  const handleMediaQuery = useCallback((_event: MediaQueryListEvent | MediaQueryList) => {
-    if (theme === 'system' && enableSystem && !forcedTheme) {
-      applyTheme('system');
+  function setTheme(newValue: SetStateAction<string>) {
+    const newTheme = typeof newValue === "function"
+      ? newValue(theme ?? "")
+      : newValue;
+    setThemeState(newTheme);
+
+    try {
+      localStorage.setItem(storageKey, newTheme);
+    } catch (error) {
+      console.warn("[theme] failed to persist to localStorage", error);
     }
-  }, [applyTheme, enableSystem, forcedTheme, theme]);
+  }
 
-  // always listen to system preference
-  useEffect(() => {
-    if (isServer) return;
+  useEffect(
+    function listenToSystemPreference() {
+      if (isServer || !enableSystem || forcedTheme || theme !== "system") return;
 
-    const media = window.matchMedia(MEDIA);
-    // intentionally use deprecated listener methods to support iOS 13 and older browsers
-    media.addListener(handleMediaQuery);
-    handleMediaQuery(media);
+      const media = window.matchMedia(MEDIA);
+      const handleMediaQuery = () => applyTheme("system");
+      // intentionally use deprecated listener methods to support iOS 13 and older browsers
+      media.addListener(handleMediaQuery);
 
-    return () => media.removeListener(handleMediaQuery);
-  }, [handleMediaQuery]);
+      return () => media.removeListener(handleMediaQuery);
+    },
+    [applyTheme, enableSystem, forcedTheme, theme],
+  );
 
-  // localStorage event handling, allow to sync theme changes between tabs
-  useEffect(() => {
-    if (isServer) return;
+  useEffect(
+    function syncThemeAcrossTabs() {
+      if (isServer) return;
 
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key !== storageKey) return;
-      // fallback to default theme if localstorage === null (happens on local storage manual deletion)
-      const newTheme = e.newValue || defaultTheme;
-      setTheme(newTheme);
-    };
+      // the other tab already persisted the value, so only local state needs updating
+      const handleStorage = (e: StorageEvent) => {
+        if (e.key !== storageKey) return;
+        setThemeState(e.newValue || defaultTheme);
+      };
 
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [defaultTheme, setTheme, storageKey]);
+      window.addEventListener("storage", handleStorage);
+      return () => window.removeEventListener("storage", handleStorage);
+    },
+    [storageKey, defaultTheme],
+  );
 
-  // whenever theme/forcedTheme changes, apply it
-  useEffect(() => {
-    applyTheme(forcedTheme ?? theme);
-  }, [applyTheme, forcedTheme, theme]);
+  useEffect(
+    function applyThemeOnChange() {
+      applyTheme(forcedTheme ?? theme);
+    },
+    [applyTheme, forcedTheme, theme],
+  );
 
-  const providerValue = useMemo(() => ({
+  const providerValue: UseThemeProps = {
     theme,
     setTheme,
     forcedTheme,
-    themes: enableSystem ? [...themes, 'system'] : themes,
-    systemTheme: enableSystem
-      ? (getSystemTheme() as 'light' | 'dark')
-      : undefined,
-  }), [theme, forcedTheme, enableSystem, themes, setTheme]
-  );
+    themes: enableSystem ? [...themes, "system"] : themes,
+    systemTheme: enableSystem ? (getSystemTheme() as "light" | "dark") : undefined,
+  };
 
   return (
     <ThemeContext.Provider value={providerValue}>
@@ -244,9 +209,9 @@ const Theme = ({
       {children}
     </ThemeContext.Provider>
   );
-};
+}
 
-const ThemeScript = memo(({
+function ThemeScript({
   forcedTheme,
   storageKey,
   attribute,
@@ -256,95 +221,122 @@ const ThemeScript = memo(({
   value,
   themes,
   nonce,
-}: Omit<ThemeProviderProps, 'children'> & { defaultTheme: string; }) => {
-  const scriptArgs = JSON.stringify([
+}: ThemeScriptOptions & { nonce?: string }) {
+  const scriptOptions = JSON.stringify({
     attribute,
     storageKey,
     defaultTheme,
-    forcedTheme,
     themes,
-    value,
     enableSystem,
     enableColorScheme,
-  ]).slice(1, -1);
+    forcedTheme,
+    value,
+  });
 
   return (
     <script
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: needed to inject script before hydration
       dangerouslySetInnerHTML={{
-        __html: `(${script.toString()})(${scriptArgs})`,
+        __html: `(${script.toString()})(${scriptOptions})`,
       }}
       nonce={nonce}
       suppressHydrationWarning
     />
   );
-});
+}
 
-ThemeScript.displayName = 'ThemeScript';
-
-const getTheme = (key: string, fallback?: string) => {
+function getTheme(key: string, fallback?: string) {
   if (isServer) return fallback;
 
   let theme: string | undefined;
   try {
     theme = localStorage.getItem(key) || undefined;
-  } catch {
-    // localStorage might not be available
+  } catch (error) {
+    console.warn("[theme] failed to read from localStorage", error);
   }
 
   return theme || fallback;
-};
+}
 
-const disableAnimation = () => {
-  const css = document.createElement('style');
+function applyAttributesToDOM(
+  resolved: string,
+  attribute: Attribute | Attribute[],
+  themes: string[],
+  value?: ValueObject,
+) {
+  const attributeList = Array.isArray(attribute) ? attribute : [attribute];
+  const attrValues = value ? Object.values(value) : themes;
+  const name = value ? value[resolved] : resolved;
+
+  for (const attr of attributeList) {
+    if (attr === "class") {
+      document.documentElement.classList.remove(...attrValues);
+      if (name) document.documentElement.classList.add(name);
+    } else if (attr.startsWith("data-")) {
+      if (name) document.documentElement.setAttribute(attr, name);
+      else document.documentElement.removeAttribute(attr);
+    }
+  }
+}
+
+function applyColorScheme(resolved: string, defaultTheme: string) {
+  const fallback = colorSchemes.includes(defaultTheme)
+    ? defaultTheme
+    : null;
+  const colorScheme = colorSchemes.includes(resolved)
+    ? resolved
+    : fallback;
+  document.documentElement.style.colorScheme = colorScheme || "";
+}
+
+function disableAnimation() {
+  const css = document.createElement("style");
   css.appendChild(
     document.createTextNode(
-      '*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
-    )
+      "*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}",
+    ),
   );
   document.head.appendChild(css);
 
   return () => {
     window.getComputedStyle(document.body); // force restyle
-
-    // wait for next tick before removing
     setTimeout(() => {
       document.head.removeChild(css);
     }, 1);
   };
-};
+}
 
-const getSystemTheme = (e?: MediaQueryList | MediaQueryListEvent) => {
-  if (isServer) return 'light';
+function getSystemTheme(e?: MediaQueryList | MediaQueryListEvent) {
+  if (isServer) return "light";
 
   const event = e ?? window.matchMedia(MEDIA);
   const isDark = event.matches;
-  const systemTheme = isDark ? 'dark' : 'light';
-  return systemTheme;
-};
+  return isDark ? "dark" : "light";
+}
 
+/** Bootstrap script injected before hydration to prevent theme flash. */
+export function script(options: ThemeScriptOptions) {
+  const {
+    attribute,
+    storageKey,
+    defaultTheme,
+    themes,
+    enableSystem,
+    enableColorScheme,
+    forcedTheme,
+    value,
+  } = options;
 
-export const script = (
-  attribute: Attribute | Attribute[],
-  storageKey: string,
-  defaultTheme: string,
-  forcedTheme: string | undefined,
-  themes: string[],
-  value: ValueObject | undefined,
-  enableSystem: boolean,
-  enableColorScheme: boolean
-) => {
   const el = document.documentElement;
-  const systemThemes = ['light', 'dark'];
+  const systemThemes = ["light", "dark"];
   const attributes = Array.isArray(attribute) ? attribute : [attribute];
   const attrValues = value ? Object.values(value) : themes;
 
-  function applyClassAttr(name: string | undefined) {
+  function applyClassAttr(name?: string) {
     el.classList.remove(...attrValues);
     if (name) el.classList.add(name);
   }
 
-  function applyDataAttr(attr: string, name: string | undefined) {
+  function applyDataAttr(attr: string, name?: string) {
     if (name) el.setAttribute(attr, name);
     else el.removeAttribute(attr);
   }
@@ -353,10 +345,8 @@ export const script = (
     const name = value ? value[theme] : theme;
 
     for (const attr of attributes) {
-      if (attr === 'class')
-        applyClassAttr(name);
-      else if (attr.startsWith('data-'))
-        applyDataAttr(attr, name);
+      if (attr === "class") applyClassAttr(name);
+      else if (attr.startsWith("data-")) applyDataAttr(attr, name);
     }
 
     setColorScheme(theme);
@@ -365,30 +355,32 @@ export const script = (
   function setColorScheme(theme: string) {
     if (!enableColorScheme) return;
 
-    const fallback = systemThemes.includes(defaultTheme) ? defaultTheme : null;
-    const colorScheme = systemThemes.includes(theme) ? theme : fallback;
-    el.style.colorScheme = colorScheme || '';
+    const fallback = systemThemes.includes(defaultTheme)
+      ? defaultTheme
+      : null;
+    const colorScheme = systemThemes.includes(theme)
+      ? theme
+      : fallback;
+    el.style.colorScheme = colorScheme || "";
   }
 
   function resolveSystemTheme() {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
 
   if (forcedTheme) {
-    const resolvedForcedTheme = forcedTheme === 'system' && enableSystem
-      ? resolveSystemTheme()
-      : forcedTheme;
+    const resolvedForcedTheme =
+      forcedTheme === "system" && enableSystem ? resolveSystemTheme() : forcedTheme;
     updateDOM(resolvedForcedTheme);
   } else {
     try {
       const themeName = localStorage.getItem(storageKey) || defaultTheme;
-      const isSystem = enableSystem && themeName === 'system';
+      const isSystem = enableSystem && themeName === "system";
       const theme = isSystem ? resolveSystemTheme() : themeName;
       updateDOM(theme);
-    } catch {
-      // localStorage might not be available
+    } catch (error) {
+      console.warn("[theme] localStorage unavailable", error);
+      updateDOM(enableSystem && defaultTheme === "system" ? resolveSystemTheme() : defaultTheme);
     }
   }
-};
+}

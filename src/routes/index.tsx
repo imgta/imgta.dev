@@ -149,7 +149,7 @@ function Index() {
                       aria-label={ariaLabel}
                       onClick={() => umami.track('contact_click', { type: title.toLowerCase() })}
                     >
-                      <span className="pl-4 sm:ml-0 -tracking-[.0125em] [word-spacing:-.1rem]">
+                      <span className="pl-4 sm:ml-0 tracking-[-.0125em] [word-spacing:-.1rem]">
                         {text}
                       </span>
                     </HighlightLink>

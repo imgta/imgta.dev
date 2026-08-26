@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "ignorePatterns": [
+    "**/*.generated.ts",
+    "**/*.d.ts",
+    "**/routes/debug/*.ts",
+    ".output/**",
+    ".tanstack/**",
+    ".wrangler/**",
+    "dist/**",
+    "public/fonts/**",
+    "src/routeTree.gen.ts"
+  ],
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [
+    "tailwindcss"
+  ],
+  "rules": {
+    "unused-types": "off",
+    "unused-files": "off",
+    "unused-exports": "off",
+    "unused-dependencies": "off",
+    "unused-dependency-overrides": "off",
+    "unused-dev-dependencies": "off",
+    "unresolved-imports": "warn"
+  },
+  "duplicates": {
+    "mode": "mild",
+    "minTokens": 50,
+    "minLines": 5,
+    "minOccurrences": 3
+  }
+}
