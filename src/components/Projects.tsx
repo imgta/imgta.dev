@@ -57,7 +57,7 @@ const PROJECTS: Project[] = [
     logo: "pryzm",
     cli: "uv audit",
     summary:
-      "Lead full-stack engineer on eWARP, an agentic budget execution and project management platform for the Defense Innovation Unit (DIU) that resolves Congressional funding, purchase requests, vendor contracts, and financial reports into auditable records of commitments, obligations, and expenditures validated against OUSW(C) benchmarks and tracked by color of money from Treasury accounts down to sub-line item numbers.",
+      "Lead full-stack engineer on eWARP, an agentic budget execution and project management platform for the Defense Innovation Unit (DIU) that resolves Congressional funding, purchase requests, vendor contracts, and financial reports into auditable records of commitments, obligations, and expenditures validated against OUSW(C) benchmarks and color-of-money availability periods.",
     techStack: ["React", "Next.js", "Django", "Celery", "FastAPI", "PostgreSQL", "Docker"],
     bullets: [
       {
@@ -93,7 +93,7 @@ const PROJECTS: Project[] = [
     logo: "videoblogai",
     cli: "npx nuxthub deploy",
     summary:
-      "Co-founder, full-stack software engineer of an AI-powered blogging platform for converting and transforming videos, articles, and user inputs into SEO-optimized blog posts and content clusters.",
+      "Co-founder, full-stack software engineer of an AI-powered blogging platform for converting and transforming videos, articles, and user input into SEO-optimized blog posts and content clusters.",
     techStack: ["Nuxt", "FastAPI", "Drizzle", "Stripe", "NGINX", "Docker", "Oracle", "Cloudflare"],
     startDate: "2024-01-08",
     links: {
