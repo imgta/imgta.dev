@@ -22,6 +22,7 @@
     "unused-dependencies": "off",
     "unused-dependency-overrides": "off",
     "unused-dev-dependencies": "off",
+    "dev-dependencies-in-production": "off",
     "unresolved-imports": "warn"
   },
   "duplicates": {

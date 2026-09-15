@@ -1,0 +1,26 @@
+pre-remove = "wt config state marker clear 2>/dev/null || true"
+
+# fast checks on every commit; expensive checks at merge time
+[[pre-commit]]
+lint = "pnpm lint"
+typecheck = "pnpm ts"
+
+[[pre-merge]]
+test = "pnpm test:unit"
+
+# blocking — need deps before --execute starts
+[[pre-start]]
+symlinks = """
+for dir in .agents .claude .codex .cursor .dev; do
+  src="{{ primary_worktree_path }}/$dir"
+  dst="{{ worktree_path }}/$dir"
+  if [ -d "$src" ]; then
+    [ -d "$dst" ] && [ ! -L "$dst" ] && rm -rf "$dst"
+    [ ! -e "$dst" ] && ln -s "$src" "$dst"
+  fi
+done
+"""
+copy = "wt step copy-ignored"
+
+[[pre-start]]
+deps = "pnpm install --frozen-lockfile"
