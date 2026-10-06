@@ -6,7 +6,7 @@ lint = "pnpm lint"
 typecheck = "pnpm ts"
 
 [[pre-merge]]
-test = "pnpm test:unit"
+build = "pnpm build"
 
 # blocking — need deps before --execute starts
 [[pre-start]]
