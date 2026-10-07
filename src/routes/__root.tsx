@@ -133,14 +133,10 @@ function Root() {
                       &gt;
                     </span>
                     <p className="font-neuvetica tracking-[0.0725rem]">
-                      <span
-                        className="marker font-light text-content-800/85 transition-[color] duration-50 group-hover:text-content-800 selection:text-content-500 dark:text-content-400 dark:group-hover:text-content-250 dark:selection:text-content-400"
-                      >
+                      <span className="marker font-light text-content-800/85 transition-[color] duration-50 group-hover:text-content-800 selection:text-content-500 dark:text-content-400 dark:group-hover:text-content-250 dark:selection:text-content-400">
                         im
                       </span>
-                      <span
-                        className="marker text-gt-700/90 transition-[color] duration-50 group-hover:text-gt-700 selection:text-content-700 dark:text-gt-500 dark:group-hover:text-gt-600 dark:selection:text-gt-500"
-                      >
+                      <span className="marker text-gt-700/90 transition-[color] duration-50 group-hover:text-gt-700 selection:text-content-700 dark:text-gt-500 dark:group-hover:text-gt-600 dark:selection:text-gt-500">
                         gta
                       </span>
                     </p>
