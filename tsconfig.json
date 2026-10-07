@@ -18,7 +18,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["vite/client", "node"],
+    "types": ["umami", "vite/client", "node"],
     /* Routing */
     "paths": {
       "@/*": ["./src/*"]
