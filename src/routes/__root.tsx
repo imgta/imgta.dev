@@ -5,17 +5,18 @@ import {
   Outlet,
   Link,
   type LinkProps,
-} from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { createMetaTags, SOCIALS } from '@/utils/meta';
-import { Toaster } from '@/components/ui/sonner';
-import { Button } from '@/components/ui/button';
-import { IconSvg } from '@/components/IconSvg';
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
-import '@/styles/main.css';
+} from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { createMetaTags, SOCIALS } from "@/utils/meta";
+import { track } from "@/utils/analytics";
+import { Toaster } from "@/components/ui/sonner";
+import { Button } from "@/components/ui/button";
+import { IconSvg } from "@/components/IconSvg";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import "@/styles/main.css";
 
 interface NavigationLink
   extends
@@ -56,7 +57,7 @@ const navLinks: NavigationLink[] = [
     href: "https://drive.google.com/file/d/1dVjJGAvB7cXL-IGoXp7wVcVZgG2VTxpH/view?usp=sharing",
     target: "_blank",
     rel: "noopener noreferrer",
-    onClick: () => umami.track("cv_click"),
+    onClick: () => track("cv_click"),
   },
 ];
 
@@ -87,7 +88,7 @@ function Root() {
   return (
     <>
       <HeadContent />
-      <div className="min-h-dvh flex flex-col">
+      <div className="flex min-h-dvh flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -100,12 +101,12 @@ function Root() {
             className={cn(
               "sticky inset-0 top-0 z-20 transition-[box-shadow,background,backdrop-filter] duration-150 ease-in-out",
               scrollY > 10 &&
-                "backdrop-blur-[9.5px] shadow-md shadow-muted-foreground/25 dark:shadow-border/30 bg-slate-100/36 dark:bg-sidebar/60",
+                "bg-slate-100/36 shadow-md shadow-muted-foreground/25 backdrop-blur-[9.5px] dark:bg-sidebar/60 dark:shadow-border/30",
             )}
           >
             <nav
               className={cn(
-                "max-w-6xl mx-auto p-8 transition-[padding-block] duration-250 ease-out",
+                "mx-auto max-w-6xl p-8 transition-[padding-block] duration-250 ease-out",
                 scrollY > 10 && "py-4",
               )}
             >
@@ -113,18 +114,18 @@ function Root() {
                 <abbr className="hidden sm:flex sm:flex-1">
                   <Link
                     title="Home"
-                    className="flex items-center text-3xl hover:cursor-pointer antialiased group"
+                    className="group flex items-center text-3xl antialiased hover:cursor-pointer"
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     resetScroll={false}
                     to="/"
                   >
                     <span
                       className={cn(
-                        "font-inter font-light dark:font-extralight text-xl leading-none mr-2",
+                        "mr-2 font-inter text-xl leading-none font-light dark:font-extralight",
                         "text-content-800/60 group-hover:text-gt-600",
-                        "dark:text-gt-500 dark:group-hover:text-gt-600 scale-y-150",
+                        "scale-y-150 dark:text-gt-500 dark:group-hover:text-gt-600",
                         scrollY < 10
-                          ? "grayscale-75 opacity-30"
+                          ? "opacity-30 grayscale-75"
                           : "group-hover:-rotate-90 dark:group-hover:font-light",
                         "transition-[rotate,scale,filter,opacity,color,font-weight] duration-200 ease-in-out",
                       )}
@@ -132,20 +133,10 @@ function Root() {
                       &gt;
                     </span>
                     <p className="font-neuvetica tracking-[0.0725rem]">
-                      <span
-                        className="marker font-light text-content-800/85 dark:text-content-400
-                        selection:text-content-500 dark:selection:text-content-400
-                        group-hover:text-content-800 dark:group-hover:text-content-250
-                        transition-[color] duration-50"
-                      >
+                      <span className="marker font-light text-content-800/85 transition-[color] duration-50 group-hover:text-content-800 selection:text-content-500 dark:text-content-400 dark:group-hover:text-content-250 dark:selection:text-content-400">
                         im
                       </span>
-                      <span
-                        className="marker text-gt-700/90 dark:text-gt-500
-                        selection:text-content-700 dark:selection:text-gt-500
-                        group-hover:text-gt-700 dark:group-hover:text-gt-600
-                        transition-[color] duration-50"
-                      >
+                      <span className="marker text-gt-700/90 transition-[color] duration-50 group-hover:text-gt-700 selection:text-content-700 dark:text-gt-500 dark:group-hover:text-gt-600 dark:selection:text-gt-500">
                         gta
                       </span>
                     </p>
@@ -156,11 +147,7 @@ function Root() {
                   <Button
                     variant="link"
                     key={link.name}
-                    className="font-dankmono lowercase tracking-tight px-0
-                    text-[.92rem] text-gt-900 dark:text-content-400
-                    hover:text-gt-700 dark:hover:text-gt-600
-                    [&.active]:pb-4 [&.active]:underline [&.active]:underline-offset-8
-                    [&.active]:font-semibold [&.active]:text-gt-700"
+                    className="px-0 font-dankmono text-[.92rem] tracking-tight text-gt-900 lowercase hover:text-gt-700 dark:text-content-400 dark:hover:text-gt-600 [&.active]:pb-4 [&.active]:font-semibold [&.active]:text-gt-700 [&.active]:underline [&.active]:underline-offset-8"
                   >
                     {link.to ? <Link {...link}>{link.name}</Link> : <a {...link}>{link.name}</a>}
                   </Button>
@@ -181,13 +168,13 @@ function Root() {
           </main>
 
           <footer className="mt-auto">
-            <div className="mx-auto max-w-6xl overflow-hidden px-6 lg:px-8 py-4 sm:py-8">
+            <div className="mx-auto max-w-6xl overflow-hidden px-6 py-4 sm:py-8 lg:px-8">
               <div className="mt-6 lg:mt-8">
                 <ul className="flex justify-center gap-x-12">
                   {SOCIALS.map(social => (
                     <li
                       key={social.name}
-                      className="text-foreground hover:scale-115 transition-[scale] duration-75 ease-in-out"
+                      className="text-foreground transition-[scale] duration-75 ease-in-out hover:scale-115"
                     >
                       <a
                         rel="noopener noreferrer"
@@ -204,7 +191,7 @@ function Root() {
                 </ul>
               </div>
 
-              <address className="not-italic mt-6 text-center text-sm/6 text-foreground/50">
+              <address className="mt-6 text-center text-sm/6 text-foreground/50 not-italic">
                 &copy; {COPYRIGHT_YEAR} Gordon Ta. Happily based in Boston, MA.
               </address>
             </div>

@@ -1,77 +1,81 @@
 overrides:
-  "@babel/core": "7.29.7"
-  "brace-expansion": "5.0.8"
-  "diff": "9.0.0"
-  "flatted": "3.4.2"
-  "nanoid": "6.0.1"
-  "picomatch": "4.0.4"
-  "postcss": "8.5.26"
+  "@babel/core": 7.29.7
+  "baseline-browser-mapping": 2.11.23
+  "brace-expansion": 5.0.12
+  "browserslist": 4.28.9
+  "diff": 9.0.0
+  "flatted": 3.4.2
+  "nanoid": 6.0.1
+  "picomatch": 4.0.4
+  "postcss": 8.5.29
+  "source-map-js": 1.2.2
+
+onlyBuiltDependencies:
+- '@tailwindcss/oxide'
+- esbuild
 
 minimumReleaseAgeExclude:
-  - '@oxfmt/binding-android-arm-eabi@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-android-arm64@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-darwin-arm64@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-darwin-x64@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-freebsd-x64@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-arm-gnueabihf@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-arm-musleabihf@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-arm64-gnu@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-arm64-musl@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-ppc64-gnu@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-riscv64-gnu@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-riscv64-musl@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-s390x-gnu@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-x64-gnu@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-linux-x64-musl@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-openharmony-arm64@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-win32-arm64-msvc@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-win32-ia32-msvc@0.53.0 || 0.65.0'
-  - '@oxfmt/binding-win32-x64-msvc@0.53.0 || 0.65.0'
-  - '@oxlint/binding-android-arm-eabi@1.68.0 || 1.80.0'
-  - '@oxlint/binding-android-arm64@1.68.0 || 1.80.0'
-  - '@oxlint/binding-darwin-arm64@1.68.0 || 1.80.0'
-  - '@oxlint/binding-darwin-x64@1.68.0 || 1.80.0'
-  - '@oxlint/binding-freebsd-x64@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-arm-gnueabihf@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-arm-musleabihf@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-arm64-gnu@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-arm64-musl@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-ppc64-gnu@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-riscv64-gnu@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-riscv64-musl@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-s390x-gnu@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-x64-gnu@1.68.0 || 1.80.0'
-  - '@oxlint/binding-linux-x64-musl@1.68.0 || 1.80.0'
-  - '@oxlint/binding-openharmony-arm64@1.68.0 || 1.80.0'
-  - '@oxlint/binding-win32-arm64-msvc@1.68.0 || 1.80.0'
-  - '@oxlint/binding-win32-ia32-msvc@1.68.0 || 1.80.0'
-  - '@oxlint/binding-win32-x64-msvc@1.68.0 || 1.80.0'
-  - '@types/react@19.2.16'
-  - '@typescript-eslint/eslint-plugin@8.60.1'
-  - '@typescript-eslint/parser@8.60.1'
-  - '@typescript-eslint/project-service@8.60.1'
-  - '@typescript-eslint/scope-manager@8.60.1'
-  - '@typescript-eslint/tsconfig-utils@8.60.1'
-  - '@typescript-eslint/type-utils@8.60.1'
-  - '@typescript-eslint/types@8.60.1'
-  - '@typescript-eslint/typescript-estree@8.60.1'
-  - '@typescript-eslint/utils@8.60.1'
-  - '@typescript-eslint/visitor-keys@8.60.1'
-  - '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-darwin-x64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-linux-arm64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-linux-arm@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-linux-x64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-win32-arm64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview-win32-x64@7.0.0-dev.20260601.1'
-  - '@typescript/native-preview@7.0.0-dev.20260601.1'
-  - oxfmt@0.53.0 || 0.65.0
-  - oxlint@1.68.0 || 1.80.0
-  - react-dom@19.2.7
-  - react@19.2.7
-  - typescript-eslint@8.60.1
-  - vite@8.0.16
-  - '@types/react-dom@19.2.5'
-onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
+- '@oxfmt/binding-android-arm-eabi@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-android-arm64@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-darwin-arm64@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-darwin-x64@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-freebsd-x64@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-arm-gnueabihf@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-arm-musleabihf@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-arm64-gnu@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-arm64-musl@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-ppc64-gnu@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-riscv64-gnu@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-riscv64-musl@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-s390x-gnu@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-x64-gnu@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-linux-x64-musl@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-openharmony-arm64@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-win32-arm64-msvc@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-win32-ia32-msvc@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxfmt/binding-win32-x64-msvc@0.53.0 || 0.65.0 || 0.68.0'
+- '@oxlint/binding-android-arm-eabi@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-android-arm64@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-darwin-arm64@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-darwin-x64@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-freebsd-x64@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-arm-gnueabihf@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-arm-musleabihf@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-arm64-gnu@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-arm64-musl@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-ppc64-gnu@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-riscv64-gnu@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-riscv64-musl@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-s390x-gnu@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-x64-gnu@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-linux-x64-musl@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-openharmony-arm64@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-win32-arm64-msvc@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-win32-ia32-msvc@1.68.0 || 1.80.0 || 1.83.0'
+- '@oxlint/binding-win32-x64-msvc@1.68.0 || 1.80.0 || 1.83.0'
+- '@types/react@19.2.16'
+- '@typescript-eslint/eslint-plugin@8.60.1'
+- '@typescript-eslint/parser@8.60.1'
+- '@typescript-eslint/project-service@8.60.1'
+- '@typescript-eslint/scope-manager@8.60.1'
+- '@typescript-eslint/tsconfig-utils@8.60.1'
+- '@typescript-eslint/type-utils@8.60.1'
+- '@typescript-eslint/types@8.60.1'
+- '@typescript-eslint/typescript-estree@8.60.1'
+- '@typescript-eslint/utils@8.60.1'
+- '@typescript-eslint/visitor-keys@8.60.1'
+- '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-darwin-x64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-linux-arm64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-linux-arm@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-linux-x64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-win32-arm64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview-win32-x64@7.0.0-dev.20260601.1'
+- '@typescript/native-preview@7.0.0-dev.20260601.1'
+- oxfmt@0.53.0 || 0.65.0 || 0.68.0
+- oxlint@1.68.0 || 1.80.0 || 1.83.0
+- react-dom@19.2.7
+- react@19.2.7
+- typescript-eslint@8.60.1
+- vite@8.0.16 || 8.3.3
+- '@types/react-dom@19.2.5'

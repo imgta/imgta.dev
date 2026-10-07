@@ -8,6 +8,7 @@ import { CmdHeading } from "@/components/CmdHeading";
 import { TechFlex } from "@/components/TechStack";
 import { useElementWidth } from "@/hooks/useElementWidth";
 import { formatDate } from "@/utils/misc";
+import { track } from "@/utils/analytics";
 import { Image } from "@unpic/react";
 import { cn } from "@/lib/utils";
 
@@ -247,7 +248,7 @@ function ProjectCard({ project }: { project: Project }) {
                         title={`${project.name} ${title}`}
                         aria-label={`Link to ${project.name}'s ${title}`}
                         onClick={() =>
-                          umami.track("project_view", {
+                          track("project_view", {
                             name: trackName(project.name),
                           })
                         }
@@ -304,7 +305,7 @@ function ProjectBullets({ name, bullets }: ProjectBulletsProps) {
           onOpenChange={(open, details) => {
             // browser find-in-page opens a panel with reason 'none'; only count deliberate opens
             if (open && details.reason === "trigger-press") {
-              void umami.track("project_expand", { name: trackName(name), item: label });
+              track("project_expand", { name: trackName(name), item: label });
             }
           }}
         >

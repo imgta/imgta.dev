@@ -26,10 +26,11 @@ dist-ssr
 .agents
 .claude
 .codex
-.config
 .cursor
 .dev
 .env
+!.env.age
+!.env.example
 .test
 .tanstack
 
