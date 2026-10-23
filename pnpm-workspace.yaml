@@ -79,3 +79,24 @@ minimumReleaseAgeExclude:
 - typescript-eslint@8.60.1
 - vite@8.0.16 || 8.3.3
 - '@types/react-dom@19.2.5'
+- '@fallow-cli/darwin-arm64@3.35.0'
+- '@fallow-cli/darwin-x64@3.35.0'
+- '@fallow-cli/linux-arm64-gnu@3.35.0'
+- '@fallow-cli/linux-arm64-musl@3.35.0'
+- '@fallow-cli/linux-x64-gnu@3.35.0'
+- '@fallow-cli/linux-x64-musl@3.35.0'
+- '@fallow-cli/win32-arm64-msvc@3.35.0'
+- '@fallow-cli/win32-x64-msvc@3.35.0'
+- fallow-type-aware@3.35.0
+- fallow@3.35.0
+- '@oxlint-tsgolint/darwin-arm64@7.0.2005'
+- '@oxlint-tsgolint/darwin-x64@7.0.2005'
+- '@oxlint-tsgolint/linux-arm64@7.0.2005'
+- '@oxlint-tsgolint/linux-x64@7.0.2005'
+- '@oxlint-tsgolint/win32-arm64@7.0.2005'
+- '@oxlint-tsgolint/win32-x64@7.0.2005'
+- '@tanstack/react-router@1.170.46'
+- '@tanstack/router-core@1.171.39'
+- '@tanstack/router-generator@1.167.46'
+- '@tanstack/router-plugin@1.168.48'
+- oxlint-tsgolint@7.0.2005
