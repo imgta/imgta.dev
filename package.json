@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "oxlint .",
     "fmt": "oxfmt .",
-    "ts": "tsc --pretty --noEmit"
+    "lint": "OXLINT_TSGOLINT_PATH=node_modules/.bin/tsrs-lint oxlint .",
+    "ts": "tsrs --noEmit --fast"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
@@ -22,10 +22,10 @@
     "sonner": "2.0.8"
   },
   "devDependencies": {
-    "@babel/core": "8.0.10",
+    "@babel/core": "8.1.0",
     "@babel/preset-typescript": "8.0.7",
     "@rolldown/plugin-babel": "0.3.0",
-    "@tailwindcss/vite": "4.3.3",
+    "@tailwindcss/vite": "4.3.4",
     "@tanstack/react-router-devtools": "1.167.2",
     "@tanstack/router-plugin": "1.168.48",
     "@types/babel__core": "7.20.5",
@@ -33,16 +33,15 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/umami": "2.10.1",
-    "@vitejs/plugin-react": "6.1.2",
+    "@vitejs/plugin-react": "6.2.1",
     "babel-plugin-react-compiler": "1.0.0",
-    "fallow": "3.38.1",
-    "oxfmt": "0.75.0",
-    "oxlint": "1.90.0",
-    "oxlint-tsgolint": "7.0.2005",
+    "fallow": "3.40.0",
+    "oxfmt": "0.76.0",
+    "oxlint": "1.91.0",
     "tailwind-merge": "3.7.0",
-    "tailwindcss": "4.3.3",
+    "tailwindcss": "4.3.4",
+    "tsrs": "0.22.0-ts7.1.0-beta",
     "tw-animate-css": "1.4.0",
-    "typescript": "7.0.2",
-    "vite": "8.3.5"
+    "vite": "8.3.6"
   }
 }
