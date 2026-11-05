@@ -11,10 +11,6 @@ overrides:
   "source-map-js": 1.2.2
   "zod": 4.6.7
 
-onlyBuiltDependencies:
-- '@tailwindcss/oxide'
-- esbuild
-
 minimumReleaseAgeExclude:
 - '@fallow-cli/darwin-arm64@3.40.0'
 - '@fallow-cli/darwin-x64@3.40.0'
@@ -46,3 +42,11 @@ minimumReleaseAgeExclude:
 - '@tsrs/win32-x64@0.22.0-ts7.1.0-beta'
 - tsrs@0.22.0-ts7.1.0-beta
 - vite@8.3.6
+
+permissions:
+  '@tanstack/react-router':
+    skills: false
+  '@tanstack/router-plugin':
+    skills: false
+  fallow:
+    skills: false
