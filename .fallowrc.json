@@ -1,20 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "ignorePatterns": [
-    "**/*.generated.ts",
-    "**/*.d.ts",
-    "**/routes/debug/*.ts",
     ".output/**",
     ".tanstack/**",
     ".wrangler/**",
-    "dist/**",
     "public/fonts/**",
     "src/routeTree.gen.ts"
   ],
   "ignoreExportsUsedInFile": true,
-  "ignoreDependencies": [
-    "tailwindcss"
-  ],
   "rules": {
     "unused-types": "off",
     "unused-files": "off",
