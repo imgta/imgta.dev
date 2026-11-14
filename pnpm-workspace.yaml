@@ -1,47 +1,15 @@
 overrides:
-  "baseline-browser-mapping": 2.11.35
-  "brace-expansion": 5.0.12
+  "baseline-browser-mapping": 2.11.37
+  "brace-expansion": 5.0.13
   "browserslist": 4.29.5
   "diff": 9.0.0
   "flatted": 3.4.4
   "nanoid": 6.0.2
   "picomatch": 4.0.7
-  "postcss": 8.5.32
-  "seroval": 1.7.7
+  "postcss": 8.5.33
+  "seroval": 1.8.1
   "source-map-js": 1.2.2
   "zod": 4.6.7
-
-minimumReleaseAgeExclude:
-- '@fallow-cli/darwin-arm64@3.40.0'
-- '@fallow-cli/darwin-x64@3.40.0'
-- '@fallow-cli/linux-arm64-gnu@3.40.0'
-- '@fallow-cli/linux-arm64-musl@3.40.0'
-- '@fallow-cli/linux-x64-gnu@3.40.0'
-- '@fallow-cli/linux-x64-musl@3.40.0'
-- '@fallow-cli/win32-arm64-msvc@3.40.0'
-- '@fallow-cli/win32-x64-msvc@3.40.0'
-- fallow-type-aware@3.40.0
-- fallow@3.40.0
-- '@oxlint-tsgolint/darwin-arm64@7.0.2005'
-- '@oxlint-tsgolint/darwin-x64@7.0.2005'
-- '@oxlint-tsgolint/linux-arm64@7.0.2005'
-- '@oxlint-tsgolint/linux-x64@7.0.2005'
-- '@oxlint-tsgolint/win32-arm64@7.0.2005'
-- '@oxlint-tsgolint/win32-x64@7.0.2005'
-- oxlint-tsgolint@7.0.2005
-- '@tanstack/react-router@1.170.46'
-- '@tanstack/router-core@1.171.39'
-- '@tanstack/router-generator@1.167.46'
-- '@tanstack/router-plugin@1.168.48'
-- '@tsrs/darwin-arm64@0.22.0-ts7.1.0-beta'
-- '@tsrs/darwin-x64@0.22.0-ts7.1.0-beta'
-- '@tsrs/linux-arm64-gnu@0.22.0-ts7.1.0-beta'
-- '@tsrs/linux-arm64-musl@0.22.0-ts7.1.0-beta'
-- '@tsrs/linux-x64-gnu@0.22.0-ts7.1.0-beta'
-- '@tsrs/linux-x64-musl@0.22.0-ts7.1.0-beta'
-- '@tsrs/win32-x64@0.22.0-ts7.1.0-beta'
-- tsrs@0.22.0-ts7.1.0-beta
-- vite@8.3.6
 
 permissions:
   '@tanstack/react-router':
@@ -50,3 +18,6 @@ permissions:
     skills: false
   fallow:
     skills: false
+
+minimumReleaseAgeExclude:
+- postcss@8.5.33
