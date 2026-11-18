@@ -1,4 +1,3 @@
 # Allowlist for `wt step copy-ignored`. Only files matching BOTH .gitignore AND this file get copied.
 .env
 AGENTS.md
-CLAUDE.md
