@@ -72,3 +72,12 @@ minimumReleaseAgeExclude:
 - oxlint@1.94.0
 - update-browserslist-db@1.4.0
 - seroval@1.8.2
+- "@tsrs/darwin-arm64@7.1.0-beta.tsrs3"
+- "@tsrs/darwin-x64@7.1.0-beta.tsrs3"
+- "@tsrs/linux-arm64-gnu@7.1.0-beta.tsrs3"
+- "@tsrs/linux-arm64-musl@7.1.0-beta.tsrs3"
+- "@tsrs/linux-x64-gnu@7.1.0-beta.tsrs3"
+- "@tsrs/linux-x64-musl@7.1.0-beta.tsrs3"
+- "@tsrs/win32-arm64@7.1.0-beta.tsrs3"
+- "@tsrs/win32-x64@7.1.0-beta.tsrs3"
+- tsrs@7.1.0-beta.tsrs3
