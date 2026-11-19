@@ -8,19 +8,25 @@ typecheck = "pnpm ts"
 [[pre-merge]]
 build = "pnpm build"
 
-# blocking — need deps before --execute starts
+# blocking: need deps before --execute starts
 [[pre-start]]
 symlinks = """
+if [ "{{ worktree_path }}" = "{{ primary_worktree_path }}" ]; then exit 0; fi
 for dir in .agents .claude .codex .cursor .dev; do
   src="{{ primary_worktree_path }}/$dir"
   dst="{{ worktree_path }}/$dir"
-  if [ -d "$src" ]; then
-    [ -d "$dst" ] && [ ! -L "$dst" ] && rm -rf "$dst"
-    [ ! -e "$dst" ] && ln -s "$src" "$dst"
+  [ -e "$src" ] || continue
+  if [ -L "$dst" ]; then
+    [ "$(readlink "$dst")" = "$src" ] && continue
+    rm "$dst"
+  elif [ -e "$dst" ]; then
+    echo "wt.toml: keeping real $dir; remove it to link the shared copy" >&2
+    continue
   fi
+  ln -s "$src" "$dst" || exit
 done
 """
-copy = "wt step copy-ignored"
+copy = "wt step copy-ignored --require-include"
 
 [[pre-start]]
 deps = "pnpm install --frozen-lockfile"
