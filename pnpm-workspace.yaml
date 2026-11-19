@@ -1,5 +1,5 @@
 overrides:
-  "baseline-browser-mapping": 2.11.38
+  "baseline-browser-mapping": 2.11.39
   "brace-expansion": 5.0.13
   "browserslist": 4.29.6
   "diff": 9.0.0
@@ -8,7 +8,7 @@ overrides:
   "picomatch": 4.0.7
   "postcss": 8.5.33
   "seroval": 1.8.2
-  "source-map-js": 1.2.2
+  "source-map-js": 1.2.4
   "zod": 4.6.7
 
 permissions:
@@ -20,14 +20,14 @@ permissions:
     skills: false
 
 minimumReleaseAgeExclude:
-- "@fallow-cli/darwin-arm64@3.43.2"
-- "@fallow-cli/darwin-x64@3.43.2"
-- "@fallow-cli/linux-arm64-gnu@3.43.2"
-- "@fallow-cli/linux-arm64-musl@3.43.2"
-- "@fallow-cli/linux-x64-gnu@3.43.2"
-- "@fallow-cli/linux-x64-musl@3.43.2"
-- "@fallow-cli/win32-arm64-msvc@3.43.2"
-- "@fallow-cli/win32-x64-msvc@3.43.2"
+- "@fallow-cli/darwin-arm64@3.43.2 || 3.44.0"
+- "@fallow-cli/darwin-x64@3.43.2 || 3.44.0"
+- "@fallow-cli/linux-arm64-gnu@3.43.2 || 3.44.0"
+- "@fallow-cli/linux-arm64-musl@3.43.2 || 3.44.0"
+- "@fallow-cli/linux-x64-gnu@3.43.2 || 3.44.0"
+- "@fallow-cli/linux-x64-musl@3.43.2 || 3.44.0"
+- "@fallow-cli/win32-arm64-msvc@3.43.2 || 3.44.0"
+- "@fallow-cli/win32-x64-msvc@3.43.2 || 3.44.0"
 - "@oxfmt/binding-android-arm-eabi@0.79.0"
 - "@oxfmt/binding-android-arm64@0.79.0"
 - "@oxfmt/binding-darwin-arm64@0.79.0"
@@ -67,7 +67,7 @@ minimumReleaseAgeExclude:
 - "@oxlint/binding-win32-ia32-msvc@1.94.0"
 - "@oxlint/binding-win32-x64-msvc@1.94.0"
 - browserslist@4.29.6
-- fallow@3.43.2
+- fallow@3.43.2 || 3.44.0
 - oxfmt@0.79.0
 - oxlint@1.94.0
 - update-browserslist-db@1.4.0
@@ -81,3 +81,7 @@ minimumReleaseAgeExclude:
 - "@tsrs/win32-arm64@7.1.0-beta.tsrs3"
 - "@tsrs/win32-x64@7.1.0-beta.tsrs3"
 - tsrs@7.1.0-beta.tsrs3
+- source-map-js@1.2.3 || 1.2.4
+- "@tanstack/react-router-devtools@1.167.4"
+- "@tanstack/router-devtools-core@1.168.4"
+- baseline-browser-mapping@2.11.39
